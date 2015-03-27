@@ -1,0 +1,20 @@
+
+.mirrormark-toolbar {
+    border: 2px solid #ddd;
+    border-bottom: 1px solid #efefef;
+}
+
+.CodeMirror {
+    border: 2px solid #ddd;
+    border-top: none;
+}
+
+    .mirrormark-toolbar.markdown-focused {
+        border-top-color: #8dae28;
+        border-left-color: #8dae28;
+        border-right-color: #8dae28;
+    }
+
+    .CodeMirror.markdown-focused {
+        border-color: #8dae28;
+    }
