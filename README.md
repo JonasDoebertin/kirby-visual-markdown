@@ -1,4 +1,4 @@
-# Kirby MirrorMark – Visual Markdown Editor for Kirby CMS 2
+Visual Markdown Editor for Kirby CMS 2
 
 *Based on MirrorMark and CodeMirror.*
 
