@@ -1,10 +1,10 @@
 # Visual Markdown Editor for Kirby CMS 2
 
-*Based on MirrorMark and CodeMirror.*
-
 [![Release](https://img.shields.io/github/release/jonasdoebertin/kirby-mirrormark.svg)](https://github.com/jonasdoebertin/kirby-mirrormark/releases)  [![Issues](https://img.shields.io/github/issues/jonasdoebertin/kirby-mirrormark.svg)](https://github.com/jonasdoebertin/kirby-mirrormark/issues) [![License](https://img.shields.io/badge/license-GPLv3-blue.svg)](https://raw.githubusercontent.com/jonasdoebertin/kirby-mirrormark/master/LICENSE)
 
-This additional panel field for [Kirby 2](http://getkirby.com) allows you to use an intuitive alternative file selection field in your blueprints.
+**Based on MirrorMark and CodeMirror.**
+
+This additional panel field for [Kirby 2](http://getkirby.com) allows you to use an intuitive and visual markdown editor in your blueprints.
 
 ## Installation
 
