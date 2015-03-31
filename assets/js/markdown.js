@@ -14,7 +14,7 @@ MarkdownField = (function($, $field) {
 
     this.$field     = $field;
     this.$draggable = $('.sidebar').find('.draggable');
-    this.$wrapper    = $field.parent();
+    this.$wrapper   = $field.parent();
     this.$toolbar   = null;
     this.$editor    = null;
 
@@ -38,7 +38,8 @@ MarkdownField = (function($, $field) {
         self.mirrormark.render();
 
         /*
-            Store a reference to the underlying codemirror instance
+            Store some references to the underlying codemirror instance
+            and the toolbar and editor elements
          */
         self.codemirror = self.mirrormark.cm;
         self.$toolbar   = self.$field.siblings('.mirrormark-toolbar');
@@ -54,6 +55,11 @@ MarkdownField = (function($, $field) {
          */
         self.codemirror.on('focus', self.attachFocusStyles);
         self.codemirror.on('blur', self.detachFocusStyles);
+
+        /*
+            Set up fullscreen mode change event handler
+         */
+        $(document).bind(screenfull.raw.fullscreenchange, self.changeFullscreenModeHandler);
 
         /**
          * Make the editor field accept Kirby typical
@@ -90,12 +96,15 @@ MarkdownField = (function($, $field) {
 
         // Register custom (and overwritten) actions
         self.mirrormark.registerActions({
-            'line': function() {
+            line: function() {
                 this.insert('****');
             },
-            'image': function() {
+            image: function() {
                 this.insertBefore('(image: filename.jpg)');
             },
+            fullScreen: function() {
+                self.toggleFullscreenMode();
+            }
         });
 
         // Register toolbar icons
@@ -118,7 +127,54 @@ MarkdownField = (function($, $field) {
     };
 
     /**
-     * Add focus style classes to the editor
+     * Deactivate plugin instance
+     *
+     * @since 1.0.0
+     */
+    this.deactivate = function(e) {
+        self.updateStorage();
+        self.codemirror.toTextArea();
+    };
+
+    /**
+     * Handle fullscreen mode change event
+     *
+     * @since 1.0.1
+     */
+    this.changeFullscreenModeHandler = function() {
+        // Remove indicator class if fullscreen mode was exited other then
+        // by clicking or custom fullscreen mode icon
+        if(!screenfull.isFullscreen) {
+            self.$wrapper.removeClass('markdownfield-wrapper-fullscreen');
+        }
+    };
+
+    /**
+     * Handle a click on the toggle fullscreen mode icon
+     *
+     * @since 1.0.1
+     */
+    this.toggleFullscreenMode = function() {
+
+        // Abort if fullscreen mode isn't supported
+        if(!screenfull.enabled) {
+            return;
+        }
+
+        // Enable fullscreen mode
+        if(!screenfull.isFullscreen) {
+            self.attachFullscreenStyles();
+            screenfull.request(self.$wrapper.get(0));
+
+        // Disable fullscreen mode
+        } else {
+            screenfull.exit();
+            self.detachFullscreenStyles();
+        }
+    };
+
+    /**
+     * Add focus style classes to the editor wrapper
      *
      * @since 1.0.0
      */
@@ -127,7 +183,7 @@ MarkdownField = (function($, $field) {
     };
 
     /**
-     * Remove focus style classes from the editor
+     * Remove focus style classes from the editor wrapper
      *
      * @since 1.0.0
      */
@@ -136,13 +192,21 @@ MarkdownField = (function($, $field) {
     };
 
     /**
-     * Deactivate plugin instance
+     * Add fullscreen style classes to the editor wrapper
      *
-     * @since 1.0.0
+     * @since 1.0.1
      */
-    this.deactivate = function(e) {
-        self.updateStorage();
-        self.codemirror.toTextArea();
+    this.attachFullscreenStyles = function(instance) {
+        self.$wrapper.addClass('markdownfield-wrapper-fullscreen');
+    };
+
+    /**
+     * Remove fullscreen style classes from the editor wrapper
+     *
+     * @since 1.0.1
+     */
+    this.detachFullscreenStyles = function(instance) {
+        self.$wrapper.removeClass('markdownfield-wrapper-fullscreen');
     };
 
     /**

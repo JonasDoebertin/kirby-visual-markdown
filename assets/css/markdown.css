@@ -25,9 +25,30 @@
     }
 
 
-    /**
-     * TOOLBAR
-     */
-    .markdownfield-wrapper .mirrormark-toolbar {
-        border-bottom: 1px solid #efefef;
+/**
+ * FULLSCREEN MODE
+ */
+.markdownfield-wrapper-fullscreen {
+    border-width: 0;
+}
+
+    .markdownfield-wrapper-fullscreen .mirrormark-toolbar,
+    .markdownfield-wrapper-fullscreen .CodeMirror {
+        max-width: 60em;
     }
+
+    .markdownfield-wrapper-fullscreen .mirrormark-toolbar {
+        margin: auto;
+    }
+
+    .markdownfield-wrapper-fullscreen .CodeMirror {
+        padding: 2em 0 0;
+    }
+
+
+/**
+ * TOOLBAR
+ */
+.markdownfield-wrapper .mirrormark-toolbar {
+    border-bottom: 1px solid #efefef;
+}

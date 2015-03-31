@@ -25,6 +25,7 @@ class MarkdownField extends InputField {
     public static $assets = array(
         'js' => array(
             'mirrormark.package.min.js',
+            'screenfull.min.js',
             'markdown.js',
         ),
         'css' => array(
