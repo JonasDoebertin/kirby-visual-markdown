@@ -2,9 +2,9 @@
 
 [![Release](https://img.shields.io/github/release/jonasdoebertin/kirby-mirrormark.svg)](https://github.com/jonasdoebertin/kirby-mirrormark/releases)  [![Issues](https://img.shields.io/github/issues/jonasdoebertin/kirby-mirrormark.svg)](https://github.com/jonasdoebertin/kirby-mirrormark/issues) [![License](https://img.shields.io/badge/license-GPLv3-blue.svg)](https://raw.githubusercontent.com/jonasdoebertin/kirby-mirrormark/master/LICENSE)
 
-**Based on MirrorMark and CodeMirror.**
+**Based on [MirrorMark](https://github.com/themusicbed/MirrorMark) and [CodeMirror](https://github.com/codemirror/CodeMirror).**
 
-This additional panel field for [Kirby 2](http://getkirby.com) allows you to use an intuitive and visual markdown editor in your blueprints.
+This Panel field plugin for [Kirby 2](http://getkirby.com) enables you to use an intuitive and visual markdown editor without any hazzle. Just drop in the plugin and you're good to go!
 
 ![Screenshot](https://raw.githubusercontent.com/JonasDoebertin/kirby-visual-markdown/master/screenshot.png)
 
@@ -12,15 +12,14 @@ This additional panel field for [Kirby 2](http://getkirby.com) allows you to use
 
 ### Copy & Pasting
 
-If not already existing, add a new `fields` folder to your `site` directory. Then copy or link this repositories whole content in a new `mirrormark` folder there. Afterwards, your directory structure should look like this:
+If not already existing, add a new `fields` folder to your `site` directory. Then copy or link this repositories whole content in a new `markdown` folder there. Afterwards, your directory structure should look similar to this:
 
 ```
 site/
 	fields/
-		mirrormark/
+		markdown/
 			assets/
-			mirrormark.php
-			template.php
+			markdown.php
 ```
 
 ### Git Submodule
@@ -29,7 +28,7 @@ If you are an advanced user and know your way around Git and you already use Git
 
 ```bash
 $ cd your/project/root
-$ git submodule add git@github.com:jonasdoebertin/kirby-mirrormark.git site/fields/mirrormark
+$ git submodule add git@github.com:jonasdoebertin/kirby-visual-markdown.git site/fields/markdown
 ```
 
 Updating all your Git submodules (eg. the Kirby core modules and any extensions added as submodules) to their latest version, all you need to do is to run these two Git commands.
@@ -42,4 +41,35 @@ $ git submodule foreach --recursive git pull
 
 ## Usage
 
+### Within your blueprints
+
+Using the field in your blueprint couldn't be easier. After installing the plugin like explained above, all you need to do is change the `type` of your text fields to `markdown`.
+
+```
+fields:
+    title:
+        label: Post Title
+        type:  text
+    text:
+        label: Text
+        type:  markdown
+```
+
+*Fields related part of the blueprint for the setup shown in the screenshot.*
+
+### Within your templates
+
+You don't have to change your templates in order to support this field. Just use content created with this field like any regular `textarea` field:
+
+```php
+<article>
+	<h1>
+		<?php echo $page->title()->html() ?>
+	</h1>
+	<?php echo $page->text()->kirbytext() ?>
+</article>
+```
+
 ## Options
+
+There are no further configuration options, just yet. However, it is planned to allow configuring (hide/show, limit icons, etc.) the editors toolbar from your blueprints. If you have any suggestions for further configuration options, [please let me know](https://github.com/JonasDoebertin/kirby-visual-markdown/issues/new).
