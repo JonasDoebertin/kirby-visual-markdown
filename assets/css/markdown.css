@@ -1,20 +1,33 @@
+/**
+ * Visual Markdown Editor Field for Kirby 2
+ *
+ * @version   1.0.0
+ * @author    Jonas Döbertin <hello@jd-powered.net>
+ * @copyright Jonas Döbertin <hello@jd-powered.net>
+ * @link      https://github.com/JonasDoebertin/kirby-visual-markdown
+ * @license   GNU GPL v3.0 <http://opensource.org/licenses/GPL-3.0>
+ */
 
-.mirrormark-toolbar {
+
+/**
+ * WRAPPER
+ */
+.markdownfield-wrapper {
     border: 2px solid #ddd;
-    border-bottom: 1px solid #efefef;
 }
 
-.CodeMirror {
-    border: 2px solid #ddd;
-    border-top: none;
-}
-
-    .mirrormark-toolbar.markdown-focused {
-        border-top-color: #8dae28;
-        border-left-color: #8dae28;
-        border-right-color: #8dae28;
+    .markdownfield-wrapper-focused {
+        border-color: #8dae28;
     }
 
-    .CodeMirror.markdown-focused {
-        border-color: #8dae28;
+    .markdownfield-wrapper-over {
+        border-color: #000000;
+    }
+
+
+    /**
+     * TOOLBAR
+     */
+    .markdownfield-wrapper .mirrormark-toolbar {
+        border-bottom: 1px solid #efefef;
     }

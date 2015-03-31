@@ -4,7 +4,7 @@
  * @version   1.0.0
  * @author    Jonas Döbertin <hello@jd-powered.net>
  * @copyright Jonas Döbertin <hello@jd-powered.net>
- * @link      https://github.com/jonasdoebertin/kirby-mirrormark
+ * @link      https://github.com/JonasDoebertin/kirby-visual-markdown
  * @license   GNU GPL v3.0 <http://opensource.org/licenses/GPL-3.0>
  */
 
@@ -14,8 +14,9 @@ MarkdownField = (function($, $field) {
 
     this.$field     = $field;
     this.$draggable = $('.sidebar').find('.draggable');
+    this.$wrapper    = $field.parent();
     this.$toolbar   = null;
-    this.$editor   = null;
+    this.$editor    = null;
 
     this.mirrormark = null;
     this.codemirror = null;
@@ -33,6 +34,7 @@ MarkdownField = (function($, $field) {
         self.mirrormark = mirrorMark(self.$field.get(0), {
             showToolbar: true
         });
+        self.registerCustomTools();
         self.mirrormark.render();
 
         /*
@@ -53,19 +55,19 @@ MarkdownField = (function($, $field) {
         self.codemirror.on('focus', self.attachFocusStyles);
         self.codemirror.on('blur', self.detachFocusStyles);
 
-        // /**
-        //  * Make the editor field accept Kirby typical
-        //  * file/page drag and drop events.
-        //  *
-        //  * @since 1.0.0
-        //  */
-        // self.$editor.droppable({
-        //     hoverClass: 'over',
-        //     accept:     self.draggable,
-        //     drop:       function(event, element) {
-        //         self.insertAtCaret(element.draggable.data('text'));
-        //     }
-        // });
+        /**
+         * Make the editor field accept Kirby typical
+         * file/page drag and drop events.
+         *
+         * @since 1.0.0
+         */
+        self.$wrapper.droppable({
+            hoverClass: 'markdownfield-wrapper-over',
+            accept:     self.draggable,
+            drop:       function(event, element) {
+                self.mirrormark.insert(element.draggable.data('text'));
+            }
+        });
 
         /**
          * Observe when the field element is destroyed (=the user leaves the
@@ -79,20 +81,65 @@ MarkdownField = (function($, $field) {
 
     };
 
+    /**
+     * Register custom actions and toolbar icons
+     *
+     * @since 1.0.0
+     */
+    this.registerCustomTools = function() {
+
+        // Register custom (and overwritten) actions
+        self.mirrormark.registerActions({
+            'line': function() {
+                this.insert('****');
+            },
+            'image': function() {
+                this.insertBefore('(image: filename.jpg)');
+            },
+        });
+
+        // Register toolbar icons
+        self.mirrormark.registerTools([
+            {
+                name: 'line',
+                action: 'line',
+                className: 'fa fa-minus'
+            }
+        ]);
+    };
+
+    /**
+     * Update storage input element
+     *
+     * @since 1.0.0
+     */
     this.updateStorage = function(instance, change) {
         self.$field.text(self.codemirror.getValue());
     };
 
+    /**
+     * Add focus style classes to the editor
+     *
+     * @since 1.0.0
+     */
     this.attachFocusStyles = function(instance) {
-        self.$toolbar.addClass('markdown-focused');
-        self.$editor.addClass('markdown-focused');
+        self.$wrapper.addClass('markdownfield-wrapper-focused');
     };
 
+    /**
+     * Remove focus style classes from the editor
+     *
+     * @since 1.0.0
+     */
     this.detachFocusStyles = function(instance) {
-        self.$toolbar.removeClass('markdown-focused');
-        self.$editor.removeClass('markdown-focused');
+        self.$wrapper.removeClass('markdownfield-wrapper-focused');
     };
 
+    /**
+     * Deactivate plugin instance
+     *
+     * @since 1.0.0
+     */
     this.deactivate = function(e) {
         self.updateStorage();
         self.codemirror.toTextArea();

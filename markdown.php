@@ -5,7 +5,7 @@
  * @version   1.0.0
  * @author    Jonas Döbertin <hello@jd-powered.net>
  * @copyright Jonas Döbertin <hello@jd-powered.net>
- * @link      https://github.com/jonasdoebertin/kirby-mirrormark
+ * @link      https://github.com/JonasDoebertin/kirby-visual-markdown
  * @license   GNU GPL v3.0 <http://opensource.org/licenses/GPL-3.0>
  */
 
@@ -42,15 +42,19 @@ class MarkdownField extends InputField {
      */
     public function input()
     {
+        // Set up textarea
         $input = parent::input();
-
         $input->tag('textarea');
         $input->removeAttr('type');
         $input->removeAttr('value');
         $input->html($this->value() ?: false);
         $input->data('field', 'markdownfield');
 
-        return $input;
+        // Set up wrapping element
+        $wrapper = new Brick('div', false);
+        $wrapper->addClass('markdownfield-wrapper');
+
+        return $wrapper->append($input);
     }
 
     public function element()
