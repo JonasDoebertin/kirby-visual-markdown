@@ -6,6 +6,8 @@
 
 This additional panel field for [Kirby 2](http://getkirby.com) allows you to use an intuitive and visual markdown editor in your blueprints.
 
+![Screenshot](https://raw.githubusercontent.com/JonasDoebertin/kirby-visual-markdown/master/screenshot.png)
+
 ## Installation
 
 ### Copy & Pasting
