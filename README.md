@@ -1,6 +1,8 @@
 # Visual Markdown Editor for Kirby CMS 2
 
 [![Release](https://img.shields.io/github/release/jonasdoebertin/kirby-visual-markdown.svg)](https://github.com/jonasdoebertin/kirby-mirrormark/releases)  [![Issues](https://img.shields.io/github/issues/jonasdoebertin/kirby-visual-markdown.svg)](https://github.com/jonasdoebertin/kirby-mirrormark/issues) [![License](https://img.shields.io/badge/license-GPLv3-blue.svg)](https://raw.githubusercontent.com/jonasdoebertin/kirby-mirrormark/master/LICENSE)
+[![PayPal](https://img.shields.io/badge/donate-paypal-009cde.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=A5K53LA5YBNW4)
+[![Gratipay](https://img.shields.io/gratipay/DieserJonas.svg)](https://gratipay.com/DieserJonas)
 
 **Based on [MirrorMark](https://github.com/themusicbed/MirrorMark) and [CodeMirror](https://github.com/codemirror/CodeMirror).**
 
