@@ -21,6 +21,10 @@ MarkdownField = (function($, $field) {
     this.mirrormark = null;
     this.codemirror = null;
 
+    this.options = {
+        toolbar: $field.data('toolbar')
+    };
+
     /**
      * Initialize editor field
      *
@@ -32,7 +36,7 @@ MarkdownField = (function($, $field) {
             Initialize MirrorMark
          */
         self.mirrormark = mirrorMark(self.$field.get(0), {
-            showToolbar: true
+            showToolbar: this.options.toolbar
         });
         self.registerCustomTools();
         self.mirrormark.render();

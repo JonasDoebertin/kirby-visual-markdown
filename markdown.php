@@ -35,6 +35,68 @@ class MarkdownField extends InputField {
     );
 
     /**
+     * Option: Show/Hide toolbar
+     *
+     * @since 1.1.0
+     *
+     * @var string
+     */
+    protected $toolbar = true;
+
+    /**************************************************************************\
+    *                          GENERAL FIELD METHODS                           *
+    \**************************************************************************/
+
+    /**
+     * Magic setter
+     *
+     * Set a fields property and apply default value if required.
+     *
+     * @since 1.1.0
+     *
+     * @param string $option
+     * @param mixed  $value
+     */
+    public function __set($option, $value)
+    {
+        /* Set given value */
+        $this->$option = $value;
+
+        /* Check if value is valid */
+        switch($option)
+        {
+            case 'toolbar':
+                if(in_array($value, array(false, 'hide')))
+                {
+                    $this->toolbar = false;
+                }
+                else
+                {
+                    $this->toolbar = true;
+                }
+                break;
+        }
+
+    }
+
+
+    /**
+     * Convert result to markdown
+     *
+     * @since 1.0.0
+     *
+     * @return string
+     */
+    public function result()
+    {
+        return str_replace(array("\r\n", "\r"), "\n", parent::result());
+    }
+
+    /**************************************************************************\
+    *                            PANEL FIELD MARKUP                            *
+    \**************************************************************************/
+
+    /**
      * Create input element
      *
      * @since 1.0.0
@@ -49,7 +111,10 @@ class MarkdownField extends InputField {
         $input->removeAttr('type');
         $input->removeAttr('value');
         $input->html($this->value() ?: false);
-        $input->data('field', 'markdownfield');
+        $input->data(array(
+            'field'   => 'markdownfield',
+            'toolbar' => ($this->toolbar) ? 'true' : 'false',
+        ));
 
         // Set up wrapping element
         $wrapper = new Brick('div', false);
@@ -63,18 +128,6 @@ class MarkdownField extends InputField {
         $element = parent::element();
         $element->addClass('field-with-textarea');
         return $element;
-    }
-
-    /**
-     * Convert result to markdown
-     *
-     * @since 1.0.0
-     *
-     * @return string
-     */
-    public function result()
-    {
-        return str_replace(array("\r\n", "\r"), "\n", parent::result());
     }
 
 }
