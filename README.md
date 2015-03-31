@@ -61,7 +61,7 @@ fields:
 
 You don't have to change your templates in order to support this field. Just use content created with this field like any regular `textarea` field:
 
-```php
+```html
 <article>
 	<h1>
 		<?php echo $page->title()->html() ?>
