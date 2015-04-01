@@ -86,4 +86,17 @@ fields:
 		toolbar: hide
 ```
 
+### header1 & header2
+
+Specify the header levels to be used with the *H1* and *H2* toolbar buttons (`h1` to `h6`). Defaults to `header1: h1` and `header2: h2`.
+
+```
+fields:
+    text:
+        label:   Text
+        type:    markdown
+		header1: h2
+		header2: h3
+```
+
 *If you have any suggestions for further configuration options, [please let me know](https://github.com/JonasDoebertin/kirby-visual-markdown/issues/new).*

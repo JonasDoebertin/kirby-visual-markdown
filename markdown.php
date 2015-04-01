@@ -43,6 +43,24 @@ class MarkdownField extends InputField {
      */
     protected $toolbar = true;
 
+    /**
+     * Option: Header 1
+     *
+     * @since 1.1.0
+     *
+     * @var string
+     */
+    protected $header1 = '#';
+
+    /**
+     * Option: Header 2
+     *
+     * @since 1.1.0
+     *
+     * @var string
+     */
+    protected $header2 = '##';
+
     /**************************************************************************\
     *                          GENERAL FIELD METHODS                           *
     \**************************************************************************/
@@ -74,6 +92,12 @@ class MarkdownField extends InputField {
                 {
                     $this->toolbar = true;
                 }
+                break;
+            case 'header1':
+                $this->header1 = $this->translateHeaderValue($value, '#');
+                break;
+            case 'header2':
+                $this->header2 = $this->translateHeaderValue($value, '##');
                 break;
         }
 
@@ -114,6 +138,8 @@ class MarkdownField extends InputField {
         $input->data(array(
             'field'   => 'markdownfield',
             'toolbar' => ($this->toolbar) ? 'true' : 'false',
+            'header1' => $this->header1,
+            'header2' => $this->header2,
         ));
 
         // Set up wrapping element
@@ -129,6 +155,41 @@ class MarkdownField extends InputField {
         $element = parent::element();
         $element->addClass('field-with-textarea');
         return $element;
+    }
+
+    /**************************************************************************\
+    *                                 HELPERS                                  *
+    \**************************************************************************/
+
+    /**
+     * Translate a header value string (h1 to h6) into it's
+     * markdown representation.
+     *
+     * @since 1.1.0
+     *
+     * @param  string $value
+     * @param  string $default
+     * @return string
+     */
+    protected function translateHeaderValue($value, $default = '#')
+    {
+        switch($value)
+        {
+            case 'h1':
+                return '#';
+            case 'h2':
+                return '##';
+            case 'h3':
+                return '###';
+            case 'h4':
+                return '####';
+            case 'h5':
+                return '#####';
+            case 'h6':
+                return '######';
+            default:
+                return $default;
+        }
     }
 
 }

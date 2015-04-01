@@ -22,7 +22,9 @@ MarkdownField = (function($, $field) {
     this.codemirror = null;
 
     this.options = {
-        toolbar: $field.data('toolbar')
+        toolbar: $field.data('toolbar'),
+        header1: $field.data('header1'),
+        header2: $field.data('header2')
     };
 
     /**
@@ -40,11 +42,13 @@ MarkdownField = (function($, $field) {
         });
         self.registerCustomTools();
         self.mirrormark.render();
+        self.registerCustomKeymaps();
 
         /*
             Store some references to the underlying codemirror instance
-            and the toolbar and editor elements
+            our field instance and the toolbar and editor elements
          */
+        self.mirrormark.fieldInstance = self;
         self.codemirror = self.mirrormark.cm;
         self.$toolbar   = self.$field.siblings('.mirrormark-toolbar');
         self.$editor    = self.$field.siblings('.CodeMirror');
@@ -100,13 +104,22 @@ MarkdownField = (function($, $field) {
 
         // Register custom (and overwritten) actions
         self.mirrormark.registerActions({
-            line: function() {
-                this.insert('****');
+            header1: function() {
+                var header = this.fieldInstance.options.header1;
+                this.insertBefore(header + ' ', header.length + 1);
+            },
+            header2: function() {
+                var header = this.fieldInstance.options.header2;
+                this.insertBefore(header + ' ', header.length + 1);
             },
             image: function() {
                 this.insertBefore('(image: filename.jpg)');
             },
-            fullScreen: function() {
+            line: function() {
+                this.insert('****');
+            },
+            fullscreen: function() {
+                // TODO: Use this.fieldInstance instead of self
                 self.toggleFullscreenMode(this);
             }
         });
@@ -114,11 +127,82 @@ MarkdownField = (function($, $field) {
         // Register toolbar icons
         self.mirrormark.registerTools([
             {
+                name: 'h1',
+                action: 'header1',
+                className: 'markdownfield-icon-text markdownfield-icon-header1',
+                showName: true,
+            },
+            {
+                name: 'h2',
+                action: 'header2',
+                className: 'markdownfield-icon-text markdownfield-icon-header1',
+                showName: true,
+            },
+            {
+                name: "bold",
+                action: "bold",
+                className: "fa fa-bold"
+            },
+            {
+                name: "italicize",
+                action: "italicize",
+                className: "fa fa-italic"
+            },
+            {
+                name: "blockquote",
+                action: "blockquote",
+                className: "fa fa-quote-left"
+            },
+            {
+                name: "link",
+                action: "link",
+                className: "fa fa-link"
+            },
+            {
+                name: "image",
+                action: "image",
+                className: "fa fa-image"
+            },
+            {
+                name: "unorderedList",
+                action: "unorderedList",
+                className: "fa fa-list"
+            },
+            {
+                name: "orderedList",
+                action: "orderedList",
+                className: "fa fa-list-ol"
+            },
+            {
                 name: 'line',
                 action: 'line',
                 className: 'fa fa-minus'
+            },
+            {
+                name: "fullScreen",
+                action: "fullscreen",
+                className: "fa fa-expand"
             }
-        ]);
+        ], true);
+    };
+
+    /**
+     * Register custom keymaps
+     *
+     * @since 1.1.0
+     */
+    this.registerCustomKeymaps = function() {
+        self.mirrormark.registerKeyMaps({
+            "Cmd-H":     'header1',
+            "Cmd-Alt-H": 'header2',
+            "Cmd-B":     'bold',
+            "Cmd-I":     'italicize',
+            "Cmd-'":     'blockquote',
+            "Cmd-Alt-L": 'orderedList',
+            "Cmd-L":     'unorderedList',
+            "Cmd-Alt-I": 'image',
+            "Cmd-A":     'link'
+        });
     };
 
     /**

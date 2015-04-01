@@ -52,3 +52,9 @@
 .markdownfield-wrapper .mirrormark-toolbar {
     border-bottom: 1px solid #efefef;
 }
+
+    .markdownfield-wrapper .mirrormark-toolbar .markdownfield-icon-text {
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 18px;
+    }
