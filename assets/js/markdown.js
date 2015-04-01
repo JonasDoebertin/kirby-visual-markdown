@@ -14,7 +14,7 @@ MarkdownField = (function($, $field) {
 
     this.$field     = $field;
     this.$draggable = $('.sidebar').find('.draggable');
-    this.$wrapper   = $field.parent();
+    this.$wrapper   = $field.closest('.markdownfield-wrapper');
     this.$toolbar   = null;
     this.$editor    = null;
 
@@ -107,7 +107,7 @@ MarkdownField = (function($, $field) {
                 this.insertBefore('(image: filename.jpg)');
             },
             fullScreen: function() {
-                self.toggleFullscreenMode();
+                self.toggleFullscreenMode(this);
             }
         });
 
@@ -158,22 +158,27 @@ MarkdownField = (function($, $field) {
      *
      * @since 1.0.1
      */
-    this.toggleFullscreenMode = function() {
+    this.toggleFullscreenMode = function(instance) {
+
+        var wrapper;
 
         // Abort if fullscreen mode isn't supported
         if(!screenfull.enabled) {
             return;
         }
 
+        // find related wrapper element
+        wrapper = jQuery(instance.cm.getWrapperElement()).closest('.markdownfield-wrapper');
+
         // Enable fullscreen mode
         if(!screenfull.isFullscreen) {
-            self.attachFullscreenStyles();
-            screenfull.request(self.$wrapper.get(0));
+            self.attachFullscreenStyles(wrapper);
+            screenfull.request(wrapper.get(0));
 
         // Disable fullscreen mode
         } else {
             screenfull.exit();
-            self.detachFullscreenStyles();
+            self.detachFullscreenStyles(wrapper);
         }
     };
 
@@ -200,8 +205,8 @@ MarkdownField = (function($, $field) {
      *
      * @since 1.0.1
      */
-    this.attachFullscreenStyles = function(instance) {
-        self.$wrapper.addClass('markdownfield-wrapper-fullscreen');
+    this.attachFullscreenStyles = function(wrapper) {
+        wrapper.addClass('markdownfield-wrapper-fullscreen');
     };
 
     /**
@@ -209,8 +214,8 @@ MarkdownField = (function($, $field) {
      *
      * @since 1.0.1
      */
-    this.detachFullscreenStyles = function(instance) {
-        self.$wrapper.removeClass('markdownfield-wrapper-fullscreen');
+    this.detachFullscreenStyles = function(wrapper) {
+        wrapper.removeClass('markdownfield-wrapper-fullscreen');
     };
 
     /**

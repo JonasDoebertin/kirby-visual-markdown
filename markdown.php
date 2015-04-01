@@ -119,6 +119,7 @@ class MarkdownField extends InputField {
         // Set up wrapping element
         $wrapper = new Brick('div', false);
         $wrapper->addClass('markdownfield-wrapper');
+        $wrapper->addClass('markdownfield-field-' . $this->name);
 
         return $wrapper->append($input);
     }
