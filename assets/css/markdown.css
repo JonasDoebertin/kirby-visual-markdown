@@ -26,6 +26,21 @@
 
 
 /**
+ * EDITOR
+ */
+
+.markdownfield-wrapper .cm-s-mirrormark {
+    padding: 0;
+}
+
+.markdownfield-wrapper .CodeMirror-scroll {
+    padding: 2em;
+    margin-bottom: 0;
+    margin-right: -2em;
+}
+
+
+/**
  * FULLSCREEN MODE
  */
 .markdownfield-wrapper-fullscreen {
