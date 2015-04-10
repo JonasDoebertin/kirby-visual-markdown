@@ -105,11 +105,11 @@ MarkdownField = (function($, $field) {
         // Register custom (and overwritten) actions
         self.mirrormark.registerActions({
             header1: function() {
-                var header = this.fieldInstance.options.header1;
+                var header = self.translateHeaderValue(this.fieldInstance.options.header1);
                 this.insertBefore(header + ' ', header.length + 1);
             },
             header2: function() {
-                var header = this.fieldInstance.options.header2;
+                var header = self.translateHeaderValue(this.fieldInstance.options.header2);
                 this.insertBefore(header + ' ', header.length + 1);
             },
             image: function() {
@@ -127,13 +127,13 @@ MarkdownField = (function($, $field) {
         // Register toolbar icons
         self.mirrormark.registerTools([
             {
-                name: 'h1',
+                name: self.options.header1,
                 action: 'header1',
                 className: 'markdownfield-icon-text markdownfield-icon-header1',
                 showName: true,
             },
             {
-                name: 'h2',
+                name: self.options.header2,
                 action: 'header2',
                 className: 'markdownfield-icon-text markdownfield-icon-header1',
                 showName: true,
@@ -300,6 +300,30 @@ MarkdownField = (function($, $field) {
      */
     this.detachFullscreenStyles = function(wrapper) {
         wrapper.removeClass('markdownfield-wrapper-fullscreen');
+    };
+
+    /**
+     * Translate a header value string (h1 to h6) into it's
+     * markdown representation.
+     *
+     * @since 1.1.0
+     */
+    this.translateHeaderValue = function(value) {
+        switch(value) {
+            case 'h6':
+                return '######';
+            case 'h5':
+                return '#####';
+            case 'h4':
+                return '####';
+            case 'h3':
+                return '###';
+            case 'h2':
+                return '##';
+            case 'h1':
+            default:
+                return '#';
+        }
     };
 
     /**

@@ -50,7 +50,7 @@ class MarkdownField extends InputField {
      *
      * @var string
      */
-    protected $header1 = '#';
+    protected $header1 = 'h1';
 
     /**
      * Option: Header 2
@@ -59,7 +59,7 @@ class MarkdownField extends InputField {
      *
      * @var string
      */
-    protected $header2 = '##';
+    protected $header2 = 'h2';
 
     /**************************************************************************\
     *                          GENERAL FIELD METHODS                           *
@@ -94,10 +94,16 @@ class MarkdownField extends InputField {
                 }
                 break;
             case 'header1':
-                $this->header1 = $this->translateHeaderValue($value, '#');
+                if(!in_array($value, array('h1', 'h2', 'h3', 'h4', 'h5', 'h6')))
+                {
+                    $this->header1 = 'h1';
+                }
                 break;
             case 'header2':
-                $this->header2 = $this->translateHeaderValue($value, '##');
+                if(!in_array($value, array('h1', 'h2', 'h3', 'h4', 'h5', 'h6')))
+                {
+                    $this->header2 = 'h2';
+                }
                 break;
         }
 
@@ -161,41 +167,6 @@ class MarkdownField extends InputField {
         $element = parent::element();
         $element->addClass('field-with-markdown');
         return $element;
-    }
-
-    /**************************************************************************\
-    *                                 HELPERS                                  *
-    \**************************************************************************/
-
-    /**
-     * Translate a header value string (h1 to h6) into it's
-     * markdown representation.
-     *
-     * @since 1.1.0
-     *
-     * @param  string $value
-     * @param  string $default
-     * @return string
-     */
-    protected function translateHeaderValue($value, $default = '#')
-    {
-        switch($value)
-        {
-            case 'h1':
-                return '#';
-            case 'h2':
-                return '##';
-            case 'h3':
-                return '###';
-            case 'h4':
-                return '####';
-            case 'h5':
-                return '#####';
-            case 'h6':
-                return '######';
-            default:
-                return $default;
-        }
     }
 
 }
