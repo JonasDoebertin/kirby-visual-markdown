@@ -28,11 +28,6 @@
 /**
  * EDITOR
  */
-
-.markdownfield-wrapper .cm-s-mirrormark {
-    padding: 0;
-}
-
 .markdownfield-wrapper .CodeMirror-scroll {
     padding: 2em;
     margin-bottom: 0;
@@ -45,6 +40,8 @@
  */
 .markdownfield-wrapper-fullscreen {
     border-width: 0;
+    height: 100% !important;
+    overflow: scroll !important;
 }
 
     .markdownfield-wrapper-fullscreen .mirrormark-toolbar,
@@ -54,6 +51,11 @@
 
     .markdownfield-wrapper-fullscreen .mirrormark-toolbar {
         margin: auto;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 999;
     }
 
     .markdownfield-wrapper-fullscreen .CodeMirror {
