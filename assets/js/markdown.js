@@ -1,7 +1,7 @@
 /**
  * Visual Markdown Editor Field for Kirby 2
  *
- * @version   1.0.0
+ * @version   1.1.0
  * @author    Jonas Döbertin <hello@jd-powered.net>
  * @copyright Jonas Döbertin <hello@jd-powered.net>
  * @link      https://github.com/JonasDoebertin/kirby-visual-markdown
@@ -14,12 +14,18 @@ MarkdownField = (function($, $field) {
 
     this.$field     = $field;
     this.$draggable = $('.sidebar').find('.draggable');
-    this.$wrapper   = $field.parent();
+    this.$wrapper   = $field.closest('.markdownfield-wrapper');
     this.$toolbar   = null;
     this.$editor    = null;
 
     this.mirrormark = null;
     this.codemirror = null;
+
+    this.options = {
+        toolbar: $field.data('toolbar'),
+        header1: $field.data('header1'),
+        header2: $field.data('header2')
+    };
 
     /**
      * Initialize editor field
@@ -32,15 +38,17 @@ MarkdownField = (function($, $field) {
             Initialize MirrorMark
          */
         self.mirrormark = mirrorMark(self.$field.get(0), {
-            showToolbar: true
+            showToolbar: this.options.toolbar
         });
         self.registerCustomTools();
         self.mirrormark.render();
+        self.registerCustomKeymaps();
 
         /*
             Store some references to the underlying codemirror instance
-            and the toolbar and editor elements
+            our field instance and the toolbar and editor elements
          */
+        self.mirrormark.fieldInstance = self;
         self.codemirror = self.mirrormark.cm;
         self.$toolbar   = self.$field.siblings('.mirrormark-toolbar');
         self.$editor    = self.$field.siblings('.CodeMirror');
@@ -96,25 +104,105 @@ MarkdownField = (function($, $field) {
 
         // Register custom (and overwritten) actions
         self.mirrormark.registerActions({
-            line: function() {
-                this.insert('****');
+            header1: function() {
+                var header = self.translateHeaderValue(this.fieldInstance.options.header1);
+                this.insertBefore(header + ' ', header.length + 1);
+            },
+            header2: function() {
+                var header = self.translateHeaderValue(this.fieldInstance.options.header2);
+                this.insertBefore(header + ' ', header.length + 1);
             },
             image: function() {
                 this.insertBefore('(image: filename.jpg)');
             },
-            fullScreen: function() {
-                self.toggleFullscreenMode();
+            line: function() {
+                this.insert('****');
+            },
+            fullscreen: function() {
+                // TODO: Use this.fieldInstance instead of self
+                self.toggleFullscreenMode(this);
             }
         });
 
         // Register toolbar icons
         self.mirrormark.registerTools([
             {
+                name: self.options.header1,
+                action: 'header1',
+                className: 'markdownfield-icon-text markdownfield-icon-header1',
+                showName: true,
+            },
+            {
+                name: self.options.header2,
+                action: 'header2',
+                className: 'markdownfield-icon-text markdownfield-icon-header1',
+                showName: true,
+            },
+            {
+                name: "bold",
+                action: "bold",
+                className: "fa fa-bold"
+            },
+            {
+                name: "italicize",
+                action: "italicize",
+                className: "fa fa-italic"
+            },
+            {
+                name: "blockquote",
+                action: "blockquote",
+                className: "fa fa-quote-left"
+            },
+            {
+                name: "link",
+                action: "link",
+                className: "fa fa-link"
+            },
+            {
+                name: "image",
+                action: "image",
+                className: "fa fa-image"
+            },
+            {
+                name: "unorderedList",
+                action: "unorderedList",
+                className: "fa fa-list"
+            },
+            {
+                name: "orderedList",
+                action: "orderedList",
+                className: "fa fa-list-ol"
+            },
+            {
                 name: 'line',
                 action: 'line',
                 className: 'fa fa-minus'
+            },
+            {
+                name: "fullScreen",
+                action: "fullscreen",
+                className: "fa fa-expand"
             }
-        ]);
+        ], true);
+    };
+
+    /**
+     * Register custom keymaps
+     *
+     * @since 1.1.0
+     */
+    this.registerCustomKeymaps = function() {
+        self.mirrormark.registerKeyMaps({
+            "Cmd-H":     'header1',
+            "Cmd-Alt-H": 'header2',
+            "Cmd-B":     'bold',
+            "Cmd-I":     'italicize',
+            "Cmd-'":     'blockquote',
+            "Cmd-Alt-L": 'orderedList',
+            "Cmd-L":     'unorderedList',
+            "Cmd-Alt-I": 'image',
+            "Cmd-A":     'link'
+        });
     };
 
     /**
@@ -154,22 +242,27 @@ MarkdownField = (function($, $field) {
      *
      * @since 1.0.1
      */
-    this.toggleFullscreenMode = function() {
+    this.toggleFullscreenMode = function(instance) {
+
+        var wrapper;
 
         // Abort if fullscreen mode isn't supported
         if(!screenfull.enabled) {
             return;
         }
 
+        // find related wrapper element
+        wrapper = jQuery(instance.cm.getWrapperElement()).closest('.markdownfield-wrapper');
+
         // Enable fullscreen mode
         if(!screenfull.isFullscreen) {
-            self.attachFullscreenStyles();
-            screenfull.request(self.$wrapper.get(0));
+            self.attachFullscreenStyles(wrapper);
+            screenfull.request(wrapper.get(0));
 
         // Disable fullscreen mode
         } else {
             screenfull.exit();
-            self.detachFullscreenStyles();
+            self.detachFullscreenStyles(wrapper);
         }
     };
 
@@ -196,8 +289,8 @@ MarkdownField = (function($, $field) {
      *
      * @since 1.0.1
      */
-    this.attachFullscreenStyles = function(instance) {
-        self.$wrapper.addClass('markdownfield-wrapper-fullscreen');
+    this.attachFullscreenStyles = function(wrapper) {
+        wrapper.addClass('markdownfield-wrapper-fullscreen');
     };
 
     /**
@@ -205,8 +298,32 @@ MarkdownField = (function($, $field) {
      *
      * @since 1.0.1
      */
-    this.detachFullscreenStyles = function(instance) {
-        self.$wrapper.removeClass('markdownfield-wrapper-fullscreen');
+    this.detachFullscreenStyles = function(wrapper) {
+        wrapper.removeClass('markdownfield-wrapper-fullscreen');
+    };
+
+    /**
+     * Translate a header value string (h1 to h6) into it's
+     * markdown representation.
+     *
+     * @since 1.1.0
+     */
+    this.translateHeaderValue = function(value) {
+        switch(value) {
+            case 'h6':
+                return '######';
+            case 'h5':
+                return '#####';
+            case 'h4':
+                return '####';
+            case 'h3':
+                return '###';
+            case 'h2':
+                return '##';
+            case 'h1':
+            default:
+                return '#';
+        }
     };
 
     /**

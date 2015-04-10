@@ -2,7 +2,7 @@
 /**
  * Visual Markdown Editor Field for Kirby 2
  *
- * @version   1.0.0
+ * @version   1.1.0
  * @author    Jonas Döbertin <hello@jd-powered.net>
  * @copyright Jonas Döbertin <hello@jd-powered.net>
  * @link      https://github.com/JonasDoebertin/kirby-visual-markdown
@@ -35,6 +35,97 @@ class MarkdownField extends InputField {
     );
 
     /**
+     * Option: Show/Hide toolbar
+     *
+     * @since 1.1.0
+     *
+     * @var string
+     */
+    protected $toolbar = true;
+
+    /**
+     * Option: Header 1
+     *
+     * @since 1.1.0
+     *
+     * @var string
+     */
+    protected $header1 = 'h1';
+
+    /**
+     * Option: Header 2
+     *
+     * @since 1.1.0
+     *
+     * @var string
+     */
+    protected $header2 = 'h2';
+
+    /**************************************************************************\
+    *                          GENERAL FIELD METHODS                           *
+    \**************************************************************************/
+
+    /**
+     * Magic setter
+     *
+     * Set a fields property and apply default value if required.
+     *
+     * @since 1.1.0
+     *
+     * @param string $option
+     * @param mixed  $value
+     */
+    public function __set($option, $value)
+    {
+        /* Set given value */
+        $this->$option = $value;
+
+        /* Check if value is valid */
+        switch($option)
+        {
+            case 'toolbar':
+                if(in_array($value, array(false, 'hide')))
+                {
+                    $this->toolbar = false;
+                }
+                else
+                {
+                    $this->toolbar = true;
+                }
+                break;
+            case 'header1':
+                if(!in_array($value, array('h1', 'h2', 'h3', 'h4', 'h5', 'h6')))
+                {
+                    $this->header1 = 'h1';
+                }
+                break;
+            case 'header2':
+                if(!in_array($value, array('h1', 'h2', 'h3', 'h4', 'h5', 'h6')))
+                {
+                    $this->header2 = 'h2';
+                }
+                break;
+        }
+
+    }
+
+    /**
+     * Convert result to markdown
+     *
+     * @since 1.0.0
+     *
+     * @return string
+     */
+    public function result()
+    {
+        return str_replace(array("\r\n", "\r"), "\n", parent::result());
+    }
+
+    /**************************************************************************\
+    *                            PANEL FIELD MARKUP                            *
+    \**************************************************************************/
+
+    /**
      * Create input element
      *
      * @since 1.0.0
@@ -49,32 +140,33 @@ class MarkdownField extends InputField {
         $input->removeAttr('type');
         $input->removeAttr('value');
         $input->html($this->value() ?: false);
-        $input->data('field', 'markdownfield');
+        $input->data(array(
+            'field'   => 'markdownfield',
+            'toolbar' => ($this->toolbar) ? 'true' : 'false',
+            'header1' => $this->header1,
+            'header2' => $this->header2,
+        ));
 
         // Set up wrapping element
         $wrapper = new Brick('div', false);
         $wrapper->addClass('markdownfield-wrapper');
+        $wrapper->addClass('markdownfield-field-' . $this->name);
 
         return $wrapper->append($input);
     }
 
-    public function element()
-    {
-        $element = parent::element();
-        $element->addClass('field-with-textarea');
-        return $element;
-    }
-
     /**
-     * Convert result to markdown
+     * Create outer field element
      *
      * @since 1.0.0
      *
-     * @return string
+     * @return \Brick
      */
-    public function result()
+    public function element()
     {
-        return str_replace(array("\r\n", "\r"), "\n", parent::result());
+        $element = parent::element();
+        $element->addClass('field-with-markdown');
+        return $element;
     }
 
 }
