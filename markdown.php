@@ -2,7 +2,7 @@
 /**
  * Visual Markdown Editor Field for Kirby 2
  *
- * @version   1.0.0
+ * @version   1.1.0
  * @author    Jonas Döbertin <hello@jd-powered.net>
  * @copyright Jonas Döbertin <hello@jd-powered.net>
  * @link      https://github.com/JonasDoebertin/kirby-visual-markdown
@@ -103,7 +103,6 @@ class MarkdownField extends InputField {
 
     }
 
-
     /**
      * Convert result to markdown
      *
@@ -150,10 +149,17 @@ class MarkdownField extends InputField {
         return $wrapper->append($input);
     }
 
+    /**
+     * Create outer field element
+     *
+     * @since 1.0.0
+     *
+     * @return \Brick
+     */
     public function element()
     {
         $element = parent::element();
-        $element->addClass('field-with-textarea');
+        $element->addClass('field-with-markdown');
         return $element;
     }
 

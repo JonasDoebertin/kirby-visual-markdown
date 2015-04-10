@@ -1,7 +1,7 @@
 /**
  * Visual Markdown Editor Field for Kirby 2
  *
- * @version   1.0.0
+ * @version   1.1.0
  * @author    Jonas Döbertin <hello@jd-powered.net>
  * @copyright Jonas Döbertin <hello@jd-powered.net>
  * @link      https://github.com/JonasDoebertin/kirby-visual-markdown
@@ -36,6 +36,34 @@
 
 
 /**
+ * ICON
+ */
+.field-with-markdown.field-with-icon .CodeMirror-scroll {
+    margin-right: 1em;
+}
+
+.field-with-markdown.field-with-icon .field-icon {
+    z-index: 0;
+}
+
+
+/**
+ * TOOLBAR
+ */
+.markdownfield-wrapper .mirrormark-toolbar {
+    border-bottom: 1px solid #efefef;
+    position: relative;
+    z-index: 100;
+}
+
+    .markdownfield-wrapper .mirrormark-toolbar .markdownfield-icon-text {
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 18px;
+    }
+
+
+/**
  * FULLSCREEN MODE
  */
 .markdownfield-wrapper-fullscreen {
@@ -55,23 +83,12 @@
         top: 0;
         left: 0;
         right: 0;
-        z-index: 999;
     }
 
     .markdownfield-wrapper-fullscreen .CodeMirror {
         padding: 2em 0 0;
     }
 
-
-/**
- * TOOLBAR
- */
-.markdownfield-wrapper .mirrormark-toolbar {
-    border-bottom: 1px solid #efefef;
-}
-
-    .markdownfield-wrapper .mirrormark-toolbar .markdownfield-icon-text {
-        font-weight: bold;
-        text-transform: uppercase;
-        font-size: 18px;
-    }
+        .field-with-markdown.field-with-icon .markdownfield-wrapper-fullscreen .CodeMirror-scroll {
+            margin-right: -2em;
+        }
