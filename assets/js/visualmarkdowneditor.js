@@ -200,6 +200,11 @@ var VisualMarkdownEditor = function($, $element, options) {
             self.initToolbar();
         }
 
+        // Bind change handler
+        self.codemirror.on('renderLine', self.renderLine);
+
+        // Refresh CodeMirror DOM
+        self.codemirror.refresh();
     };
 
     /**
@@ -409,6 +414,27 @@ var VisualMarkdownEditor = function($, $element, options) {
             // Add header formatting
             self.insertBefore(header + ' ', header.length + 1);
         }
+    };
+
+    this.renderLine = function(instance, line, element) {
+
+        var $element = $(element);
+
+        // Style hanging quote indents
+        if(self.isQuoteLine($element)) {
+            //TODO: Rework! Is is a VERY rough demo.
+            element.style.textIndent = '-12px';
+            element.style.paddingLeft = '16px';
+        }
+
+    };
+
+    this.isQuoteLine = function($element) {
+        return $element
+                   .children('span')
+                       .children('span')
+                           .first()
+                           .hasClass('cm-formatting-quote');
     };
 
     /**
