@@ -33,7 +33,7 @@ var VisualMarkdownEditor = function($, $element, options) {
                 highlightFormatting:   true,
                 underscoresBreakWords: false,
                 maxBlockquoteDepth:    0,
-                fencedCodeBlocks:      false,
+                fencedCodeBlocks:      true,
                 taskLists:             false,
                 strikethrough:         false
             },
@@ -276,15 +276,13 @@ var VisualMarkdownEditor = function($, $element, options) {
      */
     this.toggleFullscreenMode = function() {
 
-        var wrapper;
-
         // Abort if fullscreen mode isn't supported
         if(!screenfull.enabled) {
             return;
         }
 
         // Find related wrapper element
-        wrapper = $(self.codemirror.getWrapperElement()).closest('.markdownfield-wrapper');
+        var wrapper = $(self.codemirror.getWrapperElement()).closest('.markdownfield-wrapper');
 
         // Enable fullscreen mode
         if(!screenfull.isFullscreen) {

@@ -18,8 +18,7 @@ var VisualMarkdownField = (function($, $field) {
     this.$toolbar   = null;
     this.$editor    = null;
 
-    this.mirrormark = null;
-    this.codemirror = null;
+    this.editor = null;
 
     this.options = {
         toolbar: $field.data('toolbar'),
@@ -73,7 +72,7 @@ var VisualMarkdownField = (function($, $field) {
             hoverClass: 'markdownfield-wrapper-over',
             accept:     self.draggable,
             drop:       function(event, element) {
-                self.mirrormark.insert(element.draggable.data('text'));
+                self.editor.insert(element.draggable.data('text'));
             }
         });
 

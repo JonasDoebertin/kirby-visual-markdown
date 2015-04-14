@@ -79,6 +79,12 @@
         text-decoration: underline;
     }
 
+    /* Inline Code & Code Blocks */
+    .cm-s-visualmarkdown .cm-comment:not(.cm-formatting-code):not(.cm-formatting-code-block) {
+        font-family: Monaco, Consolas, monospace;
+        font-size: 90%;
+    }
+
     .cm-s-visualmarkdown .cm-formatting {}
 
         .cm-s-visualmarkdown .cm-formatting-header,
@@ -86,7 +92,9 @@
         .cm-s-visualmarkdown .cm-formatting-list,
         .cm-s-visualmarkdown .cm-formatting-link,
         .cm-s-visualmarkdown .cm-formatting-link-string,
-        .cm-s-visualmarkdown .cm-hr {
+        .cm-s-visualmarkdown .cm-hr,
+        .cm-s-visualmarkdown .cm-formatting-code,
+        .cm-s-visualmarkdown .cm-formatting-code-block {
             color: #bdc3c7;
             text-decoration: none;
         }
@@ -120,6 +128,10 @@
 
     .markdownfield-wrapper .visualmarkdown-toolbar li.fullScreen {
         float: right;
+    }
+
+    .markdownfield-wrapper .visualmarkdown-toolbar li.divider {
+        display: none;
     }
 
     .markdownfield-wrapper .visualmarkdown-toolbar li.divider + li {
@@ -240,6 +252,7 @@
     .markdownfield-wrapper-fullscreen .visualmarkdown-toolbar,
     .markdownfield-wrapper-fullscreen .CodeMirror {
         max-width: 60em;
+        width: 100%;
     }
 
     .markdownfield-wrapper-fullscreen .visualmarkdown-toolbar {
