@@ -29,13 +29,18 @@
  *  CODEMIRROR THEME
  */
 .cm-s-visualmarkdown {
-  font: 16px/1.7 Menlo, Consolas, Monaco, 'Andale Mono', monospace;
-  box-sizing: border-box;
-  height: auto;
-  margin: auto;
-  position: relative;
-  z-index: 0
+    font: 1em/1.75 monospace;
+    color: #111111;
+    box-sizing: border-box;
+    height: auto;
+    margin: auto;
+    position: relative;
+    z-index: 0;
 }
+
+    .cm-s-visualmarkdown div.CodeMirror-cursor {
+        border-left: 2px solid #8dae28;
+    }
 
     .cm-s-visualmarkdown .CodeMirror-scroll {
         height: auto !important;
@@ -50,21 +55,44 @@
      * SYNTAX ELEMENTS
      */
     .cm-s-visualmarkdown .cm-header-1 {
-      font: 28px Menlo, Consolas, Monaco, 'Andale Mono', monospace;
-      font-weight:  bold;
-    }
-
-    .cm-s-visualmarkdown .cm-header-2 {
-      font: 22px Menlo, Consolas, Monaco, 'Andale Mono', monospace;
+      font-size: 1.5em;
       font-weight: bold;
     }
 
-    .cm-s-visualmarkdown .cm-quote,
-    .cm-s-visualmarkdown .cm-link,
-    .cm-s-visualmarkdown .cm-tag,
-    .cm-s-visualmarkdown .cm-string {
-      color: #888;
+    .cm-s-visualmarkdown .cm-header-2 {
+      font-size: 1.25em;
+      font-weight: bold;
     }
+
+    /*.cm-s-visualmarkdown .cm-quote,*/
+    .cm-s-visualmarkdown .cm-tag {
+      color: #bdc3c7;
+    }
+
+    .cm-s-visualmarkdown .cm-link {
+        color: #111111;
+        text-decoration: none;
+    }
+
+    .cm-s-visualmarkdown .cm-string {
+        color: #bdc3c7;
+        text-decoration: underline;
+    }
+
+    .cm-s-visualmarkdown .cm-formatting {}
+
+        .cm-s-visualmarkdown .cm-formatting-header,
+        .cm-s-visualmarkdown .cm-formatting-quote,
+        .cm-s-visualmarkdown .cm-formatting-list,
+        .cm-s-visualmarkdown .cm-formatting-link,
+        .cm-s-visualmarkdown .cm-formatting-link-string {
+            color: #bdc3c7;
+            text-decoration: none;
+        }
+
+        .cm-s-visualmarkdown .cm-formatting-list-ul {
+            font-weight: bold;
+        }
 
 
 /**
