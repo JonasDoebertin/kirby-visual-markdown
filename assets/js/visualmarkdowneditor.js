@@ -226,28 +226,35 @@ var VisualMarkdownEditor = function($, $element, options) {
     };
 
     /**
-     * A recursive function to generate and return an unordered list of tools
-     * @param  {Object}
+     * Generate a list of <li> tags for the available tools
+     *
+     * @since 1.3.0
      */
     this.generateToolbarItems = function(tools) {
 
-        $tools = tools.map(function(tool) {
+        return tools.map(function(tool) {
 
+            // Generate elements
             var $item = $('<li>').addClass(tool.name),
                 $anchor = $('<a>');
 
+            // Don't do anything with divider elements.
+            // They are just an empty <li> tag with a "divider" class.
             if(tool.name == 'divider') {
                 return $item;
             }
 
+            // Add the tools name as anchor class.
             if(tool.className) {
                 $anchor.addClass(tool.className);
             }
 
+            // Add the tools name as text, if necessary.
             if(tool.showName) {
                 $anchor.text(tool.name);
             }
 
+            // Bind the action callback to the anchors "click" event.
             if(tool.action) {
                 $anchor.on('click', function(e) {
                     self.codemirror.focus();
@@ -255,31 +262,17 @@ var VisualMarkdownEditor = function($, $element, options) {
                 });
             }
 
+            // Join the list item and the anchor.
             $item.append($anchor);
 
-            // if (tool.nested) {
-            //     item.className += " has-nested";
-            //     var ul = document.createElement('ul');
-            //         ul.className = this.options.theme + "-toolbar-list"
-            //     var nested = generateToolList.call(this, tool.nested);
-            //         nested.forEach(function(nestedItem) {
-            //             ul.appendChild(nestedItem);
-            //         });
-            //
-            //     item.appendChild(ul);
-            // }
-
             return $item;
-
         });
-
-        return $tools;
     };
 
     /**
      * Handle a click on the toggle fullscreen mode icon
      *
-     * @since 1.0.1
+     * @since 1.3.0
      */
     this.toggleFullscreenMode = function() {
 
@@ -290,18 +283,16 @@ var VisualMarkdownEditor = function($, $element, options) {
             return;
         }
 
-        // find related wrapper element
+        // Find related wrapper element
         wrapper = $(self.codemirror.getWrapperElement()).closest('.markdownfield-wrapper');
 
         // Enable fullscreen mode
         if(!screenfull.isFullscreen) {
-            // self.attachFullscreenStyles(wrapper);
             screenfull.request(wrapper.get(0));
 
         // Disable fullscreen mode
         } else {
             screenfull.exit();
-            // self.detachFullscreenStyles(wrapper);
         }
     };
 
@@ -378,6 +369,10 @@ var VisualMarkdownEditor = function($, $element, options) {
         }
     };
 
+    /**
+     * [toggleHeader description]
+     * @param {[type]} header [description]
+     */
     this.toggleHeader = function(header) {
         var doc    = self.codemirror.getDoc(),
             cursor = doc.getCursor()
