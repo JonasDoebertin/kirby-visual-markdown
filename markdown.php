@@ -24,13 +24,18 @@ class MarkdownField extends InputField {
      */
     public static $assets = array(
         'js' => array(
-            'mirrormark.package.min.js',
-            'screenfull.min.js',
-            'markdown.js',
+            'codemirror-5.1.0.js',
+            'codemirror-addon-continuelist-5.1.0.js',
+            'codemirror-mode-markdown-5.1.0.js',
+            'lodash.js',
+            //'mirrormark.js',
+            'screenfull-2.0.0.min.js',
+            'visualmarkdownfield.js',
+            'visualmarkdowneditor.js',
         ),
         'css' => array(
-            'mirrormark.package.min.css',
-            'markdown.css',
+            'codemirror-5.1.0.css',
+            'visualmarkdown.css',
         ),
     );
 
@@ -165,7 +170,7 @@ class MarkdownField extends InputField {
     public function element()
     {
         $element = parent::element();
-        $element->addClass('field-with-markdown');
+        $element->addClass('field-with-visualmarkdown');
         return $element;
     }
 
