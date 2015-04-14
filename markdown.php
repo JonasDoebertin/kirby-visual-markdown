@@ -27,8 +27,6 @@ class MarkdownField extends InputField {
             'codemirror-5.1.0.js',
             'codemirror-addon-continuelist-5.1.0.js',
             'codemirror-mode-markdown-5.1.0.js',
-            'lodash.js',
-            //'mirrormark.js',
             'screenfull-2.0.0.min.js',
             'visualmarkdownfield.js',
             'visualmarkdowneditor.js',

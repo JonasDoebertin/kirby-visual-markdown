@@ -221,7 +221,7 @@ var VisualMarkdownEditor = function($, $element, options) {
 
             var obj = {};
             obj[name] = self.actions[self.keyMaps[name]].bind(self);
-            _.assign(self.options.codemirror.extraKeys, obj);
+            $.extend(self.options.codemirror.extraKeys, obj);
         }
     };
 
