@@ -8,6 +8,11 @@
  * @license   GNU GPL v3.0 <http://opensource.org/licenses/GPL-3.0>
  */
 
+/**
+ * Visual Markdown Editor Field
+ *
+ * @since 1.0.0
+ */
 var VisualMarkdownField = (function($, $field) {
 
     var self = this;

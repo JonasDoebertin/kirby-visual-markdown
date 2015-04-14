@@ -8,6 +8,11 @@
  * @license   GNU GPL v3.0 <http://opensource.org/licenses/GPL-3.0>
  */
 
+/**
+ * Visual Markdown Editor CodeMirror Wrapper
+ *
+ * @since 1.2.0
+ */
 var VisualMarkdownEditor = function($, $element, options) {
 
     var self = this;
@@ -42,6 +47,8 @@ var VisualMarkdownEditor = function($, $element, options) {
 
     /**
      * Actions
+     *
+     * @since 1.2.0
      */
     this.actions = {
         header1: function() {
@@ -86,6 +93,8 @@ var VisualMarkdownEditor = function($, $element, options) {
 
     /**
      * Toolbar Icons
+     *
+     * @since 1.2.0
      */
     this.tools = [
         {
@@ -155,6 +164,8 @@ var VisualMarkdownEditor = function($, $element, options) {
 
     /**
      * Keymaps
+     *
+     * @since 1.2.0
      */
     this.keyMaps = {
         "Cmd-H":     'header1',
@@ -193,6 +204,8 @@ var VisualMarkdownEditor = function($, $element, options) {
 
     /**
      * Initialize the toolbar
+     *
+     * @since 1.2.0
      */
     this.initToolbar = function() {
 
@@ -208,8 +221,9 @@ var VisualMarkdownEditor = function($, $element, options) {
     };
 
     /**
-     * Register Keymaps by extending the extraKeys object
-     * @param {Object} keyMaps
+     * Register keymaps by extending the extraKeys object
+     *
+     * @since 1.2.0
      */
     this.registerKeyMaps = function() {
 
@@ -228,7 +242,7 @@ var VisualMarkdownEditor = function($, $element, options) {
     /**
      * Generate a list of <li> tags for the available tools
      *
-     * @since 1.3.0
+     * @since 1.2.0
      */
     this.generateToolbarItems = function(tools) {
 
@@ -272,7 +286,7 @@ var VisualMarkdownEditor = function($, $element, options) {
     /**
      * Handle a click on the toggle fullscreen mode icon
      *
-     * @since 1.3.0
+     * @since 1.2.0
      */
     this.toggleFullscreenMode = function() {
 
@@ -296,6 +310,8 @@ var VisualMarkdownEditor = function($, $element, options) {
 
     /**
      * Insert a string at cursor position
+     *
+     * @since 1.2.0
      */
     this.insert = function(insertion) {
         var doc    = self.codemirror.getDoc(),
@@ -309,6 +325,8 @@ var VisualMarkdownEditor = function($, $element, options) {
 
     /**
      * Insert a string at the start and end of a selection
+     *
+     * @since 1.2.0
      */
     this.insertAround = function(start, end) {
         var doc    = self.codemirror.getDoc(),
@@ -336,7 +354,8 @@ var VisualMarkdownEditor = function($, $element, options) {
 
     /**
      * Insert a string before a selection
-     * @param  {String} insertion
+     *
+     * @since 1.2.0
      */
     this.insertBefore = function(insertion, cursorOffset) {
         var doc    = self.codemirror.getDoc(),
@@ -368,8 +387,9 @@ var VisualMarkdownEditor = function($, $element, options) {
     };
 
     /**
-     * [toggleHeader description]
-     * @param {[type]} header [description]
+     * Insert or remove header formatting
+     *
+     * @since 1.2.0
      */
     this.toggleHeader = function(header) {
         var doc    = self.codemirror.getDoc(),
@@ -423,7 +443,6 @@ var VisualMarkdownEditor = function($, $element, options) {
                 return '#';
         }
     };
-
 
     /**
      * Run initialization
