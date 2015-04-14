@@ -85,7 +85,8 @@
         .cm-s-visualmarkdown .cm-formatting-quote,
         .cm-s-visualmarkdown .cm-formatting-list,
         .cm-s-visualmarkdown .cm-formatting-link,
-        .cm-s-visualmarkdown .cm-formatting-link-string {
+        .cm-s-visualmarkdown .cm-formatting-link-string,
+        .cm-s-visualmarkdown .cm-hr {
             color: #bdc3c7;
             text-decoration: none;
         }
