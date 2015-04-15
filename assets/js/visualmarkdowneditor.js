@@ -17,9 +17,10 @@ var VisualMarkdownEditor = function($, $element, options) {
 
     var self = this;
 
-    this.$element   = $element;
-    this.$wrapper   = null;
-    this.codemirror = null;
+    this.$element    = $element;
+    this.$wrapper    = null;
+    this.codemirror  = null;
+    this.translation = VisualMarkdownTranslation;
 
     this.options = {};
     this.defaults = {
@@ -168,9 +169,9 @@ var VisualMarkdownEditor = function($, $element, options) {
             className: 'fa fa-question-circle'
         },
         {
-            name: "fullScreen",
-            action: "fullscreen",
-            className: "fa fa-expand"
+            name: 'fullScreen',
+            action: 'fullscreen',
+            className: 'fa fa-expand'
         }
     ];
 
@@ -279,6 +280,11 @@ var VisualMarkdownEditor = function($, $element, options) {
             // Add the tools name as anchor class.
             if(tool.className) {
                 $anchor.addClass(tool.className);
+            }
+
+            // Add the tooltip if available
+            if(self.translation['action.' + tool.action]) {
+                $anchor.attr('title', self.translation['action.' + tool.action]);
             }
 
             // Add the tools name as text, if necessary.

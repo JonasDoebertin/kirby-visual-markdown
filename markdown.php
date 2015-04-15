@@ -17,6 +17,13 @@
 class MarkdownField extends InputField {
 
     /**
+     * Language files directory
+     *
+     * @since 1.2.0
+     */
+    const LANG_DIR = 'languages';
+
+    /**
      * Define frontend assets
      *
      * @var array
@@ -64,9 +71,44 @@ class MarkdownField extends InputField {
      */
     protected $header2 = 'h2';
 
+    /**
+     * Translated strings
+     *
+     * @since 1.2.0
+     *
+     * @var array
+     */
+    protected $translation;
+
     /**************************************************************************\
     *                          GENERAL FIELD METHODS                           *
     \**************************************************************************/
+
+    /**
+     * Field setup
+     *
+     * (1) Load language files
+     *
+     * @since 1.2.0
+     *
+     * @return \MarkdownField
+     */
+    public function __construct()
+    {
+        /*
+            (1) Load language files
+         */
+        $baseDir = __DIR__ . DS . self::LANG_DIR . DS;
+        $lang    = panel()->language();
+        if(file_exists($baseDir . $lang . '.php'))
+        {
+            $this->translation = include $baseDir . $lang . '.php';
+        }
+        else
+        {
+            $this->translation = include $baseDir . 'en.php';
+        }
+    }
 
     /**
      * Magic setter
@@ -137,6 +179,9 @@ class MarkdownField extends InputField {
      */
     public function input()
     {
+        // Set up translation
+        $translation = tpl::load(__DIR__ . DS . 'partials' . DS . 'translation.php', array('translations' => $this->translation));
+
         // Set up textarea
         $input = parent::input();
         $input->tag('textarea');
@@ -155,7 +200,7 @@ class MarkdownField extends InputField {
         $wrapper->addClass('markdownfield-wrapper');
         $wrapper->addClass('markdownfield-field-' . $this->name);
 
-        return $wrapper->append($input);
+        return $wrapper->append($translation)->append($input);
     }
 
     /**
