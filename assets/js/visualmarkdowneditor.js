@@ -87,6 +87,9 @@ var VisualMarkdownEditor = function($, $element, options) {
         code: function () {
             self.insertAround('```\r\n', '\r\n```')
         },
+        help: function() {
+            window.open('http://getkirby.com/docs/content/text');
+        },
         fullscreen: function() {
             self.toggleFullscreenMode();
         }
@@ -155,6 +158,14 @@ var VisualMarkdownEditor = function($, $element, options) {
             name: 'line',
             action: 'line',
             className: 'fa fa-minus'
+        },
+        {
+            name: 'divider',
+        },
+        {
+            name: 'help',
+            action: 'help',
+            className: 'fa fa-question-circle'
         },
         {
             name: "fullScreen",
