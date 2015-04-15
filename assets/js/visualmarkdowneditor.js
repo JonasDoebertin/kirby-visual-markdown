@@ -17,7 +17,8 @@ var VisualMarkdownEditor = function($, $element, options) {
 
     var self = this;
 
-    this.$element = $element;
+    this.$element   = $element;
+    this.$wrapper   = null;
     this.codemirror = null;
 
     this.options = {};
@@ -194,6 +195,7 @@ var VisualMarkdownEditor = function($, $element, options) {
 
         // Initialize CodeMirror
         self.codemirror = CodeMirror.fromTextArea(self.$element.get(0), self.options.codemirror);
+        self.$wrapper = $(self.codemirror.getWrapperElement());
 
         // Initialize toolbar
         if(self.options.toolbar) {
@@ -422,6 +424,9 @@ var VisualMarkdownEditor = function($, $element, options) {
 
         // Style hanging quote indents
         self.maybeApplyHangingQuoteStyles(element, $line);
+
+        // Style header indents
+        self.maybeApplyHeaderStyles(element, $line);
     };
 
     /**
@@ -431,13 +436,13 @@ var VisualMarkdownEditor = function($, $element, options) {
      */
     this.maybeApplyHangingQuoteStyles = function(element, $line) {
 
-        var $parts = $line.children('span');
+        var $parts = $line.children('span'),
             level = 0,
             padding = 0;
 
         // Abort if the line doesn't start with quote formatting
         if(!$parts.first().hasClass('cm-formatting-quote')) {
-            return;
+            return false;
         }
 
         // Calculate quote level and required padding
@@ -452,6 +457,35 @@ var VisualMarkdownEditor = function($, $element, options) {
         // Apply padding and text-indent styles
         element.style.textIndent = '-' + padding + 'px';
         element.style.paddingLeft = (padding + 4) + 'px';
+
+        return true;
+    };
+
+    /**
+     * Maybe apply hanging quote styles to a line
+     *
+     * @since 1.2.0
+     */
+    this.maybeApplyHeaderStyles = function(element, $line) {
+
+        var $formatting = $line.children('span').first(),
+            originalText = $formatting.text(),
+            padding = 0;
+
+        // Abort if the line doesn't start with header formatting
+        if(!$formatting.hasClass('cm-formatting-header')) {
+            return false;
+        }
+
+        // Calculate required padding
+        $formatting.text(originalText + String.fromCharCode(160));
+        padding = self.getActualFormattingWidth($formatting);
+        $formatting.text(originalText);
+
+        // Apply text-indent styles
+        element.style.textIndent = '-' + padding + 'px';
+
+        return true;
     };
 
     /**
@@ -485,6 +519,17 @@ var VisualMarkdownEditor = function($, $element, options) {
             default:
                 return '#';
         }
+    };
+
+    this.getActualFormattingWidth = function($target) {
+
+        var styles = 'position: absolute !important; top: -1000px !important;',
+            width;
+
+        $target = $target.clone().attr('style', styles).appendTo(self.$wrapper);
+        width = $target.outerWidth();
+        $target.remove();
+        return width;
     };
 
     /**
