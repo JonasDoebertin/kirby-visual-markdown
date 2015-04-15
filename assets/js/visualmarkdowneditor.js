@@ -423,6 +423,18 @@ var VisualMarkdownEditor = function($, $element, options) {
     };
 
     /**
+     * Find the end position of a selection
+     *
+     * @since 1.2.0
+     */
+    this.getSelectionEnd = function(selection) {
+        var swap = ((selection.anchor.line < selection.head.line)
+                || ((selection.anchor.line == selection.head.line)
+                    && selection.anchor.ch <= selection.head.ch));
+        return (swap) ? selection.head : selection.anchor;
+    };
+
+    /**
      * Add/remove formatting before multiple selections
      *
      * @since 1.2.0
@@ -504,12 +516,8 @@ var VisualMarkdownEditor = function($, $element, options) {
         var doc = self.codemirror.getDoc(),
             swap, from, to, content, selectionTo;
 
-        // Get selection from and to values
-        swap = ((selection.anchor.line < selection.head.line)
-                || ((selection.anchor.line == selection.head.line)
-                    && selection.anchor.ch <= selection.head.ch));
-        from = (swap) ? selection.anchor : selection.head;
-        to = (swap) ? selection.head : selection.anchor;
+        from = self.getSelectionStart(selection);
+        to = self.getSelectionEnd(selection)
 
         // Get selection content
         content = doc.getRange(from, to);
