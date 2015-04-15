@@ -411,6 +411,18 @@ var VisualMarkdownEditor = function($, $element, options) {
     };
 
     /**
+     * Find the starting position of a selection
+     *
+     * @since 1.2.0
+     */
+    this.getSelectionStart = function(selection) {
+        var swap = ((selection.anchor.line < selection.head.line)
+                || ((selection.anchor.line == selection.head.line)
+                    && selection.anchor.ch <= selection.head.ch));
+        return (swap) ? selection.anchor : selection.head;
+    };
+
+    /**
      * Add/remove formatting before multiple selections
      *
      * @since 1.2.0
@@ -418,11 +430,17 @@ var VisualMarkdownEditor = function($, $element, options) {
     this.toggleBefore = function(formatting) {
 
         var doc = self.codemirror.getDoc(),
-            selections = doc.listSelections();
+            selections = doc.listSelections(),
+            processedLines = [],
+            line;
 
         // Delegate to function handling all selections independently
         selections.forEach(function(selection) {
-            self.toggleBeforeSelection(formatting, selection);
+            line = self.getSelectionStart(selection).line;
+            if(processedLines.indexOf(line) == -1) {
+                self.toggleBeforeSelection(formatting, selection);
+                processedLines.push(line);
+            }
         });
 
     };
