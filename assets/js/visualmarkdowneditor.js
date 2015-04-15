@@ -55,11 +55,11 @@ var VisualMarkdownEditor = function($, $element, options) {
     this.actions = {
         header1: function() {
             var header = self.translateHeaderValue(self.options.header1);
-            self.toggleHeader(header);
+            self.toggleBefore(header);
         },
         header2: function() {
             var header = self.translateHeaderValue(self.options.header2);
-            self.toggleHeader(header);
+            self.toggleBefore(header);
         },
         bold: function () {
             self.insertAround('**', '**')
@@ -68,7 +68,8 @@ var VisualMarkdownEditor = function($, $element, options) {
             self.insertAround('*', '*')
         },
         blockquote: function () {
-            self.insertBefore('> ', 2);
+            self.toggleBefore('>');
+            // self.insertBefore('> ', 2);
         },
         orderedList: function () {
             self.insertBefore('1. ', 3);
@@ -411,27 +412,51 @@ var VisualMarkdownEditor = function($, $element, options) {
     };
 
     /**
-     * Insert or remove header formatting
+     * Add/remove formatting before multiple selections
      *
      * @since 1.2.0
      */
-    this.toggleHeader = function(header) {
-        var doc    = self.codemirror.getDoc(),
-            cursor = doc.getCursor()
-            line   = doc.getLine(cursor.line);
+    this.toggleBefore = function(formatting) {
 
-        if(line.indexOf(header + ' ') == 0) {
+        var doc = self.codemirror.getDoc(),
+            selections = doc.listSelections();
 
-            // Remove header formatting
-            // TODO: Enable support for multiple selections
-            var start  = { line: cursor.line, ch: 0 },
-                end    = { line: cursor.line, ch: line.length };
-            doc.replaceRange(line.substr(header.length + 1), start, end);
+        // Delegate to function handling all selections independently
+        selections.forEach(function(selection) {
+            self.toggleBeforeSelection(formatting, selection);
+        });
 
+    };
+
+    /**
+     * Add/remove formatting before a single selection
+     *
+     * @since 1.2.0
+     */
+    this.toggleBeforeSelection = function(formatting, selection) {
+
+        var doc = self.codemirror.getDoc(),
+            firstLine = doc.getLine(selection.anchor.line);
+
+        // Add space character to formatting
+        formatting = formatting + ' ';
+
+        // Check for existing formatting
+        if(firstLine.indexOf(formatting) == 0) {
+            // Remove formatting
+            doc.replaceRange('', {
+                    line: selection.anchor.line,
+                    ch: 0
+                }, {
+                    line: selection.anchor.line,
+                    ch: formatting.length
+                });
         } else {
-
-            // Add header formatting
-            self.insertBefore(header + ' ', header.length + 1);
+            // Add formatting
+            doc.replaceRange(formatting, {
+                    line: selection.anchor.line,
+                    ch: 0
+                });
         }
     };
 
@@ -466,7 +491,7 @@ var VisualMarkdownEditor = function($, $element, options) {
         $part = $parts.first();
         while($part.hasClass('cm-formatting-quote')) {
             level++;
-            padding += $part.actual('outerWidth', {clone: true});
+            padding += self.getActualFormattingWidth($part);
             $part = $part.next();
         }
         padding += level * 3;
