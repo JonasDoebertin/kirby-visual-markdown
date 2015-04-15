@@ -538,6 +538,11 @@ var VisualMarkdownEditor = function($, $element, options) {
         }
     };
 
+    /**
+     * Fetch the actual with of a DOM element
+     *
+     * @since 1.2.0
+     */
     this.getActualFormattingWidth = function($target) {
 
         var styles = 'position: absolute !important; top: -1000px !important;',
