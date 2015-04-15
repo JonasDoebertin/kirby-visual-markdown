@@ -418,23 +418,40 @@ var VisualMarkdownEditor = function($, $element, options) {
 
     this.renderLine = function(instance, line, element) {
 
-        var $element = $(element);
+        var $line = $(element).children('span');
 
         // Style hanging quote indents
-        if(self.isQuoteLine($element)) {
-            //TODO: Rework! Is is a VERY rough demo.
-            element.style.textIndent = '-12px';
-            element.style.paddingLeft = '16px';
-        }
-
+        self.maybeApplyHangingQuoteStyles(element, $line);
     };
 
-    this.isQuoteLine = function($element) {
-        return $element
-                   .children('span')
-                       .children('span')
-                           .first()
-                           .hasClass('cm-formatting-quote');
+    /**
+     * Maybe apply hanging quote styles to a line
+     *
+     * @since 1.2.0
+     */
+    this.maybeApplyHangingQuoteStyles = function(element, $line) {
+
+        var $parts = $line.children('span');
+            level = 0,
+            padding = 0;
+
+        // Abort if the line doesn't start with quote formatting
+        if(!$parts.first().hasClass('cm-formatting-quote')) {
+            return;
+        }
+
+        // Calculate quote level and required padding
+        $part = $parts.first();
+        while($part.hasClass('cm-formatting-quote')) {
+            level++;
+            padding += $part.actual('outerWidth', {clone: true});
+            $part = $part.next();
+        }
+        padding += level * 3;
+
+        // Apply padding and text-indent styles
+        element.style.textIndent = '-' + padding + 'px';
+        element.style.paddingLeft = (padding + 4) + 'px';
     };
 
     /**
