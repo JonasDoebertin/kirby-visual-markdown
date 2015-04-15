@@ -62,10 +62,10 @@ var VisualMarkdownEditor = function($, $element, options) {
             self.toggleBefore(header);
         },
         bold: function () {
-            self.insertAround('**', '**')
+            self.toggleAround('**', '**')
         },
         italicize: function () {
-            self.insertAround('*', '*')
+            self.toggleAround('*', '*')
         },
         blockquote: function () {
             self.toggleBefore('>');
@@ -457,6 +457,82 @@ var VisualMarkdownEditor = function($, $element, options) {
                     line: selection.anchor.line,
                     ch: 0
                 });
+        }
+    };
+
+    /**
+     * Add/remove formatting around multiple selections
+     *
+     * @since 1.2.0
+     */
+    this.toggleAround = function(before, after) {
+
+        var doc = self.codemirror.getDoc(),
+            selections = doc.listSelections();
+
+        // Delegate to function handling all selections independently
+        selections.forEach(function(selection) {
+            self.toggleAroundSelection(before, after, selection);
+        });
+
+    };
+
+    /**
+     * Add/remove formatting before a single selection
+     *
+     * @since 1.2.0
+     */
+    this.toggleAroundSelection = function(before, after, selection) {
+
+        var doc = self.codemirror.getDoc(),
+            swap, from, to, content, selectionTo;
+
+        // Get selection from and to values
+        swap = ((selection.anchor.line < selection.head.line)
+                || ((selection.anchor.line == selection.head.line)
+                    && selection.anchor.ch <= selection.head.ch));
+        from = (swap) ? selection.anchor : selection.head;
+        to = (swap) ? selection.head : selection.anchor;
+
+        // Get selection content
+        content = doc.getRange(from, to);
+
+        // Check for existing formatting
+        if((content.indexOf(before) == 0)
+           && (content.lastIndexOf(after) == content.length - after.length)) {
+
+            // Remove formatting
+            doc.replaceRange(
+                content.substr(
+                    before.length,
+                    content.length - before.length - after.length
+                ),
+                from,
+                to
+            );
+
+            // Reset selection
+            selectionTo = {
+                line: to.line,
+                ch: ((from.line == to.line)
+                    ? to.ch - before.length - after.length
+                    : to.ch - after.length)
+            };
+            doc.addSelection(from, selectionTo);
+
+        } else {
+
+            // Add formatting
+            doc.replaceRange(before + content + after, from, to);
+
+            // Reset selection
+            selectionTo = {
+                line: to.line,
+                ch: ((from.line == to.line)
+                    ? to.ch + before.length + after.length
+                    : to.ch + after.length)
+            };
+            doc.addSelection(from, selectionTo);
         }
     };
 
