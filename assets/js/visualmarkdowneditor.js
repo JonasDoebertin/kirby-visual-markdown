@@ -22,7 +22,7 @@ var VisualMarkdownEditor = function($, $element, options) {
     this.codemirror  = null;
     this.translation = VisualMarkdownTranslation;
 
-    this.options = {};
+    this.options  = {};
     this.defaults = {
         toolbar: true,
         header1: 'h1',
@@ -41,7 +41,7 @@ var VisualMarkdownEditor = function($, $element, options) {
                 underscoresBreakWords: false,
                 maxBlockquoteDepth:    0,
                 fencedCodeBlocks:      true,
-                taskLists:             false,
+                taskLists:             true,
                 strikethrough:         false
             },
         }
@@ -69,7 +69,6 @@ var VisualMarkdownEditor = function($, $element, options) {
         },
         blockquote: function () {
             self.toggleBefore('>');
-            // self.insertBefore('> ', 2);
         },
         orderedList: function () {
             self.insertBefore('1. ', 3);
@@ -170,7 +169,7 @@ var VisualMarkdownEditor = function($, $element, options) {
             className: 'fa fa-question-circle'
         },
         {
-            name: 'fullScreen',
+            name: 'fullscreen',
             action: 'fullscreen',
             className: 'fa fa-expand'
         }
@@ -536,6 +535,11 @@ var VisualMarkdownEditor = function($, $element, options) {
         }
     };
 
+    /**
+     * Apply special styles when a line gets rendered
+     *
+     * @since 1.2.0
+     */
     this.renderLine = function(instance, line, element) {
 
         var $line = $(element).children('span');
