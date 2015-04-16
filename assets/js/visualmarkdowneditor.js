@@ -19,6 +19,7 @@ var VisualMarkdownEditor = function($, $element, options) {
 
     this.$element    = $element;
     this.$wrapper    = null;
+
     this.codemirror  = null;
     this.translation = VisualMarkdownTranslation;
 
@@ -46,6 +47,8 @@ var VisualMarkdownEditor = function($, $element, options) {
             },
         }
     };
+
+    this.isSafari = new RegExp('(Version)/(\\d+)\\.(\\d+)(?:\\.(\\d+))?.*Safari/').test(navigator.userAgent);
 
     /**
      * Actions
@@ -178,11 +181,6 @@ var VisualMarkdownEditor = function($, $element, options) {
                     showName: true
                 }
             ]
-        },
-        {
-            name: 'fullscreen',
-            action: 'fullscreen',
-            className: 'fa fa-expand'
         }
     ];
 
@@ -221,6 +219,13 @@ var VisualMarkdownEditor = function($, $element, options) {
         self.$wrapper = $(self.codemirror.getWrapperElement());
 
         // Initialize toolbar
+        if(!self.isSafari) {
+            self.tools.push({
+                name: 'fullscreen',
+                action: 'fullscreen',
+                className: 'fa fa-expand'
+            });
+        }
         if(self.options.toolbar) {
             self.initToolbar();
         }
