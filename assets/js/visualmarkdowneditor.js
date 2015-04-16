@@ -88,8 +88,14 @@ var VisualMarkdownEditor = function($, $element, options) {
         code: function () {
             self.insertAround('```\r\n', '\r\n```')
         },
-        help: function() {
+        markdownLink: function() {
+            window.open('http://daringfireball.net/projects/markdown/syntax');
+        },
+        kirbytextLink: function() {
             window.open('http://getkirby.com/docs/content/text');
+        },
+        issuesLink: function() {
+            window.open('https://github.com/JonasDoebertin/kirby-visual-markdown/issues');
         },
         fullscreen: function() {
             self.toggleFullscreenMode();
@@ -103,69 +109,75 @@ var VisualMarkdownEditor = function($, $element, options) {
      */
     this.tools = [
         {
-            name: 'h1',
             action: 'header1',
             className: 'fa fa-header',
         },
         {
-            name: 'h',
             action: 'header2',
             className: 'markdownfield-icon-text markdownfield-icon-header2',
             showName: true,
         },
         {
-            name: 'divider',
+            action: 'divider'
         },
         {
-            name: "bold",
             action: "bold",
             className: "fa fa-bold"
         },
         {
-            name: "italicize",
             action: "italicize",
             className: "fa fa-italic"
         },
         {
-            name: "blockquote",
             action: "blockquote",
             className: "fa fa-quote-left"
         },
         {
-            name: "unorderedList",
             action: "unorderedList",
             className: "fa fa-list"
         },
         {
-            name: "orderedList",
             action: "orderedList",
             className: "fa fa-list-ol"
         },
         {
-            name: 'divider',
+            action: 'divider'
         },
         {
-            name: "link",
             action: "link",
             className: "fa fa-link"
         },
         {
-            name: "image",
             action: "image",
             className: "fa fa-image"
         },
         {
-            name: 'line',
             action: 'line',
             className: 'fa fa-minus'
         },
         {
-            name: 'divider',
+            action: 'divider'
         },
         {
-            name: 'help',
-            action: 'help',
-            className: 'fa fa-question-circle'
+            action: null,
+            className: 'fa fa-question-circle',
+            nested: [
+                {
+                    action: 'markdownLink',
+                    showName: true
+                },
+                {
+                    action: 'kirbytextLink',
+                    showName: true
+                },
+                {
+                    action: 'divider'
+                },
+                {
+                    action: 'issuesLink',
+                    showName: true
+                }
+            ]
         },
         {
             name: 'fullscreen',
@@ -276,12 +288,12 @@ var VisualMarkdownEditor = function($, $element, options) {
         return tools.map(function(tool) {
 
             // Generate elements
-            var $item = $('<li>').addClass(tool.name),
+            var $item = $('<li>').addClass('visualmarkdown-action-' + tool.action),
                 $anchor = $('<a>');
 
             // Don't do anything with divider elements.
             // They are just an empty <li> tag with a "divider" class.
-            if(tool.name == 'divider') {
+            if(tool.action == 'divider') {
                 return $item;
             }
 
@@ -291,13 +303,13 @@ var VisualMarkdownEditor = function($, $element, options) {
             }
 
             // Add the tooltip if available
-            if(self.translation['action.' + tool.action]) {
-                $anchor.attr('title', self.translation['action.' + tool.action]);
+            if(self.translation['action.tooltip.' + tool.action]) {
+                $anchor.attr('title', self.translation['action.tooltip.' + tool.action]);
             }
 
-            // Add the tools name as text, if necessary.
-            if(tool.showName) {
-                $anchor.text(tool.name);
+            // Add the tools name as text, if necessary and available.
+            if(tool.showName && self.translation['action.name.' + tool.action]) {
+                $anchor.text(self.translation['action.name.' + tool.action]);
             }
 
             // Bind the action callback to the anchors "click" event.
@@ -310,6 +322,13 @@ var VisualMarkdownEditor = function($, $element, options) {
 
             // Join the list item and the anchor.
             $item.append($anchor);
+
+            // Generate nested items
+            if(tool.nested) {
+                $subitems = $('<ul>').append(self.generateToolbarItems(tool.nested));
+                $item.addClass('visualmarkdown-action-with-subactions');
+                $item.append($subitems);
+            }
 
             return $item;
         });

@@ -140,26 +140,31 @@
         vertical-align: top;
     }
 
-    .markdownfield-wrapper .visualmarkdown-toolbar li.fullscreen {
+    .markdownfield-wrapper .visualmarkdown-toolbar > li.visualmarkdown-action-header2 a {
+        font-family: Georgia, Garamond, serif;
+        font-size: 18px;
+    }
+
+    .markdownfield-wrapper .visualmarkdown-toolbar > li.visualmarkdown-action-fullscreen {
         position: absolute;
         right: 0;
     }
 
-    .markdownfield-wrapper .visualmarkdown-toolbar li.divider {
+    .markdownfield-wrapper .visualmarkdown-toolbar > li.visualmarkdown-action-divider {
         display: none;
     }
 
-    .markdownfield-wrapper .visualmarkdown-toolbar li.divider + li {
+    .markdownfield-wrapper .visualmarkdown-toolbar > li.visualmarkdown-action-divider + li {
         padding-left: 0.5em;
         margin-left: 0.5em;
         border-left: 1px solid #efefef;
     }
 
-    .markdownfield-wrapper .visualmarkdown-toolbar li:nth-last-child(2) {
+    .markdownfield-wrapper .visualmarkdown-toolbar > li:nth-last-child(2) {
         margin-right: 40px;
     }
 
-        .markdownfield-wrapper .visualmarkdown-toolbar li a {
+        .markdownfield-wrapper .visualmarkdown-toolbar > li > a {
         	color: #8d9194;
         	cursor: pointer;
         	display: block;
@@ -171,17 +176,55 @@
         	width: 40px;
         }
 
-        .markdownfield-wrapper .visualmarkdown-toolbar li:hover a {
+        .markdownfield-wrapper .visualmarkdown-toolbar > li:hover > a {
         	color: #000000;
         }
 
-        .markdownfield-wrapper .visualmarkdown-toolbar li a.markdownfield-icon-text {
-            font-size: 18px;
+        /**
+         * SUBITEMS
+         */
+        .markdownfield-wrapper .visualmarkdown-toolbar ul {
+            display: none;
+            position: absolute;
+            top: 35px;
+            width: 12em;
+            background: #ffffff;
+            box-shadow: 0 2px 5px rgba(0,0,0,.3), 0 0 15px rgba(0,0,0,.2);
         }
 
-        .markdownfield-wrapper .visualmarkdown-toolbar li a.markdownfield-icon-header2 {
-            font-family: Georgia, Garamond, serif;
+        .markdownfield-wrapper .visualmarkdown-toolbar li:hover ul {
+            display: block;
         }
+
+            .markdownfield-wrapper .visualmarkdown-toolbar ul li {
+                width: 100%;
+            }
+
+            .markdownfield-wrapper .visualmarkdown-toolbar ul li.visualmarkdown-action-divider {
+                display: none;
+            }
+
+            .markdownfield-wrapper .visualmarkdown-toolbar ul  .visualmarkdown-action-divider + li {
+                padding-top: 0.5em;
+                margin-top: 0.5em;
+                border-top: 1px solid #efefef;
+            }
+
+                .markdownfield-wrapper .visualmarkdown-toolbar ul li a {
+                    color: #74787a;
+                	cursor: pointer;
+                	display: block;
+                	font-size: 16px;
+                	/*height: 40px;*/
+                	line-height: 40px;
+                	text-align: left;
+                	transition: color .2s linear;
+                    padding: 0 1em;
+                }
+
+                .markdownfield-wrapper .visualmarkdown-toolbar ul li:hover a {
+                    color: #000000;
+                }
 
 /**
  * FIELD ICON
