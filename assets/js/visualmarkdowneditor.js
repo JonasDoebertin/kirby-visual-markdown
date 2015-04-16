@@ -221,6 +221,15 @@ var VisualMarkdownEditor = function($, $element, options) {
     };
 
     /**
+     * Deactivate and destroy
+     *
+     * @since 1.2.0
+     */
+    this.deactivate = function() {
+        self.codemirror.toTextArea();
+    };
+
+    /**
      * Initialize the toolbar
      *
      * @since 1.2.0

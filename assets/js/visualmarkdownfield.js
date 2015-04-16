@@ -109,7 +109,7 @@ var VisualMarkdownField = (function($, $field) {
      */
     this.deactivate = function(e) {
         self.updateStorage();
-        self.codemirror.toTextArea();
+        self.editor.deactivate();
     };
 
     /**
