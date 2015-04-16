@@ -497,11 +497,21 @@ var VisualMarkdownEditor = function($, $element, options) {
     this.toggleAround = function(before, after) {
 
         var doc = self.codemirror.getDoc(),
-            selections = doc.listSelections();
+            selections = doc.listSelections(),
+            offsets = [],
+            line;
 
         // Delegate to function handling all selections independently
         selections.forEach(function(selection) {
-            self.toggleAroundSelection(before, after, selection);
+
+            // Get selection start line and initialize offsets array value
+            line = self.getSelectionStart(selection).line;
+            if(typeof offsets[line] == 'undefined') {
+                offsets[line] = 0;
+            }
+
+            // Delegate to single selection toggle function
+            offsets[line] += self.toggleAroundSelection(before, after, selection, offsets[line]);
         });
 
     };
@@ -511,13 +521,18 @@ var VisualMarkdownEditor = function($, $element, options) {
      *
      * @since 1.2.0
      */
-    this.toggleAroundSelection = function(before, after, selection) {
+    this.toggleAroundSelection = function(before, after, selection, offset) {
 
         var doc = self.codemirror.getDoc(),
             swap, from, to, content, selectionTo;
 
+        // Get from and to positions from selection
         from = self.getSelectionStart(selection);
-        to = self.getSelectionEnd(selection)
+        to = self.getSelectionEnd(selection);
+
+        // Apply offset
+        from.ch += offset;
+        to.ch += offset;
 
         // Get selection content
         content = doc.getRange(from, to);
@@ -545,6 +560,9 @@ var VisualMarkdownEditor = function($, $element, options) {
             };
             doc.addSelection(from, selectionTo);
 
+            // Return offset
+            return -(before.length + after.length);
+
         } else {
 
             // Add formatting
@@ -558,6 +576,9 @@ var VisualMarkdownEditor = function($, $element, options) {
                     : to.ch + after.length)
             };
             doc.addSelection(from, selectionTo);
+
+            // Return offset
+            return (before.length + after.length);
         }
     };
 
