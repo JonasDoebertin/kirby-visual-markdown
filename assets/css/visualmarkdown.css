@@ -128,23 +128,21 @@
 	border-bottom: 1px solid #efefef;
 	display: block;
 	width: 100%;
-    margin-top: 0;
-    margin-bottom: 0;
-    padding-left: 0;
-    padding-right: 0;
+    margin: 0;
+    padding: 0;
     position: relative;
     z-index: 100;
-    vertical-align: middle;
 }
 
     .markdownfield-wrapper .visualmarkdown-toolbar li {
         display: inline-block;
         position: relative;
-        z-index: 1
+        vertical-align: top;
     }
 
     .markdownfield-wrapper .visualmarkdown-toolbar li.fullscreen {
-        float: right;
+        position: absolute;
+        right: 0;
     }
 
     .markdownfield-wrapper .visualmarkdown-toolbar li.divider {
@@ -153,13 +151,16 @@
 
     .markdownfield-wrapper .visualmarkdown-toolbar li.divider + li {
         padding-left: 0.5em;
-        border-left: 1px solid #efefef;
         margin-left: 0.5em;
+        border-left: 1px solid #efefef;
+    }
+
+    .markdownfield-wrapper .visualmarkdown-toolbar li:nth-last-child(2) {
+        margin-right: 40px;
     }
 
         .markdownfield-wrapper .visualmarkdown-toolbar li a {
-        	background-color: #fff;
-        	color: #888;
+        	color: #8d9194;
         	cursor: pointer;
         	display: block;
         	font-size: 16px;
@@ -171,7 +172,7 @@
         }
 
         .markdownfield-wrapper .visualmarkdown-toolbar li:hover a {
-        	color: #000;
+        	color: #000000;
         }
 
         .markdownfield-wrapper .visualmarkdown-toolbar li a.markdownfield-icon-text {
