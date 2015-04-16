@@ -100,6 +100,16 @@
             text-decoration: none;
         }
 
+        .cm-s-visualmarkdown .cm-formatting-header-4 {
+            font-size: 80%;
+        }
+        .cm-s-visualmarkdown .cm-formatting-header-5 {
+            font-size: 65%;
+        }
+        .cm-s-visualmarkdown .cm-formatting-header-6 {
+            font-size: 55%;
+        }
+
         .cm-s-visualmarkdown .cm-formatting-list-ul,
         .cm-s-visualmarkdown .cm-formatting-task {
             font-weight: bold;
@@ -124,6 +134,7 @@
     padding-right: 0;
     position: relative;
     z-index: 100;
+    vertical-align: middle;
 }
 
     .markdownfield-wrapper .visualmarkdown-toolbar li {
@@ -164,9 +175,11 @@
         }
 
         .markdownfield-wrapper .visualmarkdown-toolbar li a.markdownfield-icon-text {
-            font-weight: bold;
-            text-transform: uppercase;
             font-size: 18px;
+        }
+
+        .markdownfield-wrapper .visualmarkdown-toolbar li a.markdownfield-icon-header2 {
+            font-family: Georgia, Garamond, serif;
         }
 
 /**

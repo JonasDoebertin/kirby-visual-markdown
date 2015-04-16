@@ -103,15 +103,14 @@ var VisualMarkdownEditor = function($, $element, options) {
      */
     this.tools = [
         {
-            name: 'h1', //self.options.header1,
+            name: 'h1',
             action: 'header1',
-            className: 'markdownfield-icon-text markdownfield-icon-header1',
-            showName: true,
+            className: 'fa fa-header',
         },
         {
-            name: 'h2', //self.options.header2,
+            name: 'h',
             action: 'header2',
-            className: 'markdownfield-icon-text markdownfield-icon-header1',
+            className: 'markdownfield-icon-text markdownfield-icon-header2',
             showName: true,
         },
         {
