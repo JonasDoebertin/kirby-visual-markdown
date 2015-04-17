@@ -54,27 +54,34 @@
     /**
      * SYNTAX ELEMENTS
      */
+
+    /* Header 1 */
     .cm-s-visualmarkdown .cm-header-1 {
       font-size: 1.5em;
       font-weight: bold;
     }
 
+    /* Header 2*/
     .cm-s-visualmarkdown .cm-header-2 {
       font-size: 1.25em;
       font-weight: bold;
     }
 
-    /*.cm-s-visualmarkdown .cm-quote,*/
-    .cm-s-visualmarkdown .cm-tag {
-      color: #bdc3c7;
+    /* Inline HTML */
+    .cm-s-visualmarkdown .cm-bracket,
+    .cm-s-visualmarkdown .cm-tag,
+    .cm-s-visualmarkdown .cm-attribute,
+    .cm-s-visualmarkdown .cm-string {
+        color: #8dae28;
     }
 
+    /* Markdown Link Captions */
     .cm-s-visualmarkdown .cm-link {
-        color: #111111;
         text-decoration: none;
     }
 
-    .cm-s-visualmarkdown .cm-string {
+    /* Markdown Link URLs */
+    .cm-s-visualmarkdown .cm-formatting-link-string + .cm-string {
         color: #bdc3c7;
         text-decoration: underline;
     }
@@ -85,8 +92,8 @@
         font-size: 90%;
     }
 
+    /* Formatting Elements */
     .cm-s-visualmarkdown .cm-formatting {}
-
         .cm-s-visualmarkdown .cm-formatting-header,
         .cm-s-visualmarkdown .cm-formatting-quote,
         .cm-s-visualmarkdown .cm-formatting-list,

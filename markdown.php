@@ -34,6 +34,7 @@ class MarkdownField extends InputField {
             'screenfull-2.0.0.min.js',
             'codemirror-5.1.0.js',
             'codemirror-addon-continuelist-5.1.0.js',
+            'codemirror-mode-xml-5.1.0.js',
             'codemirror-mode-markdown-5.1.0.js',
             'visualmarkdownfield.js',
             'visualmarkdowneditor.js',
