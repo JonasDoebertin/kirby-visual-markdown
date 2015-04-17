@@ -34,7 +34,9 @@ var VisualMarkdownEditor = function($, $element, options) {
             indentWithTabs: false,
             lineWrapping:   true,
             extraKeys: {
-                "Enter":    'newlineAndIndentContinueMarkdownList',
+                'Enter':     'newlineAndIndentContinueMarkdownList',
+                'Alt-Enter': function() {self.savePanelForm()},
+                'Cmd-Enter': function() {self.savePanelForm()}
             },
             mode: {
                 name:                  'markdown',
@@ -736,6 +738,15 @@ var VisualMarkdownEditor = function($, $element, options) {
         width = $target.outerWidth();
         $target.remove();
         return width;
+    };
+
+    /**
+     * Trigger the panel "save" event
+     *
+     * @since 1.2.0
+     */
+    this.savePanelForm = function() {
+        self.$wrapper.closest('.form').trigger('submit');
     };
 
     /**
