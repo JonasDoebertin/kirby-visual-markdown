@@ -15,7 +15,7 @@
 * Included language files:
   * English
   * German
-  * French (Thanks to )
+  * French (Thanks to @malvese)
 
 **Changes:**
 
