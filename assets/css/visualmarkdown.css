@@ -118,9 +118,13 @@
             font-size: 55%;
         }
 
-        .cm-s-visualmarkdown .cm-formatting-list-ul,
-        .cm-s-visualmarkdown .cm-formatting-task {
+        .cm-s-visualmarkdown .cm-formatting-list-ul {
             font-weight: bold;
+        }
+
+        .cm-s-visualmarkdown .cm-formatting-task {
+            font-family: Monaco, Consolas, monospace;
+            font-size: 90%;
         }
 
         .cm-s-visualmarkdown .cm-formatting-task.cm-property {
