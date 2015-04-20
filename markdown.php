@@ -50,7 +50,7 @@ class MarkdownField extends InputField {
      *
      * @since 1.1.0
      *
-     * @var string
+     * @var bool
      */
     protected $toolbar = true;
 
@@ -156,7 +156,7 @@ class MarkdownField extends InputField {
         switch($option)
         {
             case 'toolbar':
-                if(in_array($value, array(false, 'hide')))
+                if(in_array($value, array(false, 'false', 'hide', 'no')))
                 {
                     $this->toolbar = false;
                 }
