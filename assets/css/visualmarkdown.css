@@ -56,19 +56,20 @@
      */
 
     /* Header 1 */
-    .cm-s-visualmarkdown .cm-header-1 {
-      font-size: 1.5em;
-      font-weight: bold;
+    .cm-s-visualmarkdown .cm-header-1,
+    .cm-s-visualmarkdown .has-header-1 {
+        font-size: 24px;
+        font-weight: bold;
     }
 
     /* Header 2*/
-    .cm-s-visualmarkdown .cm-header-2 {
-      font-size: 1.25em;
-      font-weight: bold;
+    .cm-s-visualmarkdown .cm-header-2,
+    .cm-s-visualmarkdown .has-header-2 {
+        font-size: 20px;
+        font-weight: bold;
     }
 
     /* Inline HTML */
-    .cm-s-visualmarkdown .cm-bracket,
     .cm-s-visualmarkdown .cm-tag,
     .cm-s-visualmarkdown .cm-attribute,
     .cm-s-visualmarkdown .cm-string {

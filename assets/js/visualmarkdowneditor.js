@@ -661,6 +661,10 @@ var VisualMarkdownEditor = function($, $element, options) {
         element.style.textIndent = '-' + padding + 'px';
         element.style.paddingLeft = (padding + 4) + 'px';
 
+        // Apply class indicating that this line is a quote line
+        element.classList.add('has-quote');
+        element.classList.add('has-quote-' + level);
+
         return true;
     };
 
@@ -671,9 +675,9 @@ var VisualMarkdownEditor = function($, $element, options) {
      */
     this.maybeApplyHeaderStyles = function(element, $line) {
 
-        var $formatting = $line.children('span').first(),
-            originalText = $formatting.text(),
-            padding = 0;
+        var $formatting  = $line.children('span').first(),
+            padding      = 0,
+            regex, classes, level;
 
         // Abort if the line doesn't start with header formatting
         if(!$formatting.hasClass('cm-formatting-header')) {
@@ -681,12 +685,17 @@ var VisualMarkdownEditor = function($, $element, options) {
         }
 
         // Calculate required padding
-        $formatting.text(originalText + String.fromCharCode(160));
         padding = self.getActualFormattingWidth($formatting);
-        $formatting.text(originalText);
 
         // Apply text-indent styles
         element.style.textIndent = '-' + padding + 'px';
+
+        // Apply class indicating that this line is a header line
+        regex = new RegExp('cm-formatting-header-([1-6])');
+        classes = $formatting.attr('class');
+        level = regex.exec(classes)[1];
+        element.classList.add('has-header');
+        element.classList.add('has-header-' + level);
 
         return true;
     };
