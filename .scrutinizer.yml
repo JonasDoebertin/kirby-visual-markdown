@@ -1,5 +1,4 @@
 filter:
-    paths:
     excluded_paths:
-        - assets/{css,js}/codemirror-*    # All CodeMirror dependencies
-        - assets/{css,js}/screenfull-*    # All Screenfull dependencies
+        - assets/js/codemirror-*     # All CodeMirror dependencies
+        - assets/js/screenfull-*     # All Screenfull dependencies
