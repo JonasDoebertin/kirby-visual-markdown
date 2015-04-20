@@ -272,14 +272,15 @@ var VisualMarkdownEditor = function($, $element, options) {
      * @since 1.2.0
      */
     this.registerKeyMaps = function() {
+        var name, obj;
 
-        for(var name in self.keyMaps) {
+        for(name in self.keyMaps) {
 
             // Abort if action doesn't have a callback
             if(typeof(self.actions[self.keyMaps[name]]) !== 'function')
                 throw "VisualMarkdownEditor: '" + self.keyMaps[name] + "' is not a registered action";
 
-            var obj = {};
+            obj = {};
             obj[name] = self.actions[self.keyMaps[name]].bind(self);
             $.extend(self.options.codemirror.extraKeys, obj);
         }
@@ -347,6 +348,7 @@ var VisualMarkdownEditor = function($, $element, options) {
      * @since 1.2.0
      */
     this.toggleFullscreenMode = function() {
+        var wrapper;
 
         // Abort if fullscreen mode isn't supported
         if(!screenfull.enabled) {
@@ -354,7 +356,7 @@ var VisualMarkdownEditor = function($, $element, options) {
         }
 
         // Find related wrapper element
-        var wrapper = $(self.codemirror.getWrapperElement()).closest('.markdownfield-wrapper');
+        wrapper = $(self.codemirror.getWrapperElement()).closest('.markdownfield-wrapper');
 
         // Enable fullscreen mode
         if(!screenfull.isFullscreen) {
@@ -388,11 +390,12 @@ var VisualMarkdownEditor = function($, $element, options) {
      */
     this.insertAround = function(start, end) {
         var doc    = self.codemirror.getDoc(),
-            cursor = doc.getCursor();
+            cursor = doc.getCursor(),
+            selection;
 
         if(doc.somethingSelected()) {
 
-            var selection = doc.getSelection();
+            selection = doc.getSelection();
             doc.replaceSelection(start + selection + end);
 
         } else {
@@ -417,15 +420,16 @@ var VisualMarkdownEditor = function($, $element, options) {
      */
     this.insertBefore = function(insertion, cursorOffset) {
         var doc    = self.codemirror.getDoc(),
-            cursor = doc.getCursor();
+            cursor = doc.getCursor()
+            selections, pos, i;
 
         if(doc.somethingSelected()) {
 
-            var selections = doc.listSelections();
+            selections = doc.listSelections();
             selections.forEach(function(selection) {
-                var pos = [selection.head.line, selection.anchor.line].sort();
+                pos = [selection.head.line, selection.anchor.line].sort();
 
-                for(var i = pos[0]; i <= pos[1]; i++) {
+                for(i = pos[0]; i <= pos[1]; i++) {
                     doc.replaceRange(insertion, { line: i, ch: 0 });
                 }
 

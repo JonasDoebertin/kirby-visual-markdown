@@ -91,8 +91,6 @@ class MarkdownField extends InputField {
      * (1) Load language files
      *
      * @since 1.2.0
-     *
-     * @return \MarkdownField
      */
     public function __construct()
     {
