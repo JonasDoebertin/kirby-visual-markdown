@@ -297,7 +297,8 @@ var VisualMarkdownEditor = function($, $element, options) {
 
             // Generate elements
             var $item = $('<li>').addClass('visualmarkdown-action-' + tool.action),
-                $anchor = $('<a>');
+                $anchor = $('<a>'),
+                $subitems;
 
             // Don't do anything with divider elements.
             // They are just an empty <li> tag with a "divider" class.
@@ -420,7 +421,7 @@ var VisualMarkdownEditor = function($, $element, options) {
      */
     this.insertBefore = function(insertion, cursorOffset) {
         var doc    = self.codemirror.getDoc(),
-            cursor = doc.getCursor()
+            cursor = doc.getCursor(),
             selections, pos, i;
 
         if(doc.somethingSelected()) {
@@ -645,7 +646,8 @@ var VisualMarkdownEditor = function($, $element, options) {
 
         var $parts = $line.children('span'),
             level = 0,
-            padding = 0;
+            padding = 0,
+            $part;
 
         // Abort if the line doesn't start with quote formatting
         if(!$parts.first().hasClass('cm-formatting-quote')) {
