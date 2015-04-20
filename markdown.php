@@ -81,6 +81,34 @@ class MarkdownField extends InputField {
      */
     protected $translation;
 
+    /**
+     * Valid header1/header2 option values
+     *
+     * @since 1.2.0
+     *
+     * @var array
+     */
+    protected $validHeaderValues = array(
+        'h1',
+        'h2',
+        'h3',
+        'h4',
+        'h5',
+        'h6',
+    );
+
+    /**
+     * Default option values
+     *
+     * @since 1.2.0
+     *
+     * @var array
+     */
+    protected $defaultValues = array(
+        'header1' => 'h1',
+        'header2' => 'h2',
+    );
+
     /**************************************************************************\
     *                          GENERAL FIELD METHODS                           *
     \**************************************************************************/
@@ -137,16 +165,12 @@ class MarkdownField extends InputField {
                     $this->toolbar = true;
                 }
                 break;
+
             case 'header1':
-                if(!in_array($value, array('h1', 'h2', 'h3', 'h4', 'h5', 'h6')))
-                {
-                    $this->header1 = 'h1';
-                }
-                break;
             case 'header2':
-                if(!in_array($value, array('h1', 'h2', 'h3', 'h4', 'h5', 'h6')))
+                if(!in_array($value, $this->validHeaderValues))
                 {
-                    $this->header2 = 'h2';
+                    $this->$option = $this->defaultValues[$option];
                 }
                 break;
         }
