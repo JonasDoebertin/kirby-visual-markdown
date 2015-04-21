@@ -2,7 +2,7 @@
 /**
  * Visual Markdown Editor Field for Kirby 2
  *
- * @version   1.1.0
+ * @version   1.2.0
  * @author    Jonas Döbertin <hello@jd-powered.net>
  * @copyright Jonas Döbertin <hello@jd-powered.net>
  * @link      https://github.com/JonasDoebertin/kirby-visual-markdown
@@ -17,6 +17,13 @@
 class MarkdownField extends InputField {
 
     /**
+     * Language files directory
+     *
+     * @since 1.2.0
+     */
+    const LANG_DIR = 'languages';
+
+    /**
      * Define frontend assets
      *
      * @var array
@@ -24,13 +31,17 @@ class MarkdownField extends InputField {
      */
     public static $assets = array(
         'js' => array(
-            'mirrormark.package.min.js',
-            'screenfull.min.js',
-            'markdown.js',
+            'screenfull-2.0.0.min.js',
+            'codemirror-5.1.0.js',
+            'codemirror-addon-continuelist-5.1.0.js',
+            'codemirror-mode-xml-5.1.0.js',
+            'codemirror-mode-markdown-5.1.0.js',
+            'visualmarkdownfield.js',
+            'visualmarkdowneditor.js',
         ),
         'css' => array(
-            'mirrormark.package.min.css',
-            'markdown.css',
+            'codemirror-5.1.0.css',
+            'visualmarkdown.css',
         ),
     );
 
@@ -39,7 +50,7 @@ class MarkdownField extends InputField {
      *
      * @since 1.1.0
      *
-     * @var string
+     * @var bool
      */
     protected $toolbar = true;
 
@@ -61,9 +72,70 @@ class MarkdownField extends InputField {
      */
     protected $header2 = 'h2';
 
+    /**
+     * Translated strings
+     *
+     * @since 1.2.0
+     *
+     * @var array
+     */
+    protected $translation;
+
+    /**
+     * Valid header1/header2 option values
+     *
+     * @since 1.2.0
+     *
+     * @var array
+     */
+    protected $validHeaderValues = array(
+        'h1',
+        'h2',
+        'h3',
+        'h4',
+        'h5',
+        'h6',
+    );
+
+    /**
+     * Default option values
+     *
+     * @since 1.2.0
+     *
+     * @var array
+     */
+    protected $defaultValues = array(
+        'header1' => 'h1',
+        'header2' => 'h2',
+    );
+
     /**************************************************************************\
     *                          GENERAL FIELD METHODS                           *
     \**************************************************************************/
+
+    /**
+     * Field setup
+     *
+     * (1) Load language files
+     *
+     * @since 1.2.0
+     */
+    public function __construct()
+    {
+        /*
+            (1) Load language files
+         */
+        $baseDir = __DIR__ . DS . self::LANG_DIR . DS;
+        $lang    = panel()->language();
+        if(file_exists($baseDir . $lang . '.php'))
+        {
+            $this->translation = include $baseDir . $lang . '.php';
+        }
+        else
+        {
+            $this->translation = include $baseDir . 'en.php';
+        }
+    }
 
     /**
      * Magic setter
@@ -84,7 +156,7 @@ class MarkdownField extends InputField {
         switch($option)
         {
             case 'toolbar':
-                if(in_array($value, array(false, 'hide')))
+                if(in_array($value, array(false, 'false', 'hide', 'no')))
                 {
                     $this->toolbar = false;
                 }
@@ -93,16 +165,12 @@ class MarkdownField extends InputField {
                     $this->toolbar = true;
                 }
                 break;
+
             case 'header1':
-                if(!in_array($value, array('h1', 'h2', 'h3', 'h4', 'h5', 'h6')))
-                {
-                    $this->header1 = 'h1';
-                }
-                break;
             case 'header2':
-                if(!in_array($value, array('h1', 'h2', 'h3', 'h4', 'h5', 'h6')))
+                if(!in_array($value, $this->validHeaderValues))
                 {
-                    $this->header2 = 'h2';
+                    $this->$option = $this->defaultValues[$option];
                 }
                 break;
         }
@@ -134,6 +202,9 @@ class MarkdownField extends InputField {
      */
     public function input()
     {
+        // Set up translation
+        $translation = tpl::load(__DIR__ . DS . 'partials' . DS . 'translation.php', array('translations' => $this->translation));
+
         // Set up textarea
         $input = parent::input();
         $input->tag('textarea');
@@ -152,7 +223,7 @@ class MarkdownField extends InputField {
         $wrapper->addClass('markdownfield-wrapper');
         $wrapper->addClass('markdownfield-field-' . $this->name);
 
-        return $wrapper->append($input);
+        return $wrapper->append($translation)->append($input);
     }
 
     /**
@@ -165,7 +236,7 @@ class MarkdownField extends InputField {
     public function element()
     {
         $element = parent::element();
-        $element->addClass('field-with-markdown');
+        $element->addClass('field-with-visualmarkdown');
         return $element;
     }
 

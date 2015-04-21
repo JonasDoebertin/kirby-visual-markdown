@@ -4,11 +4,22 @@
 [![PayPal](https://img.shields.io/badge/donate-paypal-009cde.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=A5K53LA5YBNW4)
 [![Gratipay](https://img.shields.io/gratipay/DieserJonas.svg)](https://gratipay.com/DieserJonas)
 
-**Based on [MirrorMark](https://github.com/themusicbed/MirrorMark) and [CodeMirror](https://github.com/codemirror/CodeMirror).**
+**Based on [CodeMirror](https://github.com/codemirror/CodeMirror). Inspired by [MirrorMark](https://github.com/musicbed/MirrorMark).**
 
 This Panel field plugin for [Kirby 2](http://getkirby.com) enables you to use an intuitive and visual markdown editor without any hazzle. Just drop in the plugin and you're good to go!
 
-![Screenshot](https://raw.githubusercontent.com/JonasDoebertin/kirby-visual-markdown/master/screenshot.png)
+![Screenshot](https://raw.githubusercontent.com/JonasDoebertin/kirby-visual-markdown/master/screenshot.gif)
+
+## Important Note (Please Read)
+
+This extension is free to use on both personal and commercial Kirby powered sites. You don't *have* to pay for it. However, please always keep in mind that developing this extension took place in my spare time (and maybe a little bit of the time I should have spend on other work related things). Up until now, quite some hours have been spent on it.
+
+If you want to support further development of this and future Kirby extensions, please consider [donating a small amount](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=A5K53LA5YBNW4) or [buying something from my wishlist](http://www.amazon.de/registry/wishlist/1PDC5ASLLSD67). **This is especially appreciated whenever you use this extension in a project that you get payed for.**
+
+It is awesome to see how the Kirby community connects and helps out each other.
+And while I want to be a valuable part of this connection, I can't afford not asking you for a little bit of support.
+
+Cheers, Jonas
 
 ## Installation
 
