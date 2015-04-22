@@ -1,10 +1,9 @@
-# Visual Markdown Editor for Kirby CMS 2
-
-[![Release](https://img.shields.io/github/release/jonasdoebertin/kirby-visual-markdown.svg)](https://github.com/jonasdoebertin/kirby-mirrormark/releases)  [![Issues](https://img.shields.io/github/issues/jonasdoebertin/kirby-visual-markdown.svg)](https://github.com/jonasdoebertin/kirby-mirrormark/issues) [![License](https://img.shields.io/badge/license-GPLv3-blue.svg)](https://raw.githubusercontent.com/jonasdoebertin/kirby-mirrormark/master/LICENSE)
-[![PayPal](https://img.shields.io/badge/donate-paypal-009cde.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=A5K53LA5YBNW4)
-[![Gratipay](https://img.shields.io/gratipay/DieserJonas.svg)](https://gratipay.com/DieserJonas)
+[![Visual Markdown Editor for Kirby](https://raw.githubusercontent.com/JonasDoebertin/kirby-visual-markdown/master/logo.gif)](https://github.com/JonasDoebertin/kirby-visual-markdown/)
 
 **Based on [CodeMirror](https://github.com/codemirror/CodeMirror). Inspired by [MirrorMark](https://github.com/musicbed/MirrorMark).**
+
+[![Release](https://img.shields.io/github/release/jonasdoebertin/kirby-visual-markdown.svg)](https://github.com/jonasdoebertin/kirby-mirrormark/releases)  [![Issues](https://img.shields.io/github/issues/jonasdoebertin/kirby-visual-markdown.svg)](https://github.com/jonasdoebertin/kirby-mirrormark/issues) [![License](https://img.shields.io/badge/license-GPLv3-blue.svg)](https://raw.githubusercontent.com/jonasdoebertin/kirby-mirrormark/master/LICENSE)
+[![Patreon](https://img.shields.io/badge/donate-patreon-ff5900.svg)](https://www.patreon.com/jdpowered)
 
 This Panel field plugin for [Kirby 2](http://getkirby.com) enables you to use an intuitive and visual markdown editor without any hazzle. Just drop in the plugin and you're good to go!
 
