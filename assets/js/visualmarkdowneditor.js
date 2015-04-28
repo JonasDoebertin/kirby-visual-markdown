@@ -14,6 +14,7 @@
  * @since 1.2.0
  */
 var VisualMarkdownEditor = function($, $element, options) {
+    'use strict';
 
     var self = this;
 

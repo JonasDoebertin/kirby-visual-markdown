@@ -14,6 +14,7 @@
  * @since 1.0.0
  */
 var VisualMarkdownField = (function($, $field) {
+    'use strict';
 
     var self = this;
 

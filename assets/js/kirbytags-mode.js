@@ -1,4 +1,20 @@
+/**
+ * Visual Markdown Editor Field for Kirby 2
+ *
+ * @version   1.2.0
+ * @author    Jonas Döbertin <hello@jd-powered.net>
+ * @copyright Jonas Döbertin <hello@jd-powered.net>
+ * @link      https://github.com/JonasDoebertin/kirby-visual-markdown
+ * @license   GNU GPL v3.0 <http://opensource.org/licenses/GPL-3.0>
+ */
+
+/**
+ * Kirbytext CodeMirror Syntax Mode
+ *
+ * @since 1.3.0
+ */
 CodeMirror.defineMode('kirbytext', function(config, modeConfig) {
+    'use strict';
 
     var states = {
 
