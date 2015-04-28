@@ -39,7 +39,7 @@ var VisualMarkdownEditor = function($, $element, options) {
                 'Cmd-Enter': function() {self.savePanelForm()}
             },
             mode: {
-                name:                  'markdown',
+                name:                  'kirbytext',
                 highlightFormatting:   true,
                 underscoresBreakWords: false,
                 maxBlockquoteDepth:    0,
