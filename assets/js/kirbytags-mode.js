@@ -21,29 +21,40 @@ CodeMirror.defineMode('kirbytext', function(config, modeConfig) {
         start: [
             // Match a Kirbytext tags opening bracket
             {
-                regex: /\((?=[a-z0-9]+:)/i,
+                regex: /[^\]]\((?=[a-z0-9]+:)/i,
                 token: 'kirbytext-open',
-                next: 'inside'
+                next:  'attribute'
+            },
+            {
+                regex: /\((?=[a-z0-9]+:)/i,
+                sol:   true,
+                token: 'kirbytext-open',
+                next:  'attribute'
             }
         ],
 
-        inside: [
+        attribute: [
             // Match a Kirbytext tags attributes
             {
                 regex: /[a-z0-9]+: ?(?!\/\/)/i,
                 token: 'kirbytext-attribute',
-            },
-            // Match a Kirbytext tags attribute value
-            {
-                regex: /[^\):]+(?= ([a-z0-9]+:)|\))/i,
-                token: 'kirbytext-value',
+                next:  'value'
             },
             // Match a Kirbytext tags closing bracket
             {
                 regex: /\)/,
                 token: 'kirbytext-close',
-                next: 'start'
+                next:  'start'
             }
+        ],
+
+        value: [
+            // Match a Kirbytext tags attribute value
+            {
+                regex: /[^\)]+?(?= (?:[a-z0-9]+:)|\))/i,
+                token: 'kirbytext-value',
+                next:  'attribute'
+            },
         ],
         meta: {}
 
