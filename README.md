@@ -7,7 +7,7 @@
 
 This Panel field plugin for [Kirby 2](http://getkirby.com) enables you to use an intuitive and visual markdown editor without any hazzle. Just drop in the plugin and you're good to go!
 
-![Screenshot](https://raw.githubusercontent.com/JonasDoebertin/kirby-visual-markdown/master/screenshot.gif)
+![Screenshot](https://raw.githubusercontent.com/JonasDoebertin/kirby-visual-markdown/master/screenshot.png)
 
 ## Important Note (Please Read)
 
