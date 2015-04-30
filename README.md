@@ -41,7 +41,7 @@ If you are an advanced user and know your way around Git and you already use Git
 
 ```bash
 $ cd your/project/root
-$ git submodule add git@github.com:jonasdoebertin/kirby-visual-markdown.git site/fields/markdown
+$ git submodule add https://github.com/JonasDoebertin/kirby-visual-markdown.git site/fields/markdown
 ```
 
 Updating all your Git submodules (eg. the Kirby core modules and any extensions added as submodules) to their latest version, all you need to do is to run these two Git commands.
