@@ -71,6 +71,26 @@ class MarkdownField extends InputField {
     protected $header2 = 'h2';
 
     /**
+     * Option: Available Tools
+     *
+     * @since 1.3.0
+     *
+     * @var string
+     */
+    protected $tools = array(
+        'header1',
+        'header2',
+        'bold',
+        'italic',
+        'blockquote',
+        'unorderedList',
+        'orderedList',
+        'link',
+        'image',
+        'line',
+    );
+
+    /**
      * Translated strings
      *
      * @since 1.2.0
@@ -105,6 +125,18 @@ class MarkdownField extends InputField {
     protected $defaultValues = array(
         'header1' => 'h1',
         'header2' => 'h2',
+        'tools'   => array(
+            'header1',
+            'header2',
+            'bold',
+            'italic',
+            'blockquote',
+            'unorderedList',
+            'orderedList',
+            'link',
+            'image',
+            'line',
+        ),
     );
 
     /**************************************************************************\
@@ -171,6 +203,13 @@ class MarkdownField extends InputField {
                     $this->$option = $this->defaultValues[$option];
                 }
                 break;
+
+            case 'tools':
+                if(!is_array($value))
+                {
+                    $this->$option = $this->defaultValues[$option];
+                }
+                break;
         }
 
     }
@@ -212,6 +251,7 @@ class MarkdownField extends InputField {
         $input->data(array(
             'field'   => 'markdownfield',
             'toolbar' => ($this->toolbar) ? 'true' : 'false',
+            'tools'   => implode(',', $this->tools),
             'header1' => $this->header1,
             'header2' => $this->header2,
         ));
