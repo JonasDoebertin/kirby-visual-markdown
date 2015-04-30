@@ -200,7 +200,7 @@ var VisualMarkdownField = (function($, $field) {
      * @since 1.0.0
      */
     $.fn.markdownfield = function() {
-            return new VisualMarkdownField($, this);
+        return new VisualMarkdownField($, this);
     };
 
 })(jQuery);
