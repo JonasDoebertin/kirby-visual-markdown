@@ -52,7 +52,7 @@
     }
 
     /**
-     * SYNTAX ELEMENTS
+     * MARKDOWN SYNTAX ELEMENTS
      */
 
     /* Header 1 */
@@ -93,7 +93,25 @@
         font-size: 90%;
     }
 
-    /* Formatting Elements */
+    /**
+     * KIRBYTEXT SYNTAX ELEMENTS
+     */
+    .cm-s-visualmarkdown .cm-kirbytext-open,
+    .cm-s-visualmarkdown .cm-kirbytext-close {
+        font-weight: bold;
+        color: #FF4136;
+    }
+
+    .cm-s-visualmarkdown .cm-kirbytext-attribute {
+        font-weight: bold;
+        color: #bdc3c7;
+    }
+
+    .cm-s-visualmarkdown .cm-kirbytext-value {}
+
+    /**
+     * FORMATTING
+     */
     .cm-s-visualmarkdown .cm-formatting {}
         .cm-s-visualmarkdown .cm-formatting-header,
         .cm-s-visualmarkdown .cm-formatting-quote,

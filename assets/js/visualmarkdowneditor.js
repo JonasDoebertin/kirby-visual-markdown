@@ -14,6 +14,7 @@
  * @since 1.2.0
  */
 var VisualMarkdownEditor = function($, $element, options) {
+    'use strict';
 
     var self = this;
 
@@ -39,7 +40,7 @@ var VisualMarkdownEditor = function($, $element, options) {
                 'Cmd-Enter': function() {self.savePanelForm()}
             },
             mode: {
-                name:                  'markdown',
+                name:                  'kirbytext',
                 highlightFormatting:   true,
                 underscoresBreakWords: false,
                 maxBlockquoteDepth:    0,
@@ -82,7 +83,7 @@ var VisualMarkdownEditor = function($, $element, options) {
             self.insertBefore('* ', 2);
         },
         link: function () {
-            self.insertAround('[', '](http://)');
+            self.insertAround('(link: http:// text: ', ')');
         },
         image: function () {
             self.insertBefore('(image: filename.jpg)');

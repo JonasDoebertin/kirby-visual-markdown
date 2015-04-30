@@ -32,15 +32,13 @@ class MarkdownField extends InputField {
     public static $assets = array(
         'js' => array(
             'screenfull-2.0.0.min.js',
-            'codemirror-5.1.0.js',
-            'codemirror-addon-continuelist-5.1.0.js',
-            'codemirror-mode-xml-5.1.0.js',
-            'codemirror-mode-markdown-5.1.0.js',
+            'codemirror-compressed-5.2.0.min.js',
+            'kirbytags-mode.js',
             'visualmarkdownfield.js',
             'visualmarkdowneditor.js',
         ),
         'css' => array(
-            'codemirror-5.1.0.css',
+            'codemirror-5.2.0.css',
             'visualmarkdown.css',
         ),
     );
