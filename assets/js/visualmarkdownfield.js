@@ -13,7 +13,7 @@
  *
  * @since 1.0.0
  */
-var VisualMarkdownField = (function($, $field) {
+var VisualMarkdownField = function($, $field) {
     'use strict';
 
     var self = this;
@@ -99,7 +99,7 @@ var VisualMarkdownField = (function($, $field) {
      *
      * @since 1.0.0
      */
-    this.updateStorage = function(instance, change) {
+    this.updateStorage = function() {
         self.$field.text(self.codemirror.getValue());
     };
 
@@ -108,7 +108,7 @@ var VisualMarkdownField = (function($, $field) {
      *
      * @since 1.0.0
      */
-    this.deactivate = function(e) {
+    this.deactivate = function() {
         self.updateStorage();
         self.editor.deactivate();
     };
@@ -121,7 +121,7 @@ var VisualMarkdownField = (function($, $field) {
     this.changeFullscreenModeHandler = function() {
 
         // Add indication class if fullscreen mode was entered
-        if(screenfull.isFullscreen && (screenfull.element == self.$wrapper.get(0))) {
+        if(screenfull.isFullscreen && (screenfull.element === self.$wrapper.get(0))) {
             self.attachFullscreenStyles();
         }
 
@@ -137,7 +137,7 @@ var VisualMarkdownField = (function($, $field) {
      *
      * @since 1.0.0
      */
-    this.attachFocusStyles = function(instance) {
+    this.attachFocusStyles = function() {
         self.$wrapper.addClass('markdownfield-wrapper-focused');
     };
 
@@ -146,7 +146,7 @@ var VisualMarkdownField = (function($, $field) {
      *
      * @since 1.0.0
      */
-    this.detachFocusStyles = function(instance) {
+    this.detachFocusStyles = function() {
         self.$wrapper.removeClass('markdownfield-wrapper-focused');
     };
 
@@ -173,9 +173,10 @@ var VisualMarkdownField = (function($, $field) {
      */
     return this.init();
 
-});
+};
 
 (function($) {
+    'use strict';
 
     /**
      * Set up special "destroyed" event.
