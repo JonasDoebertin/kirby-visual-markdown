@@ -97,6 +97,35 @@ fields:
 		toolbar: hide
 ```
 
+### tools
+
+With this option you may select which tools you want to show up in the toolbar. Specify a list of all tools you want to show up. *Please note that there are two toolbar items that will always shown: the help menu and the fullscreen mode icon.*
+
+```
+fields:
+    text:
+        label:   Text
+        type:    markdown
+		tools:
+			- bold
+			- italic
+			- orderedList
+			- unorderedList
+```
+
+**Available tools:**
+
+* `header1`
+* `header2`
+* `bold`
+* `italic`
+* `blockquote`
+* `unorderedList`
+* `orderedList`
+* `link`
+* `image`
+* `line`
+
 ### header1 & header2
 
 Specify the header levels to be used with the *H1* and *H2* toolbar buttons (`h1` to `h6`). Defaults to `header1: h1` and `header2: h2`.
