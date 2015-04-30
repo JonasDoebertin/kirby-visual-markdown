@@ -83,7 +83,7 @@ var VisualMarkdownEditor = function($, $element, options) {
             self.insertBefore('* ', 2);
         },
         link: function () {
-            self.insertAround('[', '](http://)');
+            self.insertAround('(link: http:// text: ', ')');
         },
         image: function () {
             self.insertBefore('(image: filename.jpg)');
