@@ -277,16 +277,16 @@ var VisualMarkdownEditor = function($, $element, options) {
         var name, obj;
 
         for(name in self.keyMaps) {
+            if(self.keyMaps.hasOwnProperty(name)) {
+                // Abort if action doesn't have a callback
+                if(typeof(self.actions[self.keyMaps[name]]) !== 'function') {
+                    throw 'VisualMarkdownEditor: \"' + self.keyMaps[name] + '\" is not a registered action';
+                }
 
-            // Abort if action doesn't have a callback
-            if(typeof(self.actions[self.keyMaps[name]]) !== 'function') {
-                throw 'VisualMarkdownEditor: \"' + self.keyMaps[name] + '\" is not a registered action';
+                obj = {};
+                obj[name] = self.actions[self.keyMaps[name]].bind(self);
+                $.extend(self.options.codemirror.extraKeys, obj);
             }
-
-
-            obj = {};
-            obj[name] = self.actions[self.keyMaps[name]].bind(self);
-            $.extend(self.options.codemirror.extraKeys, obj);
         }
     };
 
@@ -747,6 +747,7 @@ var VisualMarkdownEditor = function($, $element, options) {
             case 'h2':
                 return '##';
             case 'h1':
+                return '#';
             default:
                 return '#';
         }
