@@ -70,7 +70,7 @@ var VisualMarkdownEditor = function($, $element, options) {
         bold: function () {
             self.toggleAround('**', '**');
         },
-        italicize: function () {
+        italic: function () {
             self.toggleAround('*', '*');
         },
         blockquote: function () {
@@ -103,6 +103,7 @@ var VisualMarkdownEditor = function($, $element, options) {
         issuesLink: function() {
             window.open('https://github.com/JonasDoebertin/kirby-visual-markdown/issues');
         },
+        help: function() {},
         fullscreen: function() {
             self.toggleFullscreenMode();
         }
@@ -131,7 +132,7 @@ var VisualMarkdownEditor = function($, $element, options) {
             className: 'fa fa-bold'
         },
         {
-            action: 'italicize',
+            action: 'italic',
             className: 'fa fa-italic'
         },
         {
@@ -165,7 +166,7 @@ var VisualMarkdownEditor = function($, $element, options) {
             action: 'divider'
         },
         {
-            action: null,
+            action: 'help',
             className: 'fa fa-question-circle',
             nested: [
                 {
@@ -196,8 +197,8 @@ var VisualMarkdownEditor = function($, $element, options) {
         'Cmd-H':     'header1',
         'Cmd-Alt-H': 'header2',
         'Cmd-B':     'bold',
-        'Cmd-I':     'italicize',
-        'Cmd-\'':     'blockquote',
+        'Cmd-I':     'italic',
+        'Cmd-\'':    'blockquote',
         'Cmd-Alt-L': 'orderedList',
         'Cmd-L':     'unorderedList',
         'Cmd-Alt-I': 'image',
@@ -296,12 +297,21 @@ var VisualMarkdownEditor = function($, $element, options) {
      */
     this.generateToolbarItems = function(tools) {
 
+        var alwaysVisibleItems = ['help', 'fullscreen'];
+
         return tools.map(function(tool) {
 
+            // Define variables
+            var $item, $anchor, $subItems;
+
             // Generate elements
-            var $item = $('<li>').addClass('visualmarkdown-action-' + tool.action),
-                $anchor = $('<a>'),
-                $subitems;
+            $item   = $('<li>').addClass('visualmarkdown-action-' + tool.action);
+            $anchor = $('<a>');
+
+            if(($.inArray(tool.action, self.options.tools) === -1)
+               && ($.inArray(tool.action, alwaysVisibleItems) === -1)) {
+                $item.addClass('visualmarkdown-action-hidden');
+            }
 
             // Don't do anything with divider elements.
             // They are just an empty <li> tag with a "divider" class.
@@ -337,9 +347,9 @@ var VisualMarkdownEditor = function($, $element, options) {
 
             // Generate nested items
             if(tool.nested) {
-                $subitems = $('<ul>').append(self.generateToolbarItems(tool.nested));
+                $subItems = $('<ul>').append(self.generateToolbarItems(tool.nested));
                 $item.addClass('visualmarkdown-action-with-subactions');
-                $item.append($subitems);
+                $item.append($subItems);
             }
 
             return $item;

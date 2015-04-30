@@ -29,7 +29,8 @@ var VisualMarkdownField = function($, $field) {
     this.options = {
         toolbar: $field.data('toolbar'),
         header1: $field.data('header1'),
-        header2: $field.data('header2')
+        header2: $field.data('header2'),
+        tools:   $field.data('tools').split(',')
     };
 
     /**
