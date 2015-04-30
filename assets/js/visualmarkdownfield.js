@@ -1,7 +1,7 @@
 /**
  * Visual Markdown Editor Field for Kirby 2
  *
- * @version   1.2.0
+ * @version   1.3.0
  * @author    Jonas Döbertin <hello@jd-powered.net>
  * @copyright Jonas Döbertin <hello@jd-powered.net>
  * @link      https://github.com/JonasDoebertin/kirby-visual-markdown
@@ -13,7 +13,8 @@
  *
  * @since 1.0.0
  */
-var VisualMarkdownField = (function($, $field) {
+var VisualMarkdownField = function($, $field) {
+    'use strict';
 
     var self = this;
 
@@ -28,7 +29,8 @@ var VisualMarkdownField = (function($, $field) {
     this.options = {
         toolbar: $field.data('toolbar'),
         header1: $field.data('header1'),
-        header2: $field.data('header2')
+        header2: $field.data('header2'),
+        tools:   $field.data('tools').split(',')
     };
 
     /**
@@ -98,7 +100,7 @@ var VisualMarkdownField = (function($, $field) {
      *
      * @since 1.0.0
      */
-    this.updateStorage = function(instance, change) {
+    this.updateStorage = function() {
         self.$field.text(self.codemirror.getValue());
     };
 
@@ -107,7 +109,7 @@ var VisualMarkdownField = (function($, $field) {
      *
      * @since 1.0.0
      */
-    this.deactivate = function(e) {
+    this.deactivate = function() {
         self.updateStorage();
         self.editor.deactivate();
     };
@@ -120,7 +122,7 @@ var VisualMarkdownField = (function($, $field) {
     this.changeFullscreenModeHandler = function() {
 
         // Add indication class if fullscreen mode was entered
-        if(screenfull.isFullscreen && (screenfull.element == self.$wrapper.get(0))) {
+        if(screenfull.isFullscreen && (screenfull.element === self.$wrapper.get(0))) {
             self.attachFullscreenStyles();
         }
 
@@ -136,7 +138,7 @@ var VisualMarkdownField = (function($, $field) {
      *
      * @since 1.0.0
      */
-    this.attachFocusStyles = function(instance) {
+    this.attachFocusStyles = function() {
         self.$wrapper.addClass('markdownfield-wrapper-focused');
     };
 
@@ -145,7 +147,7 @@ var VisualMarkdownField = (function($, $field) {
      *
      * @since 1.0.0
      */
-    this.detachFocusStyles = function(instance) {
+    this.detachFocusStyles = function() {
         self.$wrapper.removeClass('markdownfield-wrapper-focused');
     };
 
@@ -172,9 +174,10 @@ var VisualMarkdownField = (function($, $field) {
      */
     return this.init();
 
-});
+};
 
 (function($) {
+    'use strict';
 
     /**
      * Set up special "destroyed" event.
@@ -199,7 +202,7 @@ var VisualMarkdownField = (function($, $field) {
      * @since 1.0.0
      */
     $.fn.markdownfield = function() {
-            return new VisualMarkdownField($, this);
+        return new VisualMarkdownField($, this);
     };
 
 })(jQuery);

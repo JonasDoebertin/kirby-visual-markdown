@@ -1,7 +1,7 @@
 /**
  * Visual Markdown Editor Field for Kirby 2
  *
- * @version   1.2.0
+ * @version   1.3.0
  * @author    Jonas Döbertin <hello@jd-powered.net>
  * @copyright Jonas Döbertin <hello@jd-powered.net>
  * @link      https://github.com/JonasDoebertin/kirby-visual-markdown
@@ -14,6 +14,7 @@
  * @since 1.2.0
  */
 var VisualMarkdownEditor = function($, $element, options) {
+    'use strict';
 
     var self = this;
 
@@ -35,11 +36,11 @@ var VisualMarkdownEditor = function($, $element, options) {
             lineWrapping:   true,
             extraKeys: {
                 'Enter':     'newlineAndIndentContinueMarkdownList',
-                'Alt-Enter': function() {self.savePanelForm()},
-                'Cmd-Enter': function() {self.savePanelForm()}
+                'Alt-Enter': function() {self.savePanelForm();},
+                'Cmd-Enter': function() {self.savePanelForm();}
             },
             mode: {
-                name:                  'markdown',
+                name:                  'kirbytext',
                 highlightFormatting:   true,
                 underscoresBreakWords: false,
                 maxBlockquoteDepth:    0,
@@ -67,10 +68,10 @@ var VisualMarkdownEditor = function($, $element, options) {
             self.toggleBefore(header);
         },
         bold: function () {
-            self.toggleAround('**', '**')
+            self.toggleAround('**', '**');
         },
-        italicize: function () {
-            self.toggleAround('*', '*')
+        italic: function () {
+            self.toggleAround('*', '*');
         },
         blockquote: function () {
             self.toggleBefore('>');
@@ -82,7 +83,7 @@ var VisualMarkdownEditor = function($, $element, options) {
             self.insertBefore('* ', 2);
         },
         link: function () {
-            self.insertAround('[', '](http://)');
+            self.insertAround('(link: http:// text: ', ')');
         },
         image: function () {
             self.insertBefore('(image: filename.jpg)');
@@ -91,7 +92,7 @@ var VisualMarkdownEditor = function($, $element, options) {
             self.insert('****');
         },
         code: function () {
-            self.insertAround('```\r\n', '\r\n```')
+            self.insertAround('```\r\n', '\r\n```');
         },
         markdownLink: function() {
             window.open('http://daringfireball.net/projects/markdown/syntax');
@@ -102,6 +103,7 @@ var VisualMarkdownEditor = function($, $element, options) {
         issuesLink: function() {
             window.open('https://github.com/JonasDoebertin/kirby-visual-markdown/issues');
         },
+        help: function() {},
         fullscreen: function() {
             self.toggleFullscreenMode();
         }
@@ -126,35 +128,35 @@ var VisualMarkdownEditor = function($, $element, options) {
             action: 'divider'
         },
         {
-            action: "bold",
-            className: "fa fa-bold"
+            action: 'bold',
+            className: 'fa fa-bold'
         },
         {
-            action: "italicize",
-            className: "fa fa-italic"
+            action: 'italic',
+            className: 'fa fa-italic'
         },
         {
-            action: "blockquote",
-            className: "fa fa-quote-left"
+            action: 'blockquote',
+            className: 'fa fa-quote-left'
         },
         {
-            action: "unorderedList",
-            className: "fa fa-list"
+            action: 'unorderedList',
+            className: 'fa fa-list'
         },
         {
-            action: "orderedList",
-            className: "fa fa-list-ol"
+            action: 'orderedList',
+            className: 'fa fa-list-ol'
         },
         {
             action: 'divider'
         },
         {
-            action: "link",
-            className: "fa fa-link"
+            action: 'link',
+            className: 'fa fa-link'
         },
         {
-            action: "image",
-            className: "fa fa-image"
+            action: 'image',
+            className: 'fa fa-image'
         },
         {
             action: 'line',
@@ -164,7 +166,7 @@ var VisualMarkdownEditor = function($, $element, options) {
             action: 'divider'
         },
         {
-            action: null,
+            action: 'help',
             className: 'fa fa-question-circle',
             nested: [
                 {
@@ -192,15 +194,15 @@ var VisualMarkdownEditor = function($, $element, options) {
      * @since 1.2.0
      */
     this.keyMaps = {
-        "Cmd-H":     'header1',
-        "Cmd-Alt-H": 'header2',
-        "Cmd-B":     'bold',
-        "Cmd-I":     'italicize',
-        "Cmd-'":     'blockquote',
-        "Cmd-Alt-L": 'orderedList',
-        "Cmd-L":     'unorderedList',
-        "Cmd-Alt-I": 'image',
-        "Cmd-A":     'link'
+        'Cmd-H':     'header1',
+        'Cmd-Alt-H': 'header2',
+        'Cmd-B':     'bold',
+        'Cmd-I':     'italic',
+        'Cmd-\'':    'blockquote',
+        'Cmd-Alt-L': 'orderedList',
+        'Cmd-L':     'unorderedList',
+        'Cmd-Alt-I': 'image',
+        'Cmd-A':     'link'
     };
 
     /**
@@ -260,7 +262,7 @@ var VisualMarkdownEditor = function($, $element, options) {
             wrapper = self.codemirror.getWrapperElement();
 
         tools.forEach(function(tool) {
-            toolbar.append(tool)
+            toolbar.append(tool);
         });
 
         $(wrapper).parent().prepend(toolbar);
@@ -275,14 +277,16 @@ var VisualMarkdownEditor = function($, $element, options) {
         var name, obj;
 
         for(name in self.keyMaps) {
+            if(self.keyMaps.hasOwnProperty(name)) {
+                // Abort if action doesn't have a callback
+                if(typeof(self.actions[self.keyMaps[name]]) !== 'function') {
+                    throw 'VisualMarkdownEditor: \"' + self.keyMaps[name] + '\" is not a registered action';
+                }
 
-            // Abort if action doesn't have a callback
-            if(typeof(self.actions[self.keyMaps[name]]) !== 'function')
-                throw "VisualMarkdownEditor: '" + self.keyMaps[name] + "' is not a registered action";
-
-            obj = {};
-            obj[name] = self.actions[self.keyMaps[name]].bind(self);
-            $.extend(self.options.codemirror.extraKeys, obj);
+                obj = {};
+                obj[name] = self.actions[self.keyMaps[name]].bind(self);
+                $.extend(self.options.codemirror.extraKeys, obj);
+            }
         }
     };
 
@@ -293,16 +297,25 @@ var VisualMarkdownEditor = function($, $element, options) {
      */
     this.generateToolbarItems = function(tools) {
 
+        var alwaysVisibleItems = ['help', 'fullscreen'];
+
         return tools.map(function(tool) {
 
+            // Define variables
+            var $item, $anchor, $subItems;
+
             // Generate elements
-            var $item = $('<li>').addClass('visualmarkdown-action-' + tool.action),
-                $anchor = $('<a>'),
-                $subitems;
+            $item   = $('<li>').addClass('visualmarkdown-action-' + tool.action);
+            $anchor = $('<a>');
+
+            if(($.inArray(tool.action, self.options.tools) === -1)
+               && ($.inArray(tool.action, alwaysVisibleItems) === -1)) {
+                $item.addClass('visualmarkdown-action-hidden');
+            }
 
             // Don't do anything with divider elements.
             // They are just an empty <li> tag with a "divider" class.
-            if(tool.action == 'divider') {
+            if(tool.action === 'divider') {
                 return $item;
             }
 
@@ -323,7 +336,7 @@ var VisualMarkdownEditor = function($, $element, options) {
 
             // Bind the action callback to the anchors "click" event.
             if(tool.action) {
-                $anchor.on('click', function(e) {
+                $anchor.on('click', function() {
                     self.codemirror.focus();
                     self.actions[tool.action].call(self);
                 });
@@ -334,9 +347,9 @@ var VisualMarkdownEditor = function($, $element, options) {
 
             // Generate nested items
             if(tool.nested) {
-                $subitems = $('<ul>').append(self.generateToolbarItems(tool.nested));
+                $subItems = $('<ul>').append(self.generateToolbarItems(tool.nested));
                 $item.addClass('visualmarkdown-action-with-subactions');
-                $item.append($subitems);
+                $item.append($subItems);
             }
 
             return $item;
@@ -456,7 +469,7 @@ var VisualMarkdownEditor = function($, $element, options) {
      */
     this.getSelectionStart = function(selection) {
         var swap = ((selection.anchor.line < selection.head.line)
-                || ((selection.anchor.line == selection.head.line)
+                    || ((selection.anchor.line === selection.head.line)
                     && selection.anchor.ch <= selection.head.ch));
         return (swap) ? selection.anchor : selection.head;
     };
@@ -468,7 +481,7 @@ var VisualMarkdownEditor = function($, $element, options) {
      */
     this.getSelectionEnd = function(selection) {
         var swap = ((selection.anchor.line < selection.head.line)
-                || ((selection.anchor.line == selection.head.line)
+                || ((selection.anchor.line === selection.head.line)
                     && selection.anchor.ch <= selection.head.ch));
         return (swap) ? selection.head : selection.anchor;
     };
@@ -488,7 +501,7 @@ var VisualMarkdownEditor = function($, $element, options) {
         // Delegate to function handling all selections independently
         selections.forEach(function(selection) {
             line = self.getSelectionStart(selection).line;
-            if(processedLines.indexOf(line) == -1) {
+            if(processedLines.indexOf(line) === -1) {
                 self.toggleBeforeSelection(formatting, selection);
                 processedLines.push(line);
             }
@@ -510,7 +523,7 @@ var VisualMarkdownEditor = function($, $element, options) {
         formatting = formatting + ' ';
 
         // Check for existing formatting
-        if(firstLine.indexOf(formatting) == 0) {
+        if(firstLine.indexOf(formatting) === 0) {
             // Remove formatting
             doc.replaceRange('', {
                     line: selection.anchor.line,
@@ -545,7 +558,7 @@ var VisualMarkdownEditor = function($, $element, options) {
 
             // Get selection start line and initialize offsets array value
             line = self.getSelectionStart(selection).line;
-            if(typeof offsets[line] == 'undefined') {
+            if(typeof offsets[line] === 'undefined') {
                 offsets[line] = 0;
             }
 
@@ -563,7 +576,7 @@ var VisualMarkdownEditor = function($, $element, options) {
     this.toggleAroundSelection = function(before, after, selection, offset) {
 
         var doc = self.codemirror.getDoc(),
-            swap, from, to, content, selectionTo;
+            from, to, content, selectionTo;
 
         // Get from and to positions from selection
         from = self.getSelectionStart(selection);
@@ -577,8 +590,8 @@ var VisualMarkdownEditor = function($, $element, options) {
         content = doc.getRange(from, to);
 
         // Check for existing formatting
-        if((content.indexOf(before) == 0)
-           && (content.lastIndexOf(after) == content.length - after.length)) {
+        if((content.indexOf(before) === 0)
+           && (content.lastIndexOf(after) === content.length - after.length)) {
 
             // Remove formatting
             doc.replaceRange(
@@ -593,7 +606,7 @@ var VisualMarkdownEditor = function($, $element, options) {
             // Reset selection
             selectionTo = {
                 line: to.line,
-                ch: ((from.line == to.line)
+                ch: ((from.line === to.line)
                     ? to.ch - before.length - after.length
                     : to.ch - after.length)
             };
@@ -610,7 +623,7 @@ var VisualMarkdownEditor = function($, $element, options) {
             // Reset selection
             selectionTo = {
                 line: to.line,
-                ch: ((from.line == to.line)
+                ch: ((from.line === to.line)
                     ? to.ch + before.length + after.length
                     : to.ch + after.length)
             };
@@ -734,6 +747,7 @@ var VisualMarkdownEditor = function($, $element, options) {
             case 'h2':
                 return '##';
             case 'h1':
+                return '#';
             default:
                 return '#';
         }
@@ -769,4 +783,4 @@ var VisualMarkdownEditor = function($, $element, options) {
      */
     return this.init(options);
 
-}
+};

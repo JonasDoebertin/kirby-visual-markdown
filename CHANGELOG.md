@@ -1,5 +1,21 @@
 # Changelog
 
+## Version 1.3.0
+
+**Features:**
+
+* Added Kirbytext highlighting
+* Added option to turn off individual toolbar icons
+
+**Changes:**
+
+* Updated to CodeMirror 5.2
+* Switched to compressed CodeMirror resources
+
+**Bugfixes:**
+
+* Fixed some potentially unsafe javascript code
+
 ## Version 1.2.0
 
 **Features:**

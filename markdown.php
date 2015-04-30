@@ -2,7 +2,7 @@
 /**
  * Visual Markdown Editor Field for Kirby 2
  *
- * @version   1.2.0
+ * @version   1.3.0
  * @author    Jonas Döbertin <hello@jd-powered.net>
  * @copyright Jonas Döbertin <hello@jd-powered.net>
  * @link      https://github.com/JonasDoebertin/kirby-visual-markdown
@@ -32,15 +32,13 @@ class MarkdownField extends InputField {
     public static $assets = array(
         'js' => array(
             'screenfull-2.0.0.min.js',
-            'codemirror-5.1.0.js',
-            'codemirror-addon-continuelist-5.1.0.js',
-            'codemirror-mode-xml-5.1.0.js',
-            'codemirror-mode-markdown-5.1.0.js',
+            'codemirror-compressed-5.2.0.min.js',
+            'kirbytags-mode.js',
             'visualmarkdownfield.js',
             'visualmarkdowneditor.js',
         ),
         'css' => array(
-            'codemirror-5.1.0.css',
+            'codemirror-5.2.0.css',
             'visualmarkdown.css',
         ),
     );
@@ -71,6 +69,26 @@ class MarkdownField extends InputField {
      * @var string
      */
     protected $header2 = 'h2';
+
+    /**
+     * Option: Available Tools
+     *
+     * @since 1.3.0
+     *
+     * @var string
+     */
+    protected $tools = array(
+        'header1',
+        'header2',
+        'bold',
+        'italic',
+        'blockquote',
+        'unorderedList',
+        'orderedList',
+        'link',
+        'image',
+        'line',
+    );
 
     /**
      * Translated strings
@@ -107,6 +125,18 @@ class MarkdownField extends InputField {
     protected $defaultValues = array(
         'header1' => 'h1',
         'header2' => 'h2',
+        'tools'   => array(
+            'header1',
+            'header2',
+            'bold',
+            'italic',
+            'blockquote',
+            'unorderedList',
+            'orderedList',
+            'link',
+            'image',
+            'line',
+        ),
     );
 
     /**************************************************************************\
@@ -156,25 +186,62 @@ class MarkdownField extends InputField {
         switch($option)
         {
             case 'toolbar':
-                if(in_array($value, array(false, 'false', 'hide', 'no')))
-                {
-                    $this->toolbar = false;
-                }
-                else
-                {
-                    $this->toolbar = true;
-                }
+                $this->validateToolbarOption($value);
                 break;
 
             case 'header1':
             case 'header2':
-                if(!in_array($value, $this->validHeaderValues))
-                {
-                    $this->$option = $this->defaultValues[$option];
-                }
+                $this->validateHeaderOption($option, $value);
+                break;
+
+            case 'tools':
+                $this->validateToolsOption($value);
                 break;
         }
 
+    }
+
+    /**
+     * Validate "toolbar" option
+     *
+     * @since 1.3.0
+     *
+     * @param mixed $value
+     */
+    protected function validateToolbarOption($value)
+    {
+        $this->toolbar = !in_array($value, array('false', 'hide', 'no', false));
+    }
+
+    /**
+     * Validate "headerX" option
+     *
+     * @since 1.3.0
+     *
+     * @param string $header
+     * @param array  $value
+     */
+    protected function validateHeaderOption($header, $value)
+    {
+        if(!in_array($value, $this->validHeaderValues))
+        {
+            $this->$header = $this->defaultValues[$header];
+        }
+    }
+
+    /**
+     * Validate "tools" option
+     *
+     * @since 1.3.0
+     *
+     * @param array $value
+     */
+    protected function validateToolsOption($value)
+    {
+        if(!is_array($value) or empty($value))
+        {
+            $this->tools = $this->defaultValues['tools'];
+        }
     }
 
     /**
@@ -214,6 +281,7 @@ class MarkdownField extends InputField {
         $input->data(array(
             'field'   => 'markdownfield',
             'toolbar' => ($this->toolbar) ? 'true' : 'false',
+            'tools'   => implode(',', $this->tools),
             'header1' => $this->header1,
             'header2' => $this->header2,
         ));
