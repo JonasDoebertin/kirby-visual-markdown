@@ -186,32 +186,62 @@ class MarkdownField extends InputField {
         switch($option)
         {
             case 'toolbar':
-                if(in_array($value, array(false, 'false', 'hide', 'no')))
-                {
-                    $this->toolbar = false;
-                }
-                else
-                {
-                    $this->toolbar = true;
-                }
+                $this->validateToolbarOption($value);
                 break;
 
             case 'header1':
             case 'header2':
-                if(!in_array($value, $this->validHeaderValues))
-                {
-                    $this->$option = $this->defaultValues[$option];
-                }
+                $this->validateHeaderOption($option, $value);
                 break;
 
             case 'tools':
-                if(!is_array($value))
-                {
-                    $this->$option = $this->defaultValues[$option];
-                }
+                $this->validateToolsOption($value);
                 break;
         }
 
+    }
+
+    /**
+     * Validate "toolbar" option
+     *
+     * @since 1.3.0
+     *
+     * @param mixed $value
+     */
+    protected function validateToolbarOption($value)
+    {
+        $this->toolbar = !in_array($value, array('false', 'hide', 'no', false));
+    }
+
+    /**
+     * Validate "headerX" option
+     *
+     * @since 1.3.0
+     *
+     * @param string $header
+     * @param array  $value
+     */
+    protected function validateHeaderOption($header, $value)
+    {
+        if(!in_array($value, $this->validHeaderValues))
+        {
+            $this->$header = $this->defaultValues[$header];
+        }
+    }
+
+    /**
+     * Validate "tools" option
+     *
+     * @since 1.3.0
+     *
+     * @param array $value
+     */
+    protected function validateToolsOption($value)
+    {
+        if(!is_array($value) or empty($value))
+        {
+            $this->tools = $this->defaultValues['tools'];
+        }
     }
 
     /**
