@@ -269,6 +269,9 @@ class MarkdownField extends InputField {
      */
     public function input()
     {
+        // Set up modals
+        $modals = tpl::load(__DIR__ . DS . 'partials' . DS . 'modals.php', array('field' => $this));
+
         // Set up translation
         $translation = tpl::load(__DIR__ . DS . 'partials' . DS . 'translation.php', array('translations' => $this->translation));
 
@@ -291,7 +294,10 @@ class MarkdownField extends InputField {
         $wrapper->addClass('markdownfield-wrapper');
         $wrapper->addClass('markdownfield-field-' . $this->name);
 
-        return $wrapper->append($translation)->append($input);
+        return $wrapper
+            ->append($modals)
+            ->append($translation)
+            ->append($input);
     }
 
     /**
@@ -306,6 +312,24 @@ class MarkdownField extends InputField {
         $element = parent::element();
         $element->addClass('field-with-visualmarkdown');
         return $element;
+    }
+
+    /**************************************************************************\
+    *                                 HELPERS                                  *
+    \**************************************************************************/
+
+    /**
+     * Return a translation from the internal translation storage
+     *
+     * @since 1.4.0
+     *
+     * @param  string $key
+     * @param  string $default
+     * @return string
+     */
+    public function lang($key, $default = '')
+    {
+        return (isset($this->translation[$key]) ? $this->translation[$key] : $default);
     }
 
 }
