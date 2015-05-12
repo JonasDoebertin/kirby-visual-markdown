@@ -4,19 +4,6 @@
             <?= $field->lang('modal.shortcuts.title', 'Keyboard Shortcuts') ?>
         </h3>
         <table class="visualmarkdown-shortcuts">
-            <!-- <thead>
-                <tr>
-                    <th>
-                        <?= $field->lang('modal.shortcuts.heading.action', 'Action') ?>
-                    </th>
-                    <th>
-                        <?= $field->lang('modal.shortcuts.heading.result', 'Action') ?>
-                    </th>
-                    <th>
-                        <?= $field->lang('modal.shortcuts.heading.shortcut', 'Action') ?>
-                    </th>
-                </tr>
-            </thead> -->
             <tbody>
                 <tr>
                     <th>

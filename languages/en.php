@@ -30,7 +30,6 @@ return array(
     /* Shortcuts modal texts */
     'modal.shortcuts.title'                => 'Keyboard Shortcuts',
     'modal.shortcuts.heading.action'       => 'Action',
-    'modal.shortcuts.heading.result'       => 'Result',
     'modal.shortcuts.heading.shortcut'     => 'Shortcut',
     'modal.shortcuts.action.heading'       => 'Heading',
     'modal.shortcuts.action.subheading'    => 'Subheading',

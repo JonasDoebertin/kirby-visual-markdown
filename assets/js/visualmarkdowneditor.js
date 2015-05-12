@@ -18,16 +18,41 @@ var VisualMarkdownEditor = function($, $element, options) {
 
     var self = this;
 
+    /**
+     * Main field element
+     */
     this.$element    = $element;
+
+    /**
+     * Editor wrapper element
+     */
     this.$wrapper    = null;
+
+    /**
+     * All available modals
+     */
     this.modals      = {
         shortcuts: $('[data-visualmarkdown-modal=shortcuts]')
     };
 
+    /**
+     * CodeMirror instance
+     */
     this.codemirror  = null;
+
+    /**
+     * Translation object including all translated strings
+     */
     this.translation = VisualMarkdownTranslation;
 
+    /**
+     * Current options
+     */
     this.options  = {};
+
+    /**
+     * Default options
+     */
     this.defaults = {
         toolbar: true,
         header1: 'h1',
@@ -54,6 +79,9 @@ var VisualMarkdownEditor = function($, $element, options) {
         }
     };
 
+    /**
+     * Will be `true` when we're on a Safari browser
+     */
     this.isSafari = new RegExp('(Version)/(\\d+)\\.(\\d+)(?:\\.(\\d+))?.*Safari/').test(navigator.userAgent);
 
     /**
@@ -234,7 +262,6 @@ var VisualMarkdownEditor = function($, $element, options) {
      * @since 1.2.0
      */
     this.init = function(options) {
-
         // Merge defaults with options
         self.options = $.extend({}, self.defaults, options);
 
@@ -284,7 +311,6 @@ var VisualMarkdownEditor = function($, $element, options) {
      * @since 1.2.0
      */
     this.initToolbar = function() {
-
         var toolbar = $('<ul>').addClass('visualmarkdown-toolbar'),
             tools   = self.generateToolbarItems(self.tools),
             wrapper = self.codemirror.getWrapperElement();
@@ -324,7 +350,6 @@ var VisualMarkdownEditor = function($, $element, options) {
      * @since 1.2.0
      */
     this.generateToolbarItems = function(tools) {
-
         var alwaysVisibleItems = ['help', 'fullscreen'];
 
         return tools.map(function(tool) {

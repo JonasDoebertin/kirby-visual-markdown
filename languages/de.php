@@ -25,6 +25,21 @@ return array(
     'action.tooltip.issuesLink'     => 'Einen Fehler auf Github melden',
     'action.name.issuesLink'        => 'Einen Fehler melden',
     'action.tooltip.shortcutsModal' => '',
-    'action.name.shortcutsModal'    => 'Tastaturkürzel',
+    'action.name.shortcutsModal'    => 'Tastenkürzel',
+
+    /* Shortcuts modal texts */
+    'modal.shortcuts.title'                => 'Tastenkürzel',
+    'modal.shortcuts.heading.action'       => 'Aktion',
+    'modal.shortcuts.heading.shortcut'     => 'Kürzel',
+    'modal.shortcuts.action.heading'       => 'Titel',
+    'modal.shortcuts.action.subheading'    => 'Untertitel',
+    'modal.shortcuts.action.bold'          => 'Fett',
+    'modal.shortcuts.action.italic'        => 'Kursiv',
+    'modal.shortcuts.action.strikethrough' => 'Durchgestrichen',
+    'modal.shortcuts.action.blockquote'    => 'Zitat',
+    'modal.shortcuts.action.unorderedList' => 'Unsortierte Liste',
+    'modal.shortcuts.action.orderedList'   => 'Sortierte Liste',
+    'modal.shortcuts.action.image'         => 'Bild',
+    'modal.shortcuts.action.link'          => 'Link',
 
 );

@@ -27,4 +27,18 @@ return array(
     'action.tooltip.shortcutsModal' => '',
     'action.name.shortcutsModal'    => 'Raccourcis Clavier',
 
+    'modal.shortcuts.title'                => 'Raccourcis Clavier',
+    'modal.shortcuts.heading.action'       => 'Action',
+    'modal.shortcuts.heading.shortcut'     => 'Raccourcis',
+    'modal.shortcuts.action.heading'       => 'Titre principal',
+    'modal.shortcuts.action.subheading'    => 'Titre secondaire',
+    'modal.shortcuts.action.bold'          => 'Gras',
+    'modal.shortcuts.action.italic'        => 'Italique',
+    'modal.shortcuts.action.strikethrough' => 'Strikethrough',
+    'modal.shortcuts.action.blockquote'    => 'Citation',
+    'modal.shortcuts.action.unorderedList' => 'Liste non ordonnée',
+    'modal.shortcuts.action.orderedList'   => 'Liste ordonnée',
+    'modal.shortcuts.action.image'         => 'Image',
+    'modal.shortcuts.action.link'          => 'Lien',
+
 );
