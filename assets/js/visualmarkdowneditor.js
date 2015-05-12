@@ -194,15 +194,20 @@ var VisualMarkdownEditor = function($, $element, options) {
      * @since 1.2.0
      */
     this.keyMaps = {
-        'Cmd-H':     'header1',
-        'Cmd-Alt-H': 'header2',
-        'Cmd-B':     'bold',
-        'Cmd-I':     'italic',
-        'Cmd-\'':    'blockquote',
-        'Cmd-Alt-L': 'orderedList',
-        'Cmd-L':     'unorderedList',
-        'Cmd-Alt-I': 'image',
-        'Cmd-A':     'link'
+        'Cmd-H':      'header1',
+        'Ctrl-H':     'header1',
+        'Cmd-Alt-H':  'header2',
+        'Ctrl-Alt-H': 'header2',
+        'Cmd-B':      'bold',
+        'Ctrl-B':     'bold',
+        'Cmd-I':      'italic',
+        'Ctrl-I':     'italic',
+        'Ctrl-Q':     'blockquote',
+        'Ctrl-L':     'unorderedList',
+        'Ctrl-Alt-L': 'orderedList',
+        'Ctrl-Alt-I': 'image',
+        'Cmd-K':      'link',
+        'Ctrl-K':     'link',
     };
 
     /**
