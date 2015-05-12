@@ -17,11 +17,13 @@ return array(
     'action.tooltip.fullscreen'    => 'Vollbildmodus ein-/ausschalten',
 
     /* Help icon subitems */
-    'action.tooltip.markdownLink'  => 'Alles wissenswerte über Markdown',
-    'action.name.markdownLink'     => 'Markdown Hilfe',
-    'action.tooltip.kirbytextLink' => 'Textauszeichnung mit Kirbytext',
-    'action.name.kirbytextLink'    => 'Kirbytext Hilfe',
-    'action.tooltip.issuesLink'    => 'Einen Fehler auf Github melden',
-    'action.name.issuesLink'       => 'Einen Fehler melden',
+    'action.tooltip.markdownLink'   => 'Alles wissenswerte über Markdown',
+    'action.name.markdownLink'      => 'Markdown Hilfe',
+    'action.tooltip.kirbytextLink'  => 'Textauszeichnung mit Kirbytext',
+    'action.name.kirbytextLink'     => 'Kirbytext Hilfe',
+    'action.tooltip.issuesLink'     => 'Einen Fehler auf Github melden',
+    'action.name.issuesLink'        => 'Einen Fehler melden',
+    'action.tooltip.shortcutsModal' => '',
+    'action.name.shortcutsModal'    => 'Tastaturkürzel',
 
 );

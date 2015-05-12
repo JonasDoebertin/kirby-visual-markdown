@@ -20,6 +20,9 @@ var VisualMarkdownEditor = function($, $element, options) {
 
     this.$element    = $element;
     this.$wrapper    = null;
+    this.modals      = {
+        shortcuts: $('[data-visualmarkdown-modal=shortcuts]')
+    };
 
     this.codemirror  = null;
     this.translation = VisualMarkdownTranslation;
@@ -103,6 +106,9 @@ var VisualMarkdownEditor = function($, $element, options) {
         issuesLink: function() {
             window.open('https://github.com/JonasDoebertin/kirby-visual-markdown/issues');
         },
+        shortcutsModal: function() {
+            self.showShortcutsModal();
+        },
         help: function() {},
         fullscreen: function() {
             self.toggleFullscreenMode();
@@ -183,6 +189,10 @@ var VisualMarkdownEditor = function($, $element, options) {
                 {
                     action: 'issuesLink',
                     showName: true
+                },
+                {
+                    action: 'shortcutsModal',
+                    showName: true
                 }
             ]
         }
@@ -241,6 +251,11 @@ var VisualMarkdownEditor = function($, $element, options) {
 
         // Bind change handler
         self.codemirror.on('renderLine', self.renderLine);
+
+        // Bind modal close handlers
+        $.each(self.modals, function(index, modal) {
+            modal.on('click', self.hideModals);
+        });
 
         // Refresh CodeMirror DOM
         self.codemirror.refresh();
@@ -722,6 +737,28 @@ var VisualMarkdownEditor = function($, $element, options) {
         element.classList.add('has-header-' + level);
 
         return true;
+    };
+
+    /**
+     * Show "Keyboard Shortcuts" modal
+     *
+     * @since 1.4.0
+     */
+    this.showShortcutsModal = function() {
+        self.modals.shortcuts.show();
+    };
+
+    /**
+     * Hide all (possibly) open modals
+     *
+     * @since 1.4.0
+     */
+    this.hideModals = function(e) {
+        if(e.target === this){
+            $.each(self.modals, function(index, modal) {
+                modal.hide();
+            });
+        }
     };
 
     /**

@@ -1,4 +1,4 @@
-<div class="visualmarkdown-modal" data-modal="shortcuts">
+<div class="visualmarkdown-modal" data-visualmarkdown-modal="shortcuts">
     <div class="visualmarkdown-modal-wrap">
         <h3 class="visualmarkdown-modal-title">
             <?= $field->lang('modal.shortcuts.title', 'Keyboard Shortcuts') ?>

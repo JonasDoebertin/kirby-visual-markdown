@@ -17,12 +17,14 @@ return array(
     'action.tooltip.fullscreen'    => 'Toggle Fullscreen Mode',
 
     /* Help icon subitems */
-    'action.tooltip.markdownLink'  => 'All you need to know about Markdown',
-    'action.name.markdownLink'     => 'Markdown Help',
-    'action.tooltip.kirbytextLink' => 'Text formatting with Kirbytext',
-    'action.name.kirbytextLink'    => 'Kirbytext Help',
-    'action.tooltip.issuesLink'    => 'Open an issue on Github',
-    'action.name.issuesLink'       => 'Report a Bug',
+    'action.tooltip.markdownLink'   => 'All you need to know about Markdown',
+    'action.name.markdownLink'      => 'Markdown Help',
+    'action.tooltip.kirbytextLink'  => 'Text formatting with Kirbytext',
+    'action.name.kirbytextLink'     => 'Kirbytext Help',
+    'action.tooltip.issuesLink'     => 'Open an issue on Github',
+    'action.name.issuesLink'        => 'Report a Bug',
+    'action.tooltip.shortcutsModal' => '',
+    'action.name.shortcutsModal'    => 'Keyboard Shortcuts',
 
     /* Shortcuts modal texts */
     'modal.shortcuts.title'                => 'Keyboard Shortcuts',
