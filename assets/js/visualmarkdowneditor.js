@@ -49,7 +49,7 @@ var VisualMarkdownEditor = function($, $element, options) {
                 maxBlockquoteDepth:    0,
                 fencedCodeBlocks:      true,
                 taskLists:             true,
-                strikethrough:         false
+                strikethrough:         true
             },
         }
     };
@@ -70,25 +70,28 @@ var VisualMarkdownEditor = function($, $element, options) {
             var header = self.translateHeaderValue(self.options.header2);
             self.toggleBefore(header);
         },
-        bold: function () {
+        bold: function() {
             self.toggleAround('**', '**');
         },
-        italic: function () {
+        italic: function() {
             self.toggleAround('*', '*');
         },
-        blockquote: function () {
+        strikethrough: function() {
+            self.toggleAround('~~', '~~');
+        },
+        blockquote: function() {
             self.toggleBefore('>');
         },
-        orderedList: function () {
+        orderedList: function() {
             self.insertBefore('1. ', 3);
         },
-        unorderedList: function () {
+        unorderedList: function() {
             self.insertBefore('* ', 2);
         },
-        link: function () {
+        link: function() {
             self.insertAround('(link: http:// text: ', ')');
         },
-        image: function () {
+        image: function() {
             self.insertBefore('(image: filename.jpg)');
         },
         line: function() {
@@ -140,6 +143,10 @@ var VisualMarkdownEditor = function($, $element, options) {
         {
             action: 'italic',
             className: 'fa fa-italic'
+        },
+        {
+            action: 'strikethrough',
+            className: 'fa fa-strikethrough'
         },
         {
             action: 'blockquote',
@@ -212,6 +219,7 @@ var VisualMarkdownEditor = function($, $element, options) {
         'Ctrl-B':     'bold',
         'Cmd-I':      'italic',
         'Ctrl-I':     'italic',
+        'Ctrl-Alt-U': 'strikethrough',
         'Ctrl-Q':     'blockquote',
         'Ctrl-L':     'unorderedList',
         'Ctrl-Alt-L': 'orderedList',

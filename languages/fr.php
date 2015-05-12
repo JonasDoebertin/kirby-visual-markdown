@@ -8,6 +8,7 @@ return array(
     'action.name.header2'          => 'h',
     'action.tooltip.bold'          => 'Gras',
     'action.tooltip.italicize'     => 'Italique',
+    'action.tooltip.strikethrough' => 'Strikethrough',
     'action.tooltip.blockquote'    => 'Citation',
     'action.tooltip.unorderedList' => 'Liste non ordonnée',
     'action.tooltip.orderedList'   => 'Liste ordonnée',

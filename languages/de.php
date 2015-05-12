@@ -8,6 +8,7 @@ return array(
     'action.name.header2'          => 'h',
     'action.tooltip.bold'          => 'Fett',
     'action.tooltip.italicize'     => 'Kursiv',
+    'action.tooltip.strikethrough' => 'Durchgestrichen',
     'action.tooltip.blockquote'    => 'Zitat',
     'action.tooltip.unorderedList' => 'Unsortierte Liste',
     'action.tooltip.orderedList'   => 'Sortierte Liste',

@@ -52,6 +52,14 @@
                 </tr>
                 <tr>
                     <th>
+                        <?= $field->lang('modal.shortcuts.action.strikethrough', 'Strikethrough') ?>
+                    </th>
+                    <td>
+                        <kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>U</kbd>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
                         <?= $field->lang('modal.shortcuts.action.blockquote', 'Blockquote') ?>
                     </th>
                     <td>

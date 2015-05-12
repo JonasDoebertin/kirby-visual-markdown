@@ -82,6 +82,7 @@ class MarkdownField extends InputField {
         'header2',
         'bold',
         'italic',
+        'strikethrough',
         'blockquote',
         'unorderedList',
         'orderedList',
