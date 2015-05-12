@@ -211,6 +211,10 @@ var VisualMarkdownEditor = function($, $element, options) {
             className: 'fa fa-question-circle',
             nested: [
                 {
+                    action: 'shortcutsModal',
+                    showName: true
+                },
+                {
                     action: 'markdownLink',
                     showName: true
                 },
@@ -223,10 +227,6 @@ var VisualMarkdownEditor = function($, $element, options) {
                 },
                 {
                     action: 'issuesLink',
-                    showName: true
-                },
-                {
-                    action: 'shortcutsModal',
                     showName: true
                 }
             ]
