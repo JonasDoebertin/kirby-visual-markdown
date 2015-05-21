@@ -1,7 +1,7 @@
 /**
  * Visual Markdown Editor Field for Kirby 2
  *
- * @version   1.3.0
+ * @version   1.3.1
  * @author    Jonas Döbertin <hello@jd-powered.net>
  * @copyright Jonas Döbertin <hello@jd-powered.net>
  * @link      https://github.com/JonasDoebertin/kirby-visual-markdown
@@ -27,10 +27,11 @@ var VisualMarkdownField = function($, $field) {
     this.editor = null;
 
     this.options = {
-        toolbar: $field.data('toolbar'),
-        header1: $field.data('header1'),
-        header2: $field.data('header2'),
-        tools:   $field.data('tools').split(',')
+        toolbar:   $field.data('toolbar'),
+        header1:   $field.data('header1'),
+        header2:   $field.data('header2'),
+        tools:     $field.data('tools').split(','),
+        kirbytext: $field.data('kirbytext')
     };
 
     /**

@@ -1,7 +1,7 @@
 /**
  * Visual Markdown Editor Field for Kirby 2
  *
- * @version   1.3.0
+ * @version   1.3.1
  * @author    Jonas Döbertin <hello@jd-powered.net>
  * @copyright Jonas Döbertin <hello@jd-powered.net>
  * @link      https://github.com/JonasDoebertin/kirby-visual-markdown
@@ -29,6 +29,7 @@ var VisualMarkdownEditor = function($, $element, options) {
         toolbar: true,
         header1: 'h1',
         header2: 'h2',
+        kirbytext: true,
         codemirror: {
             theme:          'visualmarkdown',
             tabSize:        4,
@@ -83,10 +84,18 @@ var VisualMarkdownEditor = function($, $element, options) {
             self.insertBefore('* ', 2);
         },
         link: function () {
-            self.insertAround('(link: http:// text: ', ')');
+            if(self.options.kirbytext) {
+                self.insertAround('(link: http:// text: ', ')');
+            } else {
+                self.insertAround('[', '](http://)');
+            }
         },
         image: function () {
-            self.insertBefore('(image: filename.jpg)');
+            if(self.options.kirbytext) {
+                self.insertBefore('(image: filename.jpg)');
+            } else {
+                self.insertBefore('![alt text](http://)');
+            }
         },
         line: function() {
             self.insert('****');
