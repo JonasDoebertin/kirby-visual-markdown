@@ -2,7 +2,7 @@
 /**
  * Visual Markdown Editor Field for Kirby 2
  *
- * @version   1.3.0
+ * @version   1.3.1
  * @author    Jonas Döbertin <hello@jd-powered.net>
  * @copyright Jonas Döbertin <hello@jd-powered.net>
  * @link      https://github.com/JonasDoebertin/kirby-visual-markdown
@@ -279,11 +279,12 @@ class MarkdownField extends InputField {
         $input->removeAttr('value');
         $input->html($this->value() ?: false);
         $input->data(array(
-            'field'   => 'markdownfield',
-            'toolbar' => ($this->toolbar) ? 'true' : 'false',
-            'tools'   => implode(',', $this->tools),
-            'header1' => $this->header1,
-            'header2' => $this->header2,
+            'field'     => 'markdownfield',
+            'toolbar'   => ($this->toolbar) ? 'true' : 'false',
+            'tools'     => implode(',', $this->tools),
+            'header1'   => $this->header1,
+            'header2'   => $this->header2,
+            'kirbytext' => (c::get('panel.kirbytext', true)) ? 'true' : 'false',
         ));
 
         // Set up wrapping element

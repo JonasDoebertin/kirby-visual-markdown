@@ -1,5 +1,15 @@
 # Changelog
 
+## Version 1.3.1
+
+**Features:**
+
+* Respect the new (Kirby 2.1) strict markdown mode
+
+**Special Thanks:**
+
+* @shoesforindustry for bringing this to my attention
+
 ## Version 1.3.0
 
 **Features:**
