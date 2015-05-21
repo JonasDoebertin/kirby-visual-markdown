@@ -1,7 +1,7 @@
 /**
  * Visual Markdown Editor Field for Kirby 2
  *
- * @version   1.3.0
+ * @version   1.3.1
  * @author    Jonas Döbertin <hello@jd-powered.net>
  * @copyright Jonas Döbertin <hello@jd-powered.net>
  * @link      https://github.com/JonasDoebertin/kirby-visual-markdown
