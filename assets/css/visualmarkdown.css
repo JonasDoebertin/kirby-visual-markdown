@@ -121,7 +121,8 @@
         .cm-s-visualmarkdown .cm-hr,
         .cm-s-visualmarkdown .cm-formatting-code,
         .cm-s-visualmarkdown .cm-formatting-code-block,
-        .cm-s-visualmarkdown .cm-formatting-task {
+        .cm-s-visualmarkdown .cm-formatting-task,
+        .cm-s-visualmarkdown .cm-formatting-strikethrough {
             color: #bdc3c7;
             text-decoration: none;
         }
@@ -147,6 +148,17 @@
 
         .cm-s-visualmarkdown .cm-formatting-task.cm-property {
             color: #8dae28;
+        }
+
+        /**
+         * Strike-Through
+         */
+        .cm-s-visualmarkdown .cm-strikethrough {
+            color: #FF4136;
+        }
+
+        .cm-s-visualmarkdown .cm-formatting-strikethrough.cm-strikethrough {
+            color: #bdc3c7;
         }
 
 
