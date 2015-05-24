@@ -8,6 +8,7 @@ return array(
     'action.name.header2'          => 'h',
     'action.tooltip.bold'          => 'Bold',
     'action.tooltip.italicize'     => 'Italic',
+    'action.tooltip.strikethrough' => 'Strikethrough',
     'action.tooltip.blockquote'    => 'Quote',
     'action.tooltip.unorderedList' => 'Unordered List',
     'action.tooltip.orderedList'   => 'Ordered List',
@@ -17,11 +18,28 @@ return array(
     'action.tooltip.fullscreen'    => 'Toggle Fullscreen Mode',
 
     /* Help icon subitems */
-    'action.tooltip.markdownLink'  => 'All you need to know about Markdown',
-    'action.name.markdownLink'     => 'Markdown Help',
-    'action.tooltip.kirbytextLink' => 'Text formatting with Kirbytext',
-    'action.name.kirbytextLink'    => 'Kirbytext Help',
-    'action.tooltip.issuesLink'    => 'Open an issue on Github',
-    'action.name.issuesLink'       => 'Report a Bug',
-    
+    'action.tooltip.markdownLink'   => 'All you need to know about Markdown',
+    'action.name.markdownLink'      => 'Markdown Help',
+    'action.tooltip.kirbytextLink'  => 'Text formatting with Kirbytext',
+    'action.name.kirbytextLink'     => 'Kirbytext Help',
+    'action.tooltip.issuesLink'     => 'Open an issue on Github',
+    'action.name.issuesLink'        => 'Report a Bug',
+    'action.tooltip.shortcutsModal' => '',
+    'action.name.shortcutsModal'    => 'Keyboard Shortcuts',
+
+    /* Shortcuts modal texts */
+    'modal.shortcuts.title'                => 'Keyboard Shortcuts',
+    'modal.shortcuts.heading.action'       => 'Action',
+    'modal.shortcuts.heading.shortcut'     => 'Shortcut',
+    'modal.shortcuts.action.heading'       => 'Heading',
+    'modal.shortcuts.action.subheading'    => 'Subheading',
+    'modal.shortcuts.action.bold'          => 'Bold',
+    'modal.shortcuts.action.italic'        => 'Italic',
+    'modal.shortcuts.action.strikethrough' => 'Strikethrough',
+    'modal.shortcuts.action.blockquote'    => 'Blockquote',
+    'modal.shortcuts.action.unorderedList' => 'Unordered List',
+    'modal.shortcuts.action.orderedList'   => 'Ordered List',
+    'modal.shortcuts.action.image'         => 'Image',
+    'modal.shortcuts.action.link'          => 'Link',
+
 );
