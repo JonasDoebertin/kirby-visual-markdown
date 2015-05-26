@@ -1,5 +1,22 @@
 # Changelog
 
+## Version 1.3.2
+
+**Features:**
+
+* New keyboard shortcuts modal
+* Added support for strike-through text
+
+**Changes:**
+
+* Better keyboard shortcuts
+* Updated to CodeMirror 5.3
+
+**Bugfixes:**
+
+* Better space character matching inside KirbyTags
+
+
 ## Version 1.3.1
 
 **Features:**

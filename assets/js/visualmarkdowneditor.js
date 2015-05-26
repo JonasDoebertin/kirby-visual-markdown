@@ -1,7 +1,7 @@
 /**
  * Visual Markdown Editor Field for Kirby 2
  *
- * @version   1.3.1
+ * @version   1.3.2
  * @author    Jonas Döbertin <hello@jd-powered.net>
  * @copyright Jonas Döbertin <hello@jd-powered.net>
  * @link      https://github.com/JonasDoebertin/kirby-visual-markdown
@@ -18,13 +18,41 @@ var VisualMarkdownEditor = function($, $element, options) {
 
     var self = this;
 
+    /**
+     * Main field element
+     */
     this.$element    = $element;
+
+    /**
+     * Editor wrapper element
+     */
     this.$wrapper    = null;
 
+    /**
+     * All available modals
+     */
+    this.modals      = {
+        shortcuts: $('[data-visualmarkdown-modal=shortcuts]')
+    };
+
+    /**
+     * CodeMirror instance
+     */
     this.codemirror  = null;
+
+    /**
+     * Translation object including all translated strings
+     */
     this.translation = VisualMarkdownTranslation;
 
+    /**
+     * Current options
+     */
     this.options  = {};
+
+    /**
+     * Default options
+     */
     this.defaults = {
         toolbar: true,
         header1: 'h1',
@@ -47,11 +75,14 @@ var VisualMarkdownEditor = function($, $element, options) {
                 maxBlockquoteDepth:    0,
                 fencedCodeBlocks:      true,
                 taskLists:             true,
-                strikethrough:         false
+                strikethrough:         true
             },
         }
     };
 
+    /**
+     * Will be `true` when we're on a Safari browser
+     */
     this.isSafari = new RegExp('(Version)/(\\d+)\\.(\\d+)(?:\\.(\\d+))?.*Safari/').test(navigator.userAgent);
 
     /**
@@ -68,33 +99,36 @@ var VisualMarkdownEditor = function($, $element, options) {
             var header = self.translateHeaderValue(self.options.header2);
             self.toggleBefore(header);
         },
-        bold: function () {
+        bold: function() {
             self.toggleAround('**', '**');
         },
-        italic: function () {
+        italic: function() {
             self.toggleAround('*', '*');
         },
-        blockquote: function () {
+        strikethrough: function() {
+            self.toggleAround('~~', '~~');
+        },
+        blockquote: function() {
             self.toggleBefore('>');
         },
-        orderedList: function () {
+        orderedList: function() {
             self.insertBefore('1. ', 3);
         },
-        unorderedList: function () {
+        unorderedList: function() {
             self.insertBefore('* ', 2);
         },
-        link: function () {
+        link: function() {
             if(self.options.kirbytext) {
                 self.insertAround('(link: http:// text: ', ')');
             } else {
                 self.insertAround('[', '](http://)');
             }
         },
-        image: function () {
+        image: function() {
             if(self.options.kirbytext) {
-                self.insertBefore('(image: filename.jpg)');
+                self.insert('(image: filename.jpg)');
             } else {
-                self.insertBefore('![alt text](http://)');
+                self.insert('![alt text](http://)');
             }
         },
         line: function() {
@@ -102,6 +136,9 @@ var VisualMarkdownEditor = function($, $element, options) {
         },
         code: function () {
             self.insertAround('```\r\n', '\r\n```');
+        },
+        shortcutsModal: function() {
+            self.showShortcutsModal();
         },
         markdownLink: function() {
             window.open('http://daringfireball.net/projects/markdown/syntax');
@@ -111,6 +148,9 @@ var VisualMarkdownEditor = function($, $element, options) {
         },
         issuesLink: function() {
             window.open('https://github.com/JonasDoebertin/kirby-visual-markdown/issues');
+        },
+        licenseLink: function() {
+            window.open('https://gumroad.com/l/visualmarkdown');
         },
         help: function() {},
         fullscreen: function() {
@@ -143,6 +183,10 @@ var VisualMarkdownEditor = function($, $element, options) {
         {
             action: 'italic',
             className: 'fa fa-italic'
+        },
+        {
+            action: 'strikethrough',
+            className: 'fa fa-strikethrough'
         },
         {
             action: 'blockquote',
@@ -179,6 +223,10 @@ var VisualMarkdownEditor = function($, $element, options) {
             className: 'fa fa-question-circle',
             nested: [
                 {
+                    action: 'shortcutsModal',
+                    showName: true
+                },
+                {
                     action: 'markdownLink',
                     showName: true
                 },
@@ -192,6 +240,10 @@ var VisualMarkdownEditor = function($, $element, options) {
                 {
                     action: 'issuesLink',
                     showName: true
+                },
+                {
+                    action: 'licenseLink',
+                    showName: true
                 }
             ]
         }
@@ -203,15 +255,21 @@ var VisualMarkdownEditor = function($, $element, options) {
      * @since 1.2.0
      */
     this.keyMaps = {
-        'Cmd-H':     'header1',
-        'Cmd-Alt-H': 'header2',
-        'Cmd-B':     'bold',
-        'Cmd-I':     'italic',
-        'Cmd-\'':    'blockquote',
-        'Cmd-Alt-L': 'orderedList',
-        'Cmd-L':     'unorderedList',
-        'Cmd-Alt-I': 'image',
-        'Cmd-A':     'link'
+        'Cmd-H':      'header1',
+        'Ctrl-H':     'header1',
+        'Cmd-Alt-H':  'header2',
+        'Ctrl-Alt-H': 'header2',
+        'Cmd-B':      'bold',
+        'Ctrl-B':     'bold',
+        'Cmd-I':      'italic',
+        'Ctrl-I':     'italic',
+        'Ctrl-Alt-U': 'strikethrough',
+        'Ctrl-Q':     'blockquote',
+        'Ctrl-L':     'unorderedList',
+        'Ctrl-Alt-L': 'orderedList',
+        'Ctrl-Alt-I': 'image',
+        'Cmd-K':      'link',
+        'Ctrl-K':     'link',
     };
 
     /**
@@ -220,7 +278,6 @@ var VisualMarkdownEditor = function($, $element, options) {
      * @since 1.2.0
      */
     this.init = function(options) {
-
         // Merge defaults with options
         self.options = $.extend({}, self.defaults, options);
 
@@ -246,6 +303,11 @@ var VisualMarkdownEditor = function($, $element, options) {
         // Bind change handler
         self.codemirror.on('renderLine', self.renderLine);
 
+        // Bind modal close handlers
+        $.each(self.modals, function(index, modal) {
+            modal.on('click', self.hideModals);
+        });
+
         // Refresh CodeMirror DOM
         self.codemirror.refresh();
     };
@@ -265,7 +327,6 @@ var VisualMarkdownEditor = function($, $element, options) {
      * @since 1.2.0
      */
     this.initToolbar = function() {
-
         var toolbar = $('<ul>').addClass('visualmarkdown-toolbar'),
             tools   = self.generateToolbarItems(self.tools),
             wrapper = self.codemirror.getWrapperElement();
@@ -305,7 +366,6 @@ var VisualMarkdownEditor = function($, $element, options) {
      * @since 1.2.0
      */
     this.generateToolbarItems = function(tools) {
-
         var alwaysVisibleItems = ['help', 'fullscreen'];
 
         return tools.map(function(tool) {
@@ -726,6 +786,28 @@ var VisualMarkdownEditor = function($, $element, options) {
         element.classList.add('has-header-' + level);
 
         return true;
+    };
+
+    /**
+     * Show "Keyboard Shortcuts" modal
+     *
+     * @since 1.4.2
+     */
+    this.showShortcutsModal = function() {
+        self.modals.shortcuts.show();
+    };
+
+    /**
+     * Hide all (possibly) open modals
+     *
+     * @since 1.4.2
+     */
+    this.hideModals = function(e) {
+        if(e.target === this){
+            $.each(self.modals, function(index, modal) {
+                modal.hide();
+            });
+        }
     };
 
     /**
