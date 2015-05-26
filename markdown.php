@@ -2,7 +2,7 @@
 /**
  * Visual Markdown Editor Field for Kirby 2
  *
- * @version   1.3.1
+ * @version   1.3.2
  * @author    Jonas Döbertin <hello@jd-powered.net>
  * @copyright Jonas Döbertin <hello@jd-powered.net>
  * @link      https://github.com/JonasDoebertin/kirby-visual-markdown
@@ -323,7 +323,7 @@ class MarkdownField extends InputField {
     /**
      * Return a translation from the internal translation storage
      *
-     * @since 1.4.0
+     * @since 1.3.2
      *
      * @param  string $key
      * @param  string $default
