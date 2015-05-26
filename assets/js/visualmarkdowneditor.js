@@ -137,6 +137,9 @@ var VisualMarkdownEditor = function($, $element, options) {
         code: function () {
             self.insertAround('```\r\n', '\r\n```');
         },
+        shortcutsModal: function() {
+            self.showShortcutsModal();
+        },
         markdownLink: function() {
             window.open('http://daringfireball.net/projects/markdown/syntax');
         },
@@ -146,8 +149,8 @@ var VisualMarkdownEditor = function($, $element, options) {
         issuesLink: function() {
             window.open('https://github.com/JonasDoebertin/kirby-visual-markdown/issues');
         },
-        shortcutsModal: function() {
-            self.showShortcutsModal();
+        licenseLink: function() {
+            window.open('https://gumroad.com/l/visualmarkdown');
         },
         help: function() {},
         fullscreen: function() {
@@ -236,6 +239,10 @@ var VisualMarkdownEditor = function($, $element, options) {
                 },
                 {
                     action: 'issuesLink',
+                    showName: true
+                },
+                {
+                    action: 'licenseLink',
                     showName: true
                 }
             ]

@@ -18,14 +18,17 @@ return array(
     'action.tooltip.fullscreen'    => 'Toggle Fullscreen Mode',
 
     /* Help icon subitems */
+    'action.tooltip.shortcutsModal' => 'All available keyboard shortcuts',
+    'action.name.shortcutsModal'    => 'Keyboard Shortcuts',
     'action.tooltip.markdownLink'   => 'All you need to know about Markdown',
     'action.name.markdownLink'      => 'Markdown Help',
     'action.tooltip.kirbytextLink'  => 'Text formatting with Kirbytext',
     'action.name.kirbytextLink'     => 'Kirbytext Help',
     'action.tooltip.issuesLink'     => 'Open an issue on Github',
     'action.name.issuesLink'        => 'Report a Bug',
-    'action.tooltip.shortcutsModal' => '',
-    'action.name.shortcutsModal'    => 'Keyboard Shortcuts',
+    'action.tooltip.licenseLink'    => 'Support further development by purchasing a moral license',
+    'action.name.licenseLink'       => 'Purchase a License',
+
 
     /* Shortcuts modal texts */
     'modal.shortcuts.title'                => 'Keyboard Shortcuts',

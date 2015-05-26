@@ -18,14 +18,16 @@ return array(
     'action.tooltip.fullscreen'    => 'Passer en mode plein écran',
 
     /* Help icon subitems */
+    'action.tooltip.shortcutsModal' => '',
+    'action.name.shortcutsModal'    => 'Raccourcis Clavier',
     'action.tooltip.markdownLink'   => 'Tout ce que vous devez savoir sur Markdown',
     'action.name.markdownLink'      => 'Aide de Markdown',
     'action.tooltip.kirbytextLink'  => 'Mise en forme de texte avec Kirbytext',
     'action.name.kirbytextLink'     => 'Aide de Kirbytext',
     'action.tooltip.issuesLink'     => 'Ouvrir un ticket sur Github',
     'action.name.issuesLink'        => 'Signaler un Bug',
-    'action.tooltip.shortcutsModal' => '',
-    'action.name.shortcutsModal'    => 'Raccourcis Clavier',
+    'action.tooltip.licenseLink'    => '',
+    'action.name.licenseLink'       => 'Acheter une licence',
 
     'modal.shortcuts.title'                => 'Raccourcis Clavier',
     'modal.shortcuts.heading.action'       => 'Action',

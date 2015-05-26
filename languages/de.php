@@ -18,14 +18,17 @@ return array(
     'action.tooltip.fullscreen'    => 'Vollbildmodus ein-/ausschalten',
 
     /* Help icon subitems */
+    'action.tooltip.shortcutsModal' => 'Übersicht aller Tastenkürzel',
+    'action.name.shortcutsModal'    => 'Tastenkürzel',
     'action.tooltip.markdownLink'   => 'Alles wissenswerte über Markdown',
     'action.name.markdownLink'      => 'Markdown Hilfe',
     'action.tooltip.kirbytextLink'  => 'Textauszeichnung mit Kirbytext',
     'action.name.kirbytextLink'     => 'Kirbytext Hilfe',
     'action.tooltip.issuesLink'     => 'Einen Fehler auf Github melden',
     'action.name.issuesLink'        => 'Einen Fehler melden',
-    'action.tooltip.shortcutsModal' => '',
-    'action.name.shortcutsModal'    => 'Tastenkürzel',
+    'action.tooltip.licenseLink'    => 'Unterstütze die zukünftige Weiterentwicklung',
+    'action.name.licenseLink'       => 'Eine Lizenz kaufen',
+
 
     /* Shortcuts modal texts */
     'modal.shortcuts.title'                => 'Tastenkürzel',
