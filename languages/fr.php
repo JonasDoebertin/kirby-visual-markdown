@@ -26,7 +26,7 @@ return array(
     'action.name.kirbytextLink'     => 'Aide de Kirbytext',
     'action.tooltip.issuesLink'     => 'Ouvrir un ticket sur Github',
     'action.name.issuesLink'        => 'Signaler un Bug',
-    'action.tooltip.licenseLink'    => 'Soutenez le développement en achetant une license morale',
+    'action.tooltip.licenseLink'    => 'Soutenir le développement en achetant une license morale',
     'action.name.licenseLink'       => 'Acheter une licence',
 
 
