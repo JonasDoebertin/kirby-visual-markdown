@@ -19,6 +19,7 @@ return array(
     'action.tooltip.unorderedList' => 'Ongeordende lijst',
     'action.tooltip.orderedList'   => 'Genummerde lijst',
     'action.tooltip.link'          => 'Link invoegen',
+    'action.tooltip.email'         => 'E-mail link invoegen',
     'action.tooltip.image'         => 'Afbeelding invoegen',
     'action.tooltip.line'          => 'Horizontale scheidingslijn invoegen',
     'action.tooltip.fullscreen'    => 'Schermvullende weergave openen/sluiten',
@@ -50,5 +51,6 @@ return array(
     'modal.shortcuts.action.orderedList'   => 'Genummerde ijst',
     'modal.shortcuts.action.image'         => 'Afbeelding',
     'modal.shortcuts.action.link'          => 'Link',
+    'modal.shortcuts.action.email'         => 'E-mail',
 
 );

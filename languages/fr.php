@@ -19,6 +19,7 @@ return array(
     'action.tooltip.unorderedList' => 'Liste non ordonnée',
     'action.tooltip.orderedList'   => 'Liste ordonnée',
     'action.tooltip.link'          => 'Insérer un lien',
+    'action.tooltip.email'         => 'Insérer un lien courriel',
     'action.tooltip.image'         => 'Insérer une image',
     'action.tooltip.line'          => 'Insérer une ligne horizontale',
     'action.tooltip.fullscreen'    => 'Passer en mode plein écran',
@@ -50,5 +51,6 @@ return array(
     'modal.shortcuts.action.orderedList'   => 'Liste ordonnée',
     'modal.shortcuts.action.image'         => 'Image',
     'modal.shortcuts.action.link'          => 'Lien',
+    'modal.shortcuts.action.email'         => 'Courriel',
 
 );

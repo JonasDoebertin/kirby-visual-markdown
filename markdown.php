@@ -87,6 +87,7 @@ class MarkdownField extends InputField {
         'unorderedList',
         'orderedList',
         'link',
+        'email',
         'image',
         'line',
     );

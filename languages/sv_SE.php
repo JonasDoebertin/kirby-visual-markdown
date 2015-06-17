@@ -19,6 +19,7 @@ return array(
     'action.tooltip.unorderedList' => 'Osorterad Lista',
     'action.tooltip.orderedList'   => 'Sorterat Lista',
     'action.tooltip.link'          => 'Sett Inn Länk',
+    'action.tooltip.email'         => 'Sett Inn E-Post Länk',
     'action.tooltip.image'         => 'Sett Inn Bild',
     'action.tooltip.line'          => 'Sett Inn Horisontell Linje',
     'action.tooltip.fullscreen'    => 'Aktivera Fullskärmsläge',
@@ -50,5 +51,6 @@ return array(
     'modal.shortcuts.action.orderedList'   => 'Sorterat Lista',
     'modal.shortcuts.action.image'         => 'Bild',
     'modal.shortcuts.action.link'          => 'Länk',
+    'modal.shortcuts.action.email'         => 'E-Post',
 
 );

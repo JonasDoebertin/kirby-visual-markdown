@@ -19,6 +19,7 @@ return array(
     'action.tooltip.unorderedList' => 'Usorteret Liste',
     'action.tooltip.orderedList'   => 'Sorteret Liste',
     'action.tooltip.link'          => 'Indsæt Link',
+    'action.tooltip.email'         => 'Indsæt E-Mail Link',
     'action.tooltip.image'         => 'Indsæt Billede',
     'action.tooltip.line'          => 'Indsæt Vandret Linje',
     'action.tooltip.fullscreen'    => 'Aktiver Fuld Skærm',
@@ -50,5 +51,6 @@ return array(
     'modal.shortcuts.action.orderedList'   => 'Sorteret Liste',
     'modal.shortcuts.action.image'         => 'Billede',
     'modal.shortcuts.action.link'          => 'Link',
+    'modal.shortcuts.action.email'         => 'E-Mail',
 
 );
