@@ -16,11 +16,15 @@
     border: 2px solid #ddd;
 }
 
-    .markdownfield-wrapper-focused {
+    .field-with-error .markdownfield-wrapper {
+        border-color: #b3000a;
+    }
+
+    .markdownfield-wrapper.markdownfield-wrapper-focused {
         border-color: #8dae28;
     }
 
-    .markdownfield-wrapper-over {
+    .markdownfield-wrapper.markdownfield-wrapper-over {
         border-color: #000000;
     }
 
