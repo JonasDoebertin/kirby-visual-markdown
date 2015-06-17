@@ -1,10 +1,10 @@
 <?php
+
 /**
  * @language Dansk
  * @direction ltr
  * @author Ole-Martin Bratteng <ole-martin@bratteng.me>
- * @version 1.0.0
-**/
+ */
 
 return array(
 
@@ -13,7 +13,7 @@ return array(
     'action.tooltip.header2'       => 'Undertitel',
     'action.name.header2'          => 'h',
     'action.tooltip.bold'          => 'Fet',
-    'action.tooltip.italicize'     => 'Kursiv',
+    'action.tooltip.italic'        => 'Kursiv',
     'action.tooltip.strikethrough' => 'Gennemstreget',
     'action.tooltip.blockquote'    => 'Citat',
     'action.tooltip.unorderedList' => 'Usorteret Liste',

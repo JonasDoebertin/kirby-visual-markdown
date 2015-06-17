@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @language Nederlands
+ * @direction ltr
+ * @author Maurits Misana
+ */
+
 return array(
 
     /* Main toolbar icons */
@@ -7,7 +13,7 @@ return array(
     'action.tooltip.header2'       => 'Tweedegraads kop',
     'action.name.header2'          => 'h',
     'action.tooltip.bold'          => 'Vet',
-    'action.tooltip.italicize'     => 'Cursief',
+    'action.tooltip.italic'        => 'Cursief',
     'action.tooltip.strikethrough' => 'Doorstrepen',
     'action.tooltip.blockquote'    => 'Citaat',
     'action.tooltip.unorderedList' => 'Ongeordende lijst',

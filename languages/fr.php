@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @language Français
+ * @direction ltr
+ * @author Philippe Gervaise
+ */
+
 return array(
 
     /* Main toolbar icons */
@@ -7,7 +13,7 @@ return array(
     'action.tooltip.header2'       => 'Titre secondaire',
     'action.name.header2'          => 'h',
     'action.tooltip.bold'          => 'Gras',
-    'action.tooltip.italicize'     => 'Italique',
+    'action.tooltip.italic'        => 'Italique',
     'action.tooltip.strikethrough' => 'Strikethrough',
     'action.tooltip.blockquote'    => 'Citation',
     'action.tooltip.unorderedList' => 'Liste non ordonnée',

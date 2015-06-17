@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @language English
+ * @direction ltr
+ * @author Jonas Döbertin <hello@jd-powered.net>
+ */
+
 return array(
 
     /* Main toolbar icons */
@@ -7,7 +13,7 @@ return array(
     'action.tooltip.header2'       => 'Secondary Headline',
     'action.name.header2'          => 'h',
     'action.tooltip.bold'          => 'Bold',
-    'action.tooltip.italicize'     => 'Italic',
+    'action.tooltip.italic'        => 'Italic',
     'action.tooltip.strikethrough' => 'Strikethrough',
     'action.tooltip.blockquote'    => 'Quote',
     'action.tooltip.unorderedList' => 'Unordered List',
