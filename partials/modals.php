@@ -85,6 +85,14 @@
                         <kbd>Ctrl</kbd><kbd>K</kbd> or <kbd>&#8984;</kbd><kbd>K</kbd>
                     </td>
                 </tr>
+                <tr>
+                    <th>
+                        <?= $field->lang('modal.shortcuts.action.email', 'Email') ?>
+                    </th>
+                    <td>
+                        <kbd>Ctrl</kbd><kbd>E</kbd> or <kbd>&#8984;</kbd><kbd>E</kbd>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

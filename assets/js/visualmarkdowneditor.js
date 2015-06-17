@@ -124,6 +124,13 @@ var VisualMarkdownEditor = function($, $element, options) {
                 self.insertAround('[', '](http://)');
             }
         },
+        email: function() {
+            if(self.options.kirbytext) {
+                self.insertAround('(email: user@example.com text: ', ')');
+            } else {
+                self.insert('<user@example.com>');
+            }
+        },
         image: function() {
             if(self.options.kirbytext) {
                 self.insert('(image: filename.jpg)');
@@ -208,6 +215,10 @@ var VisualMarkdownEditor = function($, $element, options) {
             className: 'fa fa-link'
         },
         {
+            action: 'email',
+            className: 'fa fa-envelope'
+        },
+        {
             action: 'image',
             className: 'fa fa-image'
         },
@@ -270,6 +281,8 @@ var VisualMarkdownEditor = function($, $element, options) {
         'Ctrl-Alt-I': 'image',
         'Cmd-K':      'link',
         'Ctrl-K':     'link',
+        'Cmd-E':      'email',
+        'Ctrl-E':     'email',
     };
 
     /**

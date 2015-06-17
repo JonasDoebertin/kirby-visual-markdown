@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @language Deutsch
+ * @direction ltr
+ * @author Jonas Döbertin <hello@jd-powered.net>
+ */
+
 return array(
 
     /* Main toolbar icons */
@@ -7,12 +13,13 @@ return array(
     'action.tooltip.header2'       => 'Unterüberschrift',
     'action.name.header2'          => 'h',
     'action.tooltip.bold'          => 'Fett',
-    'action.tooltip.italicize'     => 'Kursiv',
+    'action.tooltip.italic'        => 'Kursiv',
     'action.tooltip.strikethrough' => 'Durchgestrichen',
     'action.tooltip.blockquote'    => 'Zitat',
     'action.tooltip.unorderedList' => 'Unsortierte Liste',
     'action.tooltip.orderedList'   => 'Sortierte Liste',
     'action.tooltip.link'          => 'Link einfügen',
+    'action.tooltip.email'         => 'E-Mail-Link einfügen',
     'action.tooltip.image'         => 'Bild einfügen',
     'action.tooltip.line'          => 'Horizontale Linie einfügen',
     'action.tooltip.fullscreen'    => 'Vollbildmodus ein-/ausschalten',
@@ -44,5 +51,6 @@ return array(
     'modal.shortcuts.action.orderedList'   => 'Sortierte Liste',
     'modal.shortcuts.action.image'         => 'Bild',
     'modal.shortcuts.action.link'          => 'Link',
+    'modal.shortcuts.action.email'         => 'E-Mail',
 
 );
