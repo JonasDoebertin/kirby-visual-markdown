@@ -291,6 +291,14 @@ class MarkdownField extends InputField {
             'kirbytext' => (c::get('panel.kirbytext', true)) ? 'true' : 'false',
         ));
 
+        /*
+            FIX: Prevent Google Chrome from trying to validate the underlying
+            invisible textarea. the Panel will handle this instead.
+
+            See: https://github.com/JonasDoebertin/kirby-visual-markdown/issues/42
+         */
+        $input->removeAttr('required');
+
         // Set up wrapping element
         $wrapper = new Brick('div', false);
         $wrapper->addClass('markdownfield-wrapper');
