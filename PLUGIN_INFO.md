@@ -18,7 +18,7 @@ If you like what I'm doing for the community and you want to support further dev
 
 If not already existing, add a new `fields` folder to your `site` directory. Then copy or link this repositories whole content in a new `markdown` folder there. Afterwards, your directory structure should look similar to this:
 
-```
+```yaml
 site/
 	fields/
 		markdown/
@@ -49,7 +49,7 @@ $ git submodule foreach --recursive git pull
 
 Using the field in your blueprint couldn't be easier. After installing the plugin like explained above, all you need to do is change the `type` of your text fields to `markdown`.
 
-```
+```yaml
 fields:
     title:
         label: Post Title
@@ -80,7 +80,7 @@ You don't have to change your templates in order to support this field. Just use
 
 Show / hide the editor toolbar. Set this to `hide` if you want the toolbar to disappear. Per default, the toolbar will be shown.
 
-```
+```yaml
 fields:
     text:
         label:   Text
@@ -92,7 +92,7 @@ fields:
 
 With this option you may select which tools you want to show up in the toolbar. Specify a list of all tools you want to show up. *Please note that there are two toolbar items that will always shown: the help menu and the fullscreen mode icon.*
 
-```
+```yaml
 fields:
     text:
         label:   Text
@@ -121,7 +121,7 @@ fields:
 
 Specify the header levels to be used with the *H1* and *H2* toolbar buttons (`h1` to `h6`). Defaults to `header1: h1` and `header2: h2`.
 
-```
+```yaml
 fields:
     text:
         label:   Text
