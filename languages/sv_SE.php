@@ -11,7 +11,7 @@ return array(
     /* Main toolbar icons */
     'action.tooltip.header1'       => 'Rubrik',
     'action.tooltip.header2'       => 'Underrubrik',
-	'action.name.header2'          => 'h',
+    'action.name.header2'          => 'h',
     'action.tooltip.bold'          => 'Fet',
     'action.tooltip.italic'        => 'Kursiv',
     'action.tooltip.strikethrough' => 'Genomstrykning',
