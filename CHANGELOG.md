@@ -1,5 +1,33 @@
 # Changelog
 
+## Version 1.3.4
+
+**Changes:**
+
+* Updated Swedish language (thanks to [@andreasnymark](https://github.com/andreasnymark))
+* Updated to CodeMirror 5.5
+
+**Additional:**
+
+* Added a list of all contributors
+
+## Version 1.3.3
+
+**Features:**
+
+* Added Norwegian, Swedish & Danish languages (thanks to [@tnViking](https://github.com/tnViking))
+* Added Dutch language (thanks to [@TECHMAUS](https://github.com/TECHMAUS))
+* Added "Email Link" toolbar item
+
+**Changes:**
+
+- Updated French language (thanks to [@malvese](https://github.com/malvese))
+
+**Bugfixes:**
+
+- Added tooltip for "Italic" toolbar item
+- `Required: true` blueprint setting works as expected
+
 ## Version 1.3.2
 
 **Features:**

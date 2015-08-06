@@ -2,7 +2,7 @@
 /**
  * Visual Markdown Editor Field for Kirby 2
  *
- * @version   1.3.2
+ * @version   1.3.4
  * @author    Jonas Döbertin <hello@jd-powered.net>
  * @copyright Jonas Döbertin <hello@jd-powered.net>
  * @link      https://github.com/JonasDoebertin/kirby-visual-markdown
@@ -32,13 +32,13 @@ class MarkdownField extends InputField {
     public static $assets = array(
         'js' => array(
             'screenfull-2.0.0.min.js',
-            'codemirror-compressed-5.3.0.min.js',
+            'codemirror-compressed-5.5.0.min.js',
             'kirbytags-mode.js',
             'visualmarkdownfield.js',
             'visualmarkdowneditor.js',
         ),
         'css' => array(
-            'codemirror-5.3.0.css',
+            'codemirror-5.5.0.css',
             'visualmarkdown.css',
         ),
     );
