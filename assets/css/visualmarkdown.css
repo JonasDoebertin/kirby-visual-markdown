@@ -180,6 +180,12 @@
     z-index: 100;
 }
 
+.markdownfield-wrapper .visualmarkdown-toolbar-fixed {
+    position: fixed;
+    top: 0;
+    z-index: 999;
+}
+
     .markdownfield-wrapper .visualmarkdown-toolbar li {
         display: inline-block;
         position: relative;
