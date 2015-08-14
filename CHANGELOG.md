@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 1.4.0
+
+**Features:**
+
+* Sticky toolbar
+
 ## Version 1.3.4
 
 **Changes:**

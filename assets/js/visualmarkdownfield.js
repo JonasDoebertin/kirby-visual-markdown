@@ -26,6 +26,9 @@ var VisualMarkdownField = function($, $field) {
 
     this.editor = null;
 
+    this.isFixed = false;
+    this.isFullscreen = false;
+
     this.options = {
         toolbar:   $field.data('toolbar'),
         header1:   $field.data('header1'),
@@ -42,7 +45,7 @@ var VisualMarkdownField = function($, $field) {
     this.init = function() {
 
         /*
-            Initialize MirrorMark
+            Initialize VisualMarkdownEditor
          */
         self.editor = new VisualMarkdownEditor($, self.$field, self.options);
 
@@ -51,7 +54,7 @@ var VisualMarkdownField = function($, $field) {
             our field instance and the toolbar and editor elements
          */
         self.codemirror = self.editor.getCodeMirrorInstance();
-        self.$toolbar   = self.$field.siblings('.mirrormark-toolbar');
+        self.$toolbar   = self.$field.siblings('.visualmarkdown-toolbar');
         self.$editor    = self.$field.siblings('.CodeMirror');
 
         /*
@@ -82,6 +85,35 @@ var VisualMarkdownField = function($, $field) {
             drop:       function(event, element) {
                 self.editor.insert(element.draggable.data('text'));
             }
+        });
+
+        /**
+         * Observe page scroll events to switch to sticky toolbar
+         *
+         * @since 1.4.0
+         */
+        $(window).scroll(function() {
+
+            /**
+             * Switch to fixed toolbar, if
+             * - the fullscreen mode isn't enabled
+             * - the toolbar isn't fixed already
+             * - the scroll position is within the fields wrapper
+             */
+            if (!self.isFullscreen && !self.isFixed && self.scrollTopWithinWrapper()) {
+                self.enableFixedToolbar();
+            }
+
+            /**
+             * Switch back to regular toolbar, if
+             * - the fullscreen mode isn't enabled
+             * - the toolbar is fixed
+             * - the scroll position is not within the fields wrapper
+             */
+            else if (!self.isFullscreen && self.isFixed && !self.scrollTopWithinWrapper()) {
+                self.disableFixedToolbar();
+            }
+
         });
 
         /**
@@ -158,6 +190,8 @@ var VisualMarkdownField = function($, $field) {
      * @since 1.0.1
      */
     this.attachFullscreenStyles = function() {
+        self.isFullscreen = true;
+        self.disableFixedToolbar();
         self.$wrapper.addClass('markdownfield-wrapper-fullscreen');
     };
 
@@ -167,7 +201,44 @@ var VisualMarkdownField = function($, $field) {
      * @since 1.0.1
      */
     this.detachFullscreenStyles = function() {
+        self.isFullscreen = false;
         self.$wrapper.removeClass('markdownfield-wrapper-fullscreen');
+    };
+
+    /**
+     * Chick if the documents scrollTop is within the fields wrapper element.
+     *
+     * @since 1.4.0
+     * @return boolean
+     */
+    this.scrollTopWithinWrapper = function() {
+        var $document = $(document);
+        return (($document.scrollTop() >= self.$wrapper.offset().top)
+                && ($document.scrollTop() < self.$wrapper.offset().top + self.$wrapper.outerHeight() - self.$toolbar.outerHeight()));
+    };
+
+    /**
+     * Enable the fixed toolbar.
+     *
+     * @since 1.4.0
+     */
+    this.enableFixedToolbar = function() {
+        self.isFixed = true;
+        self.$toolbar.addClass('visualmarkdown-toolbar-fixed')
+                     .css('max-width', self.$wrapper.width());
+        self.$wrapper.css('padding-top', self.$toolbar.outerHeight());
+    };
+
+    /**
+     * Disable the fixed toolbar.
+     *
+     * @since 1.4.0
+     */
+    this.disableFixedToolbar = function() {
+        self.isFixed = false;
+        self.$toolbar.removeClass('visualmarkdown-toolbar-fixed')
+                     .css('max-width', '');
+        self.$wrapper.css('padding-top', 0);
     };
 
     /**
