@@ -27,6 +27,7 @@ var VisualMarkdownField = function ($, $field) {
     this.editor = null;
 
     this.isFixed = false;
+    this.isFocused = false;
     this.isFullscreen = false;
 
     this.options = {
@@ -99,8 +100,9 @@ var VisualMarkdownField = function ($, $field) {
              * - the fullscreen mode isn't enabled
              * - the toolbar isn't fixed already
              * - the scroll position is within the fields wrapper
+             * - the field is focused
              */
-            if (!self.isFullscreen && !self.isFixed && self.scrollTopWithinWrapper()) {
+            if (!self.isFullscreen && !self.isFixed && self.scrollTopWithinWrapper() && self.isFocused) {
                 self.enableFixedToolbar();
             }
 
@@ -173,6 +175,8 @@ var VisualMarkdownField = function ($, $field) {
      */
     this.attachFocusStyles = function () {
         self.$wrapper.addClass('markdownfield-wrapper-focused');
+        self.enableFixedToolbar();
+        self.isFocused = true;
     };
 
     /**
@@ -182,6 +186,8 @@ var VisualMarkdownField = function ($, $field) {
      */
     this.detachFocusStyles = function () {
         self.$wrapper.removeClass('markdownfield-wrapper-focused');
+        self.disableFixedToolbar();
+        self.isFocused = false;
     };
 
     /**

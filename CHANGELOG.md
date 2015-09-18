@@ -8,6 +8,7 @@
 
 **Changes:**
 
+* Only enable fixed toolbar if field is focused
 * Updated to CodeMirror 5.6
 
 ## Version 1.4.0
