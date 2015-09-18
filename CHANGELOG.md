@@ -1,5 +1,15 @@
 # Changelog
 
+## Version 1.5.0 (TBA)
+
+**Features:**
+
+* Smarter header toggling
+
+**Changes:**
+
+* Updated to CodeMirror 5.6
+
 ## Version 1.4.0
 
 **Features:**

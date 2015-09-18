@@ -591,8 +591,42 @@ var VisualMarkdownEditor = function ($, $element, options) {
         // Add space character to formatting
         formatting = formatting + ' ';
 
-        // Check for existing formatting
-        if (firstLine.indexOf(formatting) === 0) {
+        /*
+            SPECIAL CASE: In case we're toggling header formatting and the line
+            already starts with header formatting, we'll remove the current
+            header formatting before appling the new one.
+
+            Exception: The lines current header level is the same as the new
+            formattings header level. In this case we'll only remove the current header formatting.
+         */
+        if (self.isHeader(firstLine) && self.isHeader(formatting) && (self.getHeaderLevel(firstLine) !== self.getHeaderLevel(formatting))) {
+            // Remove header formatting
+            var level = self.getHeaderLevel(firstLine);
+            doc.replaceRange('', {
+                line: selection.anchor.line,
+                ch: 0
+            }, {
+                line: selection.anchor.line,
+                ch: level
+            });
+            // Remove leading space if present
+            if (doc.getLine(selection.anchor.line).indexOf(' ') === 0) {
+                doc.replaceRange('', {
+                    line: selection.anchor.line,
+                    ch: 0
+                }, {
+                    line: selection.anchor.line,
+                    ch: 1
+                });
+            }
+            // Add new header formatting
+            doc.replaceRange(formatting, {
+                line: selection.anchor.line,
+                ch: 0
+            });
+        }
+        // Remove existing formatting
+        else if (firstLine.indexOf(formatting) === 0) {
             // Remove formatting
             doc.replaceRange('', {
                 line: selection.anchor.line,
@@ -838,6 +872,23 @@ var VisualMarkdownEditor = function ($, $element, options) {
                 return '#';
             default:
                 return '#';
+        }
+    };
+
+    this.isHeader = function (str) {
+        return (str.indexOf('#') === 0);
+    };
+
+    this.getHeaderLevel = function (str) {
+        var min = 1,
+            max = 6,
+            needle;
+
+        for (var i = max; i >= min; i--) {
+            needle = new Array(i + 1).join('#');
+            if (str.indexOf(needle) === 0) {
+                return i;
+            }
         }
     };
 
