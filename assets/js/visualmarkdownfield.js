@@ -175,7 +175,9 @@ var VisualMarkdownField = function ($, $field) {
      */
     this.attachFocusStyles = function () {
         self.$wrapper.addClass('markdownfield-wrapper-focused');
-        self.enableFixedToolbar();
+        if (!self.isFullscreen && self.scrollTopWithinWrapper()) {
+            self.enableFixedToolbar();
+        }
         self.isFocused = true;
     };
 

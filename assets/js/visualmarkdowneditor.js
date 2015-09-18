@@ -119,7 +119,7 @@ var VisualMarkdownEditor = function ($, $element, options) {
             self.insertBefore('1. ', 3);
         },
         unorderedList: function () {
-            self.insertBefore('* ', 2);
+            self.toggleBefore('*');
         },
         link: function () {
             if (self.options.kirbytext) {
