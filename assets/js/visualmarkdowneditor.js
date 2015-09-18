@@ -13,7 +13,7 @@
  *
  * @since 1.2.0
  */
-var VisualMarkdownEditor = function($, $element, options) {
+var VisualMarkdownEditor = function ($, $element, options) {
     'use strict';
 
     var self = this;
@@ -21,24 +21,24 @@ var VisualMarkdownEditor = function($, $element, options) {
     /**
      * Main field element
      */
-    this.$element    = $element;
+    this.$element = $element;
 
     /**
      * Editor wrapper element
      */
-    this.$wrapper    = null;
+    this.$wrapper = null;
 
     /**
      * All available modals
      */
-    this.modals      = {
+    this.modals = {
         shortcuts: $('[data-visualmarkdown-modal=shortcuts]')
     };
 
     /**
      * CodeMirror instance
      */
-    this.codemirror  = null;
+    this.codemirror = null;
 
     /**
      * Translation object including all translated strings
@@ -48,7 +48,7 @@ var VisualMarkdownEditor = function($, $element, options) {
     /**
      * Current options
      */
-    this.options  = {};
+    this.options = {};
 
     /**
      * Default options
@@ -59,23 +59,27 @@ var VisualMarkdownEditor = function($, $element, options) {
         header2: 'h2',
         kirbytext: true,
         codemirror: {
-            theme:          'visualmarkdown',
-            tabSize:        4,
+            theme: 'visualmarkdown',
+            tabSize: 4,
             indentWithTabs: false,
-            lineWrapping:   true,
+            lineWrapping: true,
             extraKeys: {
-                'Enter':     'newlineAndIndentContinueMarkdownList',
-                'Alt-Enter': function() {self.savePanelForm();},
-                'Cmd-Enter': function() {self.savePanelForm();}
+                'Enter': 'newlineAndIndentContinueMarkdownList',
+                'Alt-Enter': function () {
+                    self.savePanelForm();
+                },
+                'Cmd-Enter': function () {
+                    self.savePanelForm();
+                }
             },
             mode: {
-                name:                  'kirbytext',
-                highlightFormatting:   true,
+                name: 'kirbytext',
+                highlightFormatting: true,
                 underscoresBreakWords: false,
-                maxBlockquoteDepth:    0,
-                fencedCodeBlocks:      true,
-                taskLists:             true,
-                strikethrough:         true
+                maxBlockquoteDepth: 0,
+                fencedCodeBlocks: true,
+                taskLists: true,
+                strikethrough: true
             },
         }
     };
@@ -91,76 +95,79 @@ var VisualMarkdownEditor = function($, $element, options) {
      * @since 1.2.0
      */
     this.actions = {
-        header1: function() {
+        header1: function () {
             var header = self.translateHeaderValue(self.options.header1);
             self.toggleBefore(header);
         },
-        header2: function() {
+        header2: function () {
             var header = self.translateHeaderValue(self.options.header2);
             self.toggleBefore(header);
         },
-        bold: function() {
+        bold: function () {
             self.toggleAround('**', '**');
         },
-        italic: function() {
+        italic: function () {
             self.toggleAround('*', '*');
         },
-        strikethrough: function() {
+        strikethrough: function () {
             self.toggleAround('~~', '~~');
         },
-        blockquote: function() {
+        blockquote: function () {
             self.toggleBefore('>');
         },
-        orderedList: function() {
+        orderedList: function () {
             self.insertBefore('1. ', 3);
         },
-        unorderedList: function() {
+        unorderedList: function () {
             self.insertBefore('* ', 2);
         },
-        link: function() {
-            if(self.options.kirbytext) {
+        link: function () {
+            if (self.options.kirbytext) {
                 self.insertAround('(link: http:// text: ', ')');
-            } else {
+            }
+            else {
                 self.insertAround('[', '](http://)');
             }
         },
-        email: function() {
-            if(self.options.kirbytext) {
+        email: function () {
+            if (self.options.kirbytext) {
                 self.insertAround('(email: user@example.com text: ', ')');
-            } else {
+            }
+            else {
                 self.insert('<user@example.com>');
             }
         },
-        image: function() {
-            if(self.options.kirbytext) {
+        image: function () {
+            if (self.options.kirbytext) {
                 self.insert('(image: filename.jpg)');
-            } else {
+            }
+            else {
                 self.insert('![alt text](http://)');
             }
         },
-        line: function() {
+        line: function () {
             self.insert('****');
         },
         code: function () {
             self.insertAround('```\r\n', '\r\n```');
         },
-        shortcutsModal: function() {
+        shortcutsModal: function () {
             self.showShortcutsModal();
         },
-        markdownLink: function() {
+        markdownLink: function () {
             window.open('http://daringfireball.net/projects/markdown/syntax');
         },
-        kirbytextLink: function() {
+        kirbytextLink: function () {
             window.open('http://getkirby.com/docs/content/text');
         },
-        issuesLink: function() {
+        issuesLink: function () {
             window.open('https://github.com/JonasDoebertin/kirby-visual-markdown/issues');
         },
-        licenseLink: function() {
+        licenseLink: function () {
             window.open('https://gumroad.com/l/visualmarkdown');
         },
-        help: function() {},
-        fullscreen: function() {
+        help: function () {},
+        fullscreen: function () {
             self.toggleFullscreenMode();
         }
     };
@@ -170,95 +177,71 @@ var VisualMarkdownEditor = function($, $element, options) {
      *
      * @since 1.2.0
      */
-    this.tools = [
-        {
-            action: 'header1',
-            className: 'fa fa-header',
-        },
-        {
-            action: 'header2',
-            className: 'markdownfield-icon-text markdownfield-icon-header2',
-            showName: true,
-        },
-        {
+    this.tools = [{
+        action: 'header1',
+        className: 'fa fa-header',
+    }, {
+        action: 'header2',
+        className: 'markdownfield-icon-text markdownfield-icon-header2',
+        showName: true,
+    }, {
+        action: 'divider'
+    }, {
+        action: 'bold',
+        className: 'fa fa-bold'
+    }, {
+        action: 'italic',
+        className: 'fa fa-italic'
+    }, {
+        action: 'strikethrough',
+        className: 'fa fa-strikethrough'
+    }, {
+        action: 'blockquote',
+        className: 'fa fa-quote-left'
+    }, {
+        action: 'unorderedList',
+        className: 'fa fa-list'
+    }, {
+        action: 'orderedList',
+        className: 'fa fa-list-ol'
+    }, {
+        action: 'divider'
+    }, {
+        action: 'link',
+        className: 'fa fa-link'
+    }, {
+        action: 'email',
+        className: 'fa fa-envelope'
+    }, {
+        action: 'image',
+        className: 'fa fa-image'
+    }, {
+        action: 'line',
+        className: 'fa fa-minus'
+    }, {
+        action: 'divider'
+    }, {
+        action: 'help',
+        className: 'fa fa-question-circle',
+        nested: [{
+            action: 'shortcutsModal',
+            showName: true
+        }, {
+            action: 'markdownLink',
+            showName: true
+        }, {
+            action: 'kirbytextLink',
+            showName: true
+        }, {
             action: 'divider'
-        },
-        {
-            action: 'bold',
-            className: 'fa fa-bold'
-        },
-        {
-            action: 'italic',
-            className: 'fa fa-italic'
-        },
-        {
-            action: 'strikethrough',
-            className: 'fa fa-strikethrough'
-        },
-        {
-            action: 'blockquote',
-            className: 'fa fa-quote-left'
-        },
-        {
-            action: 'unorderedList',
-            className: 'fa fa-list'
-        },
-        {
-            action: 'orderedList',
-            className: 'fa fa-list-ol'
-        },
-        {
-            action: 'divider'
-        },
-        {
-            action: 'link',
-            className: 'fa fa-link'
-        },
-        {
-            action: 'email',
-            className: 'fa fa-envelope'
-        },
-        {
-            action: 'image',
-            className: 'fa fa-image'
-        },
-        {
-            action: 'line',
-            className: 'fa fa-minus'
-        },
-        {
-            action: 'divider'
-        },
-        {
-            action: 'help',
-            className: 'fa fa-question-circle',
-            nested: [
-                {
-                    action: 'shortcutsModal',
-                    showName: true
-                },
-                {
-                    action: 'markdownLink',
-                    showName: true
-                },
-                {
-                    action: 'kirbytextLink',
-                    showName: true
-                },
-                {
-                    action: 'divider'
-                },
-                {
-                    action: 'issuesLink',
-                    showName: true
-                },
-                {
-                    action: 'licenseLink',
-                    showName: true
-                }
-            ]
-        }
-    ];
+        }, {
+            action: 'issuesLink',
+            showName: true
+        }, {
+            action: 'licenseLink',
+            showName: true
+        }]
+    }];
 
     /**
      * Keymaps
@@ -266,23 +249,23 @@ var VisualMarkdownEditor = function($, $element, options) {
      * @since 1.2.0
      */
     this.keyMaps = {
-        'Cmd-H':      'header1',
-        'Ctrl-H':     'header1',
-        'Cmd-Alt-H':  'header2',
+        'Cmd-H': 'header1',
+        'Ctrl-H': 'header1',
+        'Cmd-Alt-H': 'header2',
         'Ctrl-Alt-H': 'header2',
-        'Cmd-B':      'bold',
-        'Ctrl-B':     'bold',
-        'Cmd-I':      'italic',
-        'Ctrl-I':     'italic',
+        'Cmd-B': 'bold',
+        'Ctrl-B': 'bold',
+        'Cmd-I': 'italic',
+        'Ctrl-I': 'italic',
         'Ctrl-Alt-U': 'strikethrough',
-        'Ctrl-Q':     'blockquote',
-        'Ctrl-L':     'unorderedList',
+        'Ctrl-Q': 'blockquote',
+        'Ctrl-L': 'unorderedList',
         'Ctrl-Alt-L': 'orderedList',
         'Ctrl-Alt-I': 'image',
-        'Cmd-K':      'link',
-        'Ctrl-K':     'link',
-        'Cmd-E':      'email',
-        'Ctrl-E':     'email',
+        'Cmd-K': 'link',
+        'Ctrl-K': 'link',
+        'Cmd-E': 'email',
+        'Ctrl-E': 'email',
     };
 
     /**
@@ -290,7 +273,7 @@ var VisualMarkdownEditor = function($, $element, options) {
      *
      * @since 1.2.0
      */
-    this.init = function(options) {
+    this.init = function (options) {
         // Merge defaults with options
         self.options = $.extend({}, self.defaults, options);
 
@@ -302,14 +285,14 @@ var VisualMarkdownEditor = function($, $element, options) {
         self.$wrapper = $(self.codemirror.getWrapperElement());
 
         // Initialize toolbar
-        if(!self.isSafari) {
+        if (!self.isSafari) {
             self.tools.push({
                 name: 'fullscreen',
                 action: 'fullscreen',
                 className: 'fa fa-expand'
             });
         }
-        if(self.options.toolbar) {
+        if (self.options.toolbar) {
             self.initToolbar();
         }
 
@@ -317,7 +300,7 @@ var VisualMarkdownEditor = function($, $element, options) {
         self.codemirror.on('renderLine', self.renderLine);
 
         // Bind modal close handlers
-        $.each(self.modals, function(index, modal) {
+        $.each(self.modals, function (index, modal) {
             modal.on('click', self.hideModals);
         });
 
@@ -330,7 +313,7 @@ var VisualMarkdownEditor = function($, $element, options) {
      *
      * @since 1.2.0
      */
-    this.deactivate = function() {
+    this.deactivate = function () {
         self.codemirror.toTextArea();
     };
 
@@ -339,12 +322,12 @@ var VisualMarkdownEditor = function($, $element, options) {
      *
      * @since 1.2.0
      */
-    this.initToolbar = function() {
+    this.initToolbar = function () {
         var toolbar = $('<ul>').addClass('visualmarkdown-toolbar'),
-            tools   = self.generateToolbarItems(self.tools),
+            tools = self.generateToolbarItems(self.tools),
             wrapper = self.codemirror.getWrapperElement();
 
-        tools.forEach(function(tool) {
+        tools.forEach(function (tool) {
             toolbar.append(tool);
         });
 
@@ -356,13 +339,13 @@ var VisualMarkdownEditor = function($, $element, options) {
      *
      * @since 1.2.0
      */
-    this.registerKeyMaps = function() {
+    this.registerKeyMaps = function () {
         var name, obj;
 
-        for(name in self.keyMaps) {
-            if(self.keyMaps.hasOwnProperty(name)) {
+        for (name in self.keyMaps) {
+            if (self.keyMaps.hasOwnProperty(name)) {
                 // Abort if action doesn't have a callback
-                if(typeof(self.actions[self.keyMaps[name]]) !== 'function') {
+                if (typeof (self.actions[self.keyMaps[name]]) !== 'function') {
                     throw 'VisualMarkdownEditor: \"' + self.keyMaps[name] + '\" is not a registered action';
                 }
 
@@ -378,47 +361,46 @@ var VisualMarkdownEditor = function($, $element, options) {
      *
      * @since 1.2.0
      */
-    this.generateToolbarItems = function(tools) {
+    this.generateToolbarItems = function (tools) {
         var alwaysVisibleItems = ['help', 'fullscreen'];
 
-        return tools.map(function(tool) {
+        return tools.map(function (tool) {
 
             // Define variables
             var $item, $anchor, $subItems;
 
             // Generate elements
-            $item   = $('<li>').addClass('visualmarkdown-action-' + tool.action);
+            $item = $('<li>').addClass('visualmarkdown-action-' + tool.action);
             $anchor = $('<a>');
 
-            if(($.inArray(tool.action, self.options.tools) === -1)
-               && ($.inArray(tool.action, alwaysVisibleItems) === -1)) {
+            if (($.inArray(tool.action, self.options.tools) === -1) && ($.inArray(tool.action, alwaysVisibleItems) === -1)) {
                 $item.addClass('visualmarkdown-action-hidden');
             }
 
             // Don't do anything with divider elements.
             // They are just an empty <li> tag with a "divider" class.
-            if(tool.action === 'divider') {
+            if (tool.action === 'divider') {
                 return $item;
             }
 
             // Add the tools name as anchor class.
-            if(tool.className) {
+            if (tool.className) {
                 $anchor.addClass(tool.className);
             }
 
             // Add the tooltip if available
-            if(self.translation['action.tooltip.' + tool.action]) {
+            if (self.translation['action.tooltip.' + tool.action]) {
                 $anchor.attr('title', self.translation['action.tooltip.' + tool.action]);
             }
 
             // Add the tools name as text, if necessary and available.
-            if(tool.showName && self.translation['action.name.' + tool.action]) {
+            if (tool.showName && self.translation['action.name.' + tool.action]) {
                 $anchor.text(self.translation['action.name.' + tool.action]);
             }
 
             // Bind the action callback to the anchors "click" event.
-            if(tool.action) {
-                $anchor.on('click', function() {
+            if (tool.action) {
+                $anchor.on('click', function () {
                     self.codemirror.focus();
                     self.actions[tool.action].call(self);
                 });
@@ -428,7 +410,7 @@ var VisualMarkdownEditor = function($, $element, options) {
             $item.append($anchor);
 
             // Generate nested items
-            if(tool.nested) {
+            if (tool.nested) {
                 $subItems = $('<ul>').append(self.generateToolbarItems(tool.nested));
                 $item.addClass('visualmarkdown-action-with-subactions');
                 $item.append($subItems);
@@ -443,11 +425,11 @@ var VisualMarkdownEditor = function($, $element, options) {
      *
      * @since 1.2.0
      */
-    this.toggleFullscreenMode = function() {
+    this.toggleFullscreenMode = function () {
         var wrapper;
 
         // Abort if fullscreen mode isn't supported
-        if(!screenfull.enabled) {
+        if (!screenfull.enabled) {
             return;
         }
 
@@ -455,11 +437,12 @@ var VisualMarkdownEditor = function($, $element, options) {
         wrapper = $(self.codemirror.getWrapperElement()).closest('.markdownfield-wrapper');
 
         // Enable fullscreen mode
-        if(!screenfull.isFullscreen) {
+        if (!screenfull.isFullscreen) {
             screenfull.request(wrapper.get(0));
 
-        // Disable fullscreen mode
-        } else {
+            // Disable fullscreen mode
+        }
+        else {
             screenfull.exit();
         }
     };
@@ -469,8 +452,8 @@ var VisualMarkdownEditor = function($, $element, options) {
      *
      * @since 1.2.0
      */
-    this.insert = function(insertion) {
-        var doc    = self.codemirror.getDoc(),
+    this.insert = function (insertion) {
+        var doc = self.codemirror.getDoc(),
             cursor = doc.getCursor();
 
         doc.replaceRange(insertion, {
@@ -484,17 +467,18 @@ var VisualMarkdownEditor = function($, $element, options) {
      *
      * @since 1.2.0
      */
-    this.insertAround = function(start, end) {
-        var doc    = self.codemirror.getDoc(),
+    this.insertAround = function (start, end) {
+        var doc = self.codemirror.getDoc(),
             cursor = doc.getCursor(),
             selection;
 
-        if(doc.somethingSelected()) {
+        if (doc.somethingSelected()) {
 
             selection = doc.getSelection();
             doc.replaceSelection(start + selection + end);
 
-        } else {
+        }
+        else {
 
             // If no selection then insert start and end args and set cursor position between the two.
             doc.replaceRange(start + end, {
@@ -514,25 +498,32 @@ var VisualMarkdownEditor = function($, $element, options) {
      *
      * @since 1.2.0
      */
-    this.insertBefore = function(insertion, cursorOffset) {
-        var doc    = self.codemirror.getDoc(),
+    this.insertBefore = function (insertion, cursorOffset) {
+        var doc = self.codemirror.getDoc(),
             cursor = doc.getCursor(),
             selections, pos, i;
 
-        if(doc.somethingSelected()) {
+        if (doc.somethingSelected()) {
 
             selections = doc.listSelections();
-            selections.forEach(function(selection) {
+            selections.forEach(function (selection) {
                 pos = [selection.head.line, selection.anchor.line].sort();
 
-                for(i = pos[0]; i <= pos[1]; i++) {
-                    doc.replaceRange(insertion, { line: i, ch: 0 });
+                for (i = pos[0]; i <= pos[1]; i++) {
+                    doc.replaceRange(insertion, {
+                        line: i,
+                        ch: 0
+                    });
                 }
 
-                doc.setCursor({ line: pos[0], ch: cursorOffset || 0 });
+                doc.setCursor({
+                    line: pos[0],
+                    ch: cursorOffset || 0
+                });
             });
 
-        } else {
+        }
+        else {
             doc.replaceRange(insertion, {
                 line: cursor.line,
                 ch: 0
@@ -549,10 +540,8 @@ var VisualMarkdownEditor = function($, $element, options) {
      *
      * @since 1.2.0
      */
-    this.getSelectionStart = function(selection) {
-        var swap = ((selection.anchor.line < selection.head.line)
-                    || ((selection.anchor.line === selection.head.line)
-                    && selection.anchor.ch <= selection.head.ch));
+    this.getSelectionStart = function (selection) {
+        var swap = ((selection.anchor.line < selection.head.line) || ((selection.anchor.line === selection.head.line) && selection.anchor.ch <= selection.head.ch));
         return (swap) ? selection.anchor : selection.head;
     };
 
@@ -561,10 +550,8 @@ var VisualMarkdownEditor = function($, $element, options) {
      *
      * @since 1.2.0
      */
-    this.getSelectionEnd = function(selection) {
-        var swap = ((selection.anchor.line < selection.head.line)
-                || ((selection.anchor.line === selection.head.line)
-                    && selection.anchor.ch <= selection.head.ch));
+    this.getSelectionEnd = function (selection) {
+        var swap = ((selection.anchor.line < selection.head.line) || ((selection.anchor.line === selection.head.line) && selection.anchor.ch <= selection.head.ch));
         return (swap) ? selection.head : selection.anchor;
     };
 
@@ -573,7 +560,7 @@ var VisualMarkdownEditor = function($, $element, options) {
      *
      * @since 1.2.0
      */
-    this.toggleBefore = function(formatting) {
+    this.toggleBefore = function (formatting) {
 
         var doc = self.codemirror.getDoc(),
             selections = doc.listSelections(),
@@ -581,9 +568,9 @@ var VisualMarkdownEditor = function($, $element, options) {
             line;
 
         // Delegate to function handling all selections independently
-        selections.forEach(function(selection) {
+        selections.forEach(function (selection) {
             line = self.getSelectionStart(selection).line;
-            if(processedLines.indexOf(line) === -1) {
+            if (processedLines.indexOf(line) === -1) {
                 self.toggleBeforeSelection(formatting, selection);
                 processedLines.push(line);
             }
@@ -596,7 +583,7 @@ var VisualMarkdownEditor = function($, $element, options) {
      *
      * @since 1.2.0
      */
-    this.toggleBeforeSelection = function(formatting, selection) {
+    this.toggleBeforeSelection = function (formatting, selection) {
 
         var doc = self.codemirror.getDoc(),
             firstLine = doc.getLine(selection.anchor.line);
@@ -605,21 +592,22 @@ var VisualMarkdownEditor = function($, $element, options) {
         formatting = formatting + ' ';
 
         // Check for existing formatting
-        if(firstLine.indexOf(formatting) === 0) {
+        if (firstLine.indexOf(formatting) === 0) {
             // Remove formatting
             doc.replaceRange('', {
-                    line: selection.anchor.line,
-                    ch: 0
-                }, {
-                    line: selection.anchor.line,
-                    ch: formatting.length
-                });
-        } else {
+                line: selection.anchor.line,
+                ch: 0
+            }, {
+                line: selection.anchor.line,
+                ch: formatting.length
+            });
+        }
+        else {
             // Add formatting
             doc.replaceRange(formatting, {
-                    line: selection.anchor.line,
-                    ch: 0
-                });
+                line: selection.anchor.line,
+                ch: 0
+            });
         }
     };
 
@@ -628,7 +616,7 @@ var VisualMarkdownEditor = function($, $element, options) {
      *
      * @since 1.2.0
      */
-    this.toggleAround = function(before, after) {
+    this.toggleAround = function (before, after) {
 
         var doc = self.codemirror.getDoc(),
             selections = doc.listSelections(),
@@ -636,11 +624,11 @@ var VisualMarkdownEditor = function($, $element, options) {
             line;
 
         // Delegate to function handling all selections independently
-        selections.forEach(function(selection) {
+        selections.forEach(function (selection) {
 
             // Get selection start line and initialize offsets array value
             line = self.getSelectionStart(selection).line;
-            if(typeof offsets[line] === 'undefined') {
+            if (typeof offsets[line] === 'undefined') {
                 offsets[line] = 0;
             }
 
@@ -655,7 +643,7 @@ var VisualMarkdownEditor = function($, $element, options) {
      *
      * @since 1.2.0
      */
-    this.toggleAroundSelection = function(before, after, selection, offset) {
+    this.toggleAroundSelection = function (before, after, selection, offset) {
 
         var doc = self.codemirror.getDoc(),
             from, to, content, selectionTo;
@@ -672,8 +660,7 @@ var VisualMarkdownEditor = function($, $element, options) {
         content = doc.getRange(from, to);
 
         // Check for existing formatting
-        if((content.indexOf(before) === 0)
-           && (content.lastIndexOf(after) === content.length - after.length)) {
+        if ((content.indexOf(before) === 0) && (content.lastIndexOf(after) === content.length - after.length)) {
 
             // Remove formatting
             doc.replaceRange(
@@ -688,16 +675,15 @@ var VisualMarkdownEditor = function($, $element, options) {
             // Reset selection
             selectionTo = {
                 line: to.line,
-                ch: ((from.line === to.line)
-                    ? to.ch - before.length - after.length
-                    : to.ch - after.length)
+                ch: ((from.line === to.line) ? to.ch - before.length - after.length : to.ch - after.length)
             };
             doc.addSelection(from, selectionTo);
 
             // Return offset
             return -(before.length + after.length);
 
-        } else {
+        }
+        else {
 
             // Add formatting
             doc.replaceRange(before + content + after, from, to);
@@ -705,9 +691,7 @@ var VisualMarkdownEditor = function($, $element, options) {
             // Reset selection
             selectionTo = {
                 line: to.line,
-                ch: ((from.line === to.line)
-                    ? to.ch + before.length + after.length
-                    : to.ch + after.length)
+                ch: ((from.line === to.line) ? to.ch + before.length + after.length : to.ch + after.length)
             };
             doc.addSelection(from, selectionTo);
 
@@ -721,7 +705,7 @@ var VisualMarkdownEditor = function($, $element, options) {
      *
      * @since 1.2.0
      */
-    this.renderLine = function(instance, line, element) {
+    this.renderLine = function (instance, line, element) {
 
         var $line = $(element).children('span');
 
@@ -737,7 +721,7 @@ var VisualMarkdownEditor = function($, $element, options) {
      *
      * @since 1.2.0
      */
-    this.maybeApplyHangingQuoteStyles = function(element, $line) {
+    this.maybeApplyHangingQuoteStyles = function (element, $line) {
 
         var $parts = $line.children('span'),
             level = 0,
@@ -745,13 +729,13 @@ var VisualMarkdownEditor = function($, $element, options) {
             $part;
 
         // Abort if the line doesn't start with quote formatting
-        if(!$parts.first().hasClass('cm-formatting-quote')) {
+        if (!$parts.first().hasClass('cm-formatting-quote')) {
             return false;
         }
 
         // Calculate quote level and required padding
         $part = $parts.first();
-        while($part.hasClass('cm-formatting-quote')) {
+        while ($part.hasClass('cm-formatting-quote')) {
             level++;
             padding += self.getActualFormattingWidth($part);
             $part = $part.next();
@@ -774,14 +758,14 @@ var VisualMarkdownEditor = function($, $element, options) {
      *
      * @since 1.2.0
      */
-    this.maybeApplyHeaderStyles = function(element, $line) {
+    this.maybeApplyHeaderStyles = function (element, $line) {
 
-        var $formatting  = $line.children('span').first(),
-            padding      = 0,
+        var $formatting = $line.children('span').first(),
+            padding = 0,
             regex, classes, level;
 
         // Abort if the line doesn't start with header formatting
-        if(!$formatting.hasClass('cm-formatting-header')) {
+        if (!$formatting.hasClass('cm-formatting-header')) {
             return false;
         }
 
@@ -806,7 +790,7 @@ var VisualMarkdownEditor = function($, $element, options) {
      *
      * @since 1.4.2
      */
-    this.showShortcutsModal = function() {
+    this.showShortcutsModal = function () {
         self.modals.shortcuts.show();
     };
 
@@ -815,9 +799,9 @@ var VisualMarkdownEditor = function($, $element, options) {
      *
      * @since 1.4.2
      */
-    this.hideModals = function(e) {
-        if(e.target === this){
-            $.each(self.modals, function(index, modal) {
+    this.hideModals = function (e) {
+        if (e.target === this) {
+            $.each(self.modals, function (index, modal) {
                 modal.hide();
             });
         }
@@ -828,7 +812,7 @@ var VisualMarkdownEditor = function($, $element, options) {
      *
      * @since 1.2.0
      */
-    this.getCodeMirrorInstance = function() {
+    this.getCodeMirrorInstance = function () {
         return self.codemirror;
     };
 
@@ -838,8 +822,8 @@ var VisualMarkdownEditor = function($, $element, options) {
      *
      * @since 1.2.0
      */
-    this.translateHeaderValue = function(value) {
-        switch(value) {
+    this.translateHeaderValue = function (value) {
+        switch (value) {
             case 'h6':
                 return '######';
             case 'h5':
@@ -862,7 +846,7 @@ var VisualMarkdownEditor = function($, $element, options) {
      *
      * @since 1.2.0
      */
-    this.getActualFormattingWidth = function($target) {
+    this.getActualFormattingWidth = function ($target) {
 
         var styles = 'position: absolute !important; top: -1000px !important;',
             width;
@@ -878,7 +862,7 @@ var VisualMarkdownEditor = function($, $element, options) {
      *
      * @since 1.2.0
      */
-    this.savePanelForm = function() {
+    this.savePanelForm = function () {
         self.$wrapper.closest('.form').trigger('submit');
     };
 
