@@ -875,10 +875,24 @@ var VisualMarkdownEditor = function ($, $element, options) {
         }
     };
 
+    /**
+     * Check if the string includes header formatting.
+     *
+     * @since 1.5.0
+     * @param string str
+     * @return boolean
+     */
     this.isHeader = function (str) {
         return (str.indexOf('#') === 0);
     };
 
+    /**
+     * Returns the strings header level.
+     *
+     * @since 1.5.0
+     * @param string str
+     * @return boolean|integer
+     */
     this.getHeaderLevel = function (str) {
         var min = 1,
             max = 6,
@@ -890,6 +904,8 @@ var VisualMarkdownEditor = function ($, $element, options) {
                 return i;
             }
         }
+
+        return false;
     };
 
     /**
