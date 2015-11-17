@@ -1,7 +1,7 @@
 /**
  * Visual Markdown Editor Field for Kirby 2
  *
- * @version   1.3.4
+ * @version   1.4.1
  * @author    Jonas Döbertin <hello@jd-powered.net>
  * @copyright Jonas Döbertin <hello@jd-powered.net>
  * @link      https://github.com/JonasDoebertin/kirby-visual-markdown
@@ -93,7 +93,7 @@ var VisualMarkdownField = function ($, $field) {
          *
          * @since 1.4.0
          */
-        $(window).scroll(function () {
+        $('.mainbar').scroll(function () {
 
             /**
              * Switch to fixed toolbar, if
@@ -174,11 +174,11 @@ var VisualMarkdownField = function ($, $field) {
      * @since 1.0.0
      */
     this.attachFocusStyles = function () {
+        self.isFocused = true;
         self.$wrapper.addClass('markdownfield-wrapper-focused');
         if (!self.isFullscreen && self.scrollTopWithinWrapper()) {
             self.enableFixedToolbar();
         }
-        self.isFocused = true;
     };
 
     /**
@@ -187,9 +187,9 @@ var VisualMarkdownField = function ($, $field) {
      * @since 1.0.0
      */
     this.detachFocusStyles = function () {
+        self.isFocused = false;
         self.$wrapper.removeClass('markdownfield-wrapper-focused');
         self.disableFixedToolbar();
-        self.isFocused = false;
     };
 
     /**
@@ -220,8 +220,10 @@ var VisualMarkdownField = function ($, $field) {
      * @return boolean
      */
     this.scrollTopWithinWrapper = function () {
-        var $document = $(document);
-        return (($document.scrollTop() >= self.$wrapper.offset().top) && ($document.scrollTop() < self.$wrapper.offset().top + self.$wrapper.outerHeight() - self.$toolbar.outerHeight()));
+        var topOffset    = self.$wrapper.offset().top + 2,
+            bottomOffset = self.$wrapper.offset().top + self.$wrapper.outerHeight() - self.$toolbar.outerHeight() - 2;
+
+        return ((topOffset <= 48) && (bottomOffset >= 48));
     };
 
     /**

@@ -5,11 +5,17 @@
 **Features:**
 
 * Smarter header toggling
+* Smarter list toggling
 
 **Changes:**
 
+* Drop support for Kirby 2.1 and below
 * Only enable fixed toolbar if field is focused
-* Updated to CodeMirror 5.6
+* Updated to CodeMirror 5.8
+
+**Bugfixes**
+
+* More compatible way of getting the current panel language
 
 ## Version 1.4.0
 
