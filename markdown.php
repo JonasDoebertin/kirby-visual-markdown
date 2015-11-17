@@ -32,13 +32,13 @@ class MarkdownField extends InputField {
     public static $assets = array(
         'js' => array(
             'screenfull-2.0.0.min.js',
-            'codemirror-compressed-5.6.0.min.js',
+            'codemirror-compressed-5.8.0.min.js',
             'kirbytags-mode.js',
             'visualmarkdownfield.js',
             'visualmarkdowneditor.js',
         ),
         'css' => array(
-            'codemirror-5.6.0.css',
+            'codemirror-5.8.0.css',
             'visualmarkdown.css',
         ),
     );
@@ -146,25 +146,26 @@ class MarkdownField extends InputField {
     \**************************************************************************/
 
     /**
-     * Field setup
-     *
-     * (1) Load language files
+     * Field setup.
      *
      * @since 1.2.0
      */
     public function __construct()
     {
-        /*
-            (1) Load language files
-         */
+        // Build translation file path
         $baseDir = __DIR__ . DS . self::LANG_DIR . DS;
-        $lang    = panel()->language();
-        if(file_exists($baseDir . $lang . '.php'))
-        {
-            $this->translation = include $baseDir . $lang . '.php';
+
+        // Get panel language
+        if (version_compare(panel()->version(), '2.2', '>=')) {
+            $lang = panel()->translation()->code();
+        } else {
+            $lang = panel()->language();
         }
-        else
-        {
+
+        // Load language files
+        if (file_exists($baseDir . $lang . '.php')) {
+            $this->translation = include $baseDir . $lang . '.php';
+        } else {
             $this->translation = include $baseDir . 'en.php';
         }
     }
