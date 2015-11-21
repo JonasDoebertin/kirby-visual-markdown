@@ -13,10 +13,15 @@
  *
  * @since 1.2.0
  */
-var VisualMarkdownEditor = function ($, $element, options) {
+var VisualMarkdownEditor = function ($, field, $element, options) {
     'use strict';
 
     var self = this;
+
+    /**
+     * Field handler object
+     */
+    this.field = field;
 
     /**
      * Main field element
@@ -400,9 +405,13 @@ var VisualMarkdownEditor = function ($, $element, options) {
 
             // Bind the action callback to the anchors "click" event.
             if (tool.action) {
+                $anchor.on('mousedown', function () {
+                    self.field.inAction = true;
+                });
                 $anchor.on('click', function (event) {
                     self.codemirror.focus();
                     self.actions[tool.action].call(self);
+                    self.field.inAction = false;
                     event.preventDefault();
                 });
             }

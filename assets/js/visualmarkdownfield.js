@@ -26,6 +26,7 @@ var VisualMarkdownField = function ($, $field) {
 
     this.editor = null;
 
+    this.inAction = false;
     this.isFixed = false;
     this.isFocused = false;
     this.isFullscreen = false;
@@ -48,7 +49,7 @@ var VisualMarkdownField = function ($, $field) {
         /*
             Initialize VisualMarkdownEditor
          */
-        self.editor = new VisualMarkdownEditor($, self.$field, self.options);
+        self.editor = new VisualMarkdownEditor($, self, self.$field, self.options);
 
         /*
             Store some references to the underlying codemirror instance
@@ -244,10 +245,12 @@ var VisualMarkdownField = function ($, $field) {
      * @since 1.4.0
      */
     this.disableFixedToolbar = function () {
-        self.isFixed = false;
-        self.$toolbar.removeClass('visualmarkdown-toolbar-fixed')
-            .css('max-width', '');
-        self.$wrapper.css('padding-top', 0);
+        if (!self.inAction) {
+            self.isFixed = false;
+            self.$toolbar.removeClass('visualmarkdown-toolbar-fixed')
+                .css('max-width', '');
+            self.$wrapper.css('padding-top', 0);
+        }
     };
 
     /**
