@@ -371,7 +371,7 @@ var VisualMarkdownEditor = function ($, $element, options) {
 
             // Generate elements
             $item = $('<li>').addClass('visualmarkdown-action-' + tool.action);
-            $anchor = $('<a>');
+            $anchor = $('<a>').attr('href', '#');
 
             if (($.inArray(tool.action, self.options.tools) === -1) && ($.inArray(tool.action, alwaysVisibleItems) === -1)) {
                 $item.addClass('visualmarkdown-action-hidden');
@@ -400,9 +400,10 @@ var VisualMarkdownEditor = function ($, $element, options) {
 
             // Bind the action callback to the anchors "click" event.
             if (tool.action) {
-                $anchor.on('click', function () {
+                $anchor.on('click', function (event) {
                     self.codemirror.focus();
                     self.actions[tool.action].call(self);
+                    event.preventDefault();
                 });
             }
 
