@@ -177,7 +177,6 @@
     margin: 0;
     padding: 0;
     position: relative;
-    z-index: 100;
 }
 
 .markdownfield-wrapper .visualmarkdown-toolbar-fixed {
@@ -409,6 +408,7 @@
         top: 0;
         left: 0;
         right: 0;
+        z-index: 100;
     }
 
     .markdownfield-wrapper-fullscreen .CodeMirror {
