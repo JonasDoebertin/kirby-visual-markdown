@@ -593,7 +593,7 @@ var VisualMarkdownEditor = function ($, field, $element, options) {
                 end = self.getSelectionEnd(selection).line;
                 for (var i = start; i <= end; i++) {
                     if (processedLines.indexOf(i) === -1) {
-                        self.toggleBeforeSelection(formatting, selection);
+                        self.toggleBeforeLine(formatting, i);
                         processedLines.push(i);
                     }
                 }
@@ -602,7 +602,7 @@ var VisualMarkdownEditor = function ($, field, $element, options) {
             else {
                 line = self.getSelectionStart(selection).line;
                 if (processedLines.indexOf(line) === -1) {
-                    self.toggleBeforeSelection(formatting, selection);
+                    self.toggleBeforeLine(formatting, line);
                     processedLines.push(line);
                 }
             }
@@ -616,10 +616,10 @@ var VisualMarkdownEditor = function ($, field, $element, options) {
      *
      * @since 1.2.0
      */
-    this.toggleBeforeSelection = function (formatting, selection) {
+    this.toggleBeforeLine = function (formatting, index) {
 
         var doc = self.codemirror.getDoc(),
-            firstLine = doc.getLine(selection.anchor.line);
+            line = doc.getLine(index);
 
         // Add space character to formatting
         formatting = formatting + ' ';
@@ -632,47 +632,48 @@ var VisualMarkdownEditor = function ($, field, $element, options) {
             Exception: The lines current header level is the same as the new
             formattings header level. In this case we'll only remove the current header formatting.
          */
-        if (self.isHeader(firstLine) && self.isHeader(formatting) && (self.getHeaderLevel(firstLine) !== self.getHeaderLevel(formatting))) {
+        if (self.isHeader(line) && self.isHeader(formatting)
+            && (self.getHeaderLevel(line) !== self.getHeaderLevel(formatting))) {
             // Remove header formatting
-            var level = self.getHeaderLevel(firstLine);
+            var level = self.getHeaderLevel(line);
             doc.replaceRange('', {
-                line: selection.anchor.line,
+                line: index,
                 ch: 0
             }, {
-                line: selection.anchor.line,
+                line: index,
                 ch: level
             });
             // Remove leading space if present
-            if (doc.getLine(selection.anchor.line).indexOf(' ') === 0) {
+            if (doc.getLine(index).indexOf(' ') === 0) {
                 doc.replaceRange('', {
-                    line: selection.anchor.line,
+                    line: index,
                     ch: 0
                 }, {
-                    line: selection.anchor.line,
+                    line: index,
                     ch: 1
                 });
             }
             // Add new header formatting
             doc.replaceRange(formatting, {
-                line: selection.anchor.line,
+                line: index,
                 ch: 0
             });
         }
         // Remove existing formatting
-        else if (firstLine.indexOf(formatting) === 0) {
+        else if (line.indexOf(formatting) === 0) {
             // Remove formatting
             doc.replaceRange('', {
-                line: selection.anchor.line,
+                line: index,
                 ch: 0
             }, {
-                line: selection.anchor.line,
+                line: index,
                 ch: formatting.length
             });
         }
+        // Add new formatting
         else {
-            // Add formatting
             doc.replaceRange(formatting, {
-                line: selection.anchor.line,
+                line: index,
                 ch: 0
             });
         }
