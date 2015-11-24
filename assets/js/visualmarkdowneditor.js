@@ -632,8 +632,7 @@ var VisualMarkdownEditor = function ($, field, $element, options) {
             Exception: The lines current header level is the same as the new
             formattings header level. In this case we'll only remove the current header formatting.
          */
-        if (self.isHeader(line) && self.isHeader(formatting)
-            && (self.getHeaderLevel(line) !== self.getHeaderLevel(formatting))) {
+        if (self.isHeader(line) && self.isHeader(formatting) && (self.getHeaderLevel(line) !== self.getHeaderLevel(formatting))) {
             // Remove header formatting
             var level = self.getHeaderLevel(line);
             doc.replaceRange('', {
@@ -892,20 +891,20 @@ var VisualMarkdownEditor = function ($, field, $element, options) {
      */
     this.translateHeaderValue = function (value) {
         switch (value) {
-            case 'h6':
-                return '######';
-            case 'h5':
-                return '#####';
-            case 'h4':
-                return '####';
-            case 'h3':
-                return '###';
-            case 'h2':
-                return '##';
-            case 'h1':
-                return '#';
-            default:
-                return '#';
+        case 'h6':
+            return '######';
+        case 'h5':
+            return '#####';
+        case 'h4':
+            return '####';
+        case 'h3':
+            return '###';
+        case 'h2':
+            return '##';
+        case 'h1':
+            return '#';
+        default:
+            return '#';
         }
     };
 
