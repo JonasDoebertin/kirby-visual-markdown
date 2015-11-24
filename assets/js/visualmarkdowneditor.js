@@ -102,11 +102,11 @@ var VisualMarkdownEditor = function ($, field, $element, options) {
     this.actions = {
         header1: function () {
             var header = self.translateHeaderValue(self.options.header1);
-            self.toggleBefore(header);
+            self.toggleBefore(header, false);
         },
         header2: function () {
             var header = self.translateHeaderValue(self.options.header2);
-            self.toggleBefore(header);
+            self.toggleBefore(header, false);
         },
         bold: function () {
             self.toggleAround('**', '**');
@@ -118,13 +118,13 @@ var VisualMarkdownEditor = function ($, field, $element, options) {
             self.toggleAround('~~', '~~');
         },
         blockquote: function () {
-            self.toggleBefore('>');
+            self.toggleBefore('>', false);
         },
         orderedList: function () {
             self.insertBefore('1. ', 3);
         },
         unorderedList: function () {
-            self.toggleBefore('*');
+            self.toggleBefore('*', true);
         },
         link: function () {
             if (self.options.kirbytext) {
@@ -570,20 +570,43 @@ var VisualMarkdownEditor = function ($, field, $element, options) {
      *
      * @since 1.2.0
      */
-    this.toggleBefore = function (formatting) {
+    this.toggleBefore = function (formatting, multiline) {
 
         var doc = self.codemirror.getDoc(),
             selections = doc.listSelections(),
             processedLines = [],
-            line;
+            start, end, line;
+
+        // Initialize multiline parameter
+        if (multiline === undefined) {
+            multiline = false;
+        }
 
         // Delegate to function handling all selections independently
         selections.forEach(function (selection) {
-            line = self.getSelectionStart(selection).line;
-            if (processedLines.indexOf(line) === -1) {
-                self.toggleBeforeSelection(formatting, selection);
-                processedLines.push(line);
+
+            // For cases were we need to toggle every line
+            // (lists, etc.) we'll call the handling function
+            // for every line of the current selection
+            if (multiline) {
+                start = self.getSelectionStart(selection).line;
+                end = self.getSelectionEnd(selection).line;
+                for (var i = start; i <= end; i++) {
+                    if (processedLines.indexOf(i) === -1) {
+                        self.toggleBeforeSelection(formatting, selection);
+                        processedLines.push(i);
+                    }
+                }
             }
+            // Otherwise we'll just use the selection start line
+            else {
+                line = self.getSelectionStart(selection).line;
+                if (processedLines.indexOf(line) === -1) {
+                    self.toggleBeforeSelection(formatting, selection);
+                    processedLines.push(line);
+                }
+            }
+
         });
 
     };
