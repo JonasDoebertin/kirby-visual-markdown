@@ -3,6 +3,7 @@
 /**
  * @language Norsk Bokmål
  * @direction ltr
+ *
  * @author Ole-Martin Bratteng <ole-martin@bratteng.me>
  */
 
@@ -35,7 +36,6 @@ return array(
     'action.name.issuesLink'        => 'Rapporter en feil',
     'action.tooltip.licenseLink'    => 'Støtt videre utvikling ved å kjøpe en moral lisens',
     'action.name.licenseLink'       => 'Kjøp en lisens',
-
 
     /* Shortcuts modal texts */
     'modal.shortcuts.title'                => 'Tastatursnarveier',

@@ -3,6 +3,7 @@
 /**
  * @language English
  * @direction ltr
+ *
  * @author Jonas Döbertin <hello@jd-powered.net>
  */
 
@@ -35,7 +36,6 @@ return array(
     'action.name.issuesLink'        => 'Report a Bug',
     'action.tooltip.licenseLink'    => 'Support further development by purchasing a moral license',
     'action.name.licenseLink'       => 'Purchase a License',
-
 
     /* Shortcuts modal texts */
     'modal.shortcuts.title'                => 'Keyboard Shortcuts',
