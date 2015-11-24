@@ -3,6 +3,7 @@
 /**
  * @language Deutsch
  * @direction ltr
+ *
  * @author Jonas Döbertin <hello@jd-powered.net>
  */
 
@@ -35,7 +36,6 @@ return array(
     'action.name.issuesLink'        => 'Einen Fehler melden',
     'action.tooltip.licenseLink'    => 'Unterstütze die zukünftige Weiterentwicklung',
     'action.name.licenseLink'       => 'Eine Lizenz kaufen',
-
 
     /* Shortcuts modal texts */
     'modal.shortcuts.title'                => 'Tastenkürzel',

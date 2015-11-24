@@ -1,32 +1,36 @@
 <?php
 /**
- * Visual Markdown Editor Field for Kirby 2
+ * Visual Markdown Editor Field for Kirby 2.
  *
  * @version   1.4.1
+ *
  * @author    Jonas Döbertin <hello@jd-powered.net>
  * @copyright Jonas Döbertin <hello@jd-powered.net>
+ *
  * @link      https://github.com/JonasDoebertin/kirby-visual-markdown
+ *
  * @license   GNU GPL v3.0 <http://opensource.org/licenses/GPL-3.0>
  */
 
 /**
- * Visual Markdown Editor Field
+ * Visual Markdown Editor Field.
  *
  * @since 1.0.0
  */
-class MarkdownField extends InputField {
-
+class MarkdownField extends InputField
+{
     /**
-     * Language files directory
+     * Language files directory.
      *
      * @since 1.2.0
      */
     const LANG_DIR = 'languages';
 
     /**
-     * Define frontend assets
+     * Define frontend assets.
      *
      * @var array
+     *
      * @since 1.0.0
      */
     public static $assets = array(
@@ -44,7 +48,7 @@ class MarkdownField extends InputField {
     );
 
     /**
-     * Option: Show/Hide toolbar
+     * Option: Show/Hide toolbar.
      *
      * @since 1.1.0
      *
@@ -53,7 +57,7 @@ class MarkdownField extends InputField {
     protected $toolbar = true;
 
     /**
-     * Option: Header 1
+     * Option: Header 1.
      *
      * @since 1.1.0
      *
@@ -62,7 +66,7 @@ class MarkdownField extends InputField {
     protected $header1 = 'h1';
 
     /**
-     * Option: Header 2
+     * Option: Header 2.
      *
      * @since 1.1.0
      *
@@ -71,7 +75,7 @@ class MarkdownField extends InputField {
     protected $header2 = 'h2';
 
     /**
-     * Option: Available Tools
+     * Option: Available Tools.
      *
      * @since 1.3.0
      *
@@ -93,7 +97,7 @@ class MarkdownField extends InputField {
     );
 
     /**
-     * Translated strings
+     * Translated strings.
      *
      * @since 1.2.0
      *
@@ -102,7 +106,7 @@ class MarkdownField extends InputField {
     protected $translation;
 
     /**
-     * Valid header1/header2 option values
+     * Valid header1/header2 option values.
      *
      * @since 1.2.0
      *
@@ -118,7 +122,7 @@ class MarkdownField extends InputField {
     );
 
     /**
-     * Default option values
+     * Default option values.
      *
      * @since 1.2.0
      *
@@ -171,7 +175,7 @@ class MarkdownField extends InputField {
     }
 
     /**
-     * Magic setter
+     * Magic setter.
      *
      * Set a fields property and apply default value if required.
      *
@@ -186,8 +190,7 @@ class MarkdownField extends InputField {
         $this->$option = $value;
 
         /* Check if value is valid */
-        switch($option)
-        {
+        switch ($option) {
             case 'toolbar':
                 $this->validateToolbarOption($value);
                 break;
@@ -201,11 +204,10 @@ class MarkdownField extends InputField {
                 $this->validateToolsOption($value);
                 break;
         }
-
     }
 
     /**
-     * Validate "toolbar" option
+     * Validate "toolbar" option.
      *
      * @since 1.3.0
      *
@@ -217,7 +219,7 @@ class MarkdownField extends InputField {
     }
 
     /**
-     * Validate "headerX" option
+     * Validate "headerX" option.
      *
      * @since 1.3.0
      *
@@ -226,14 +228,13 @@ class MarkdownField extends InputField {
      */
     protected function validateHeaderOption($header, $value)
     {
-        if(!in_array($value, $this->validHeaderValues))
-        {
+        if (!in_array($value, $this->validHeaderValues)) {
             $this->$header = $this->defaultValues[$header];
         }
     }
 
     /**
-     * Validate "tools" option
+     * Validate "tools" option.
      *
      * @since 1.3.0
      *
@@ -241,14 +242,13 @@ class MarkdownField extends InputField {
      */
     protected function validateToolsOption($value)
     {
-        if(!is_array($value) or empty($value))
-        {
+        if (!is_array($value) or empty($value)) {
             $this->tools = $this->defaultValues['tools'];
         }
     }
 
     /**
-     * Convert result to markdown
+     * Convert result to markdown.
      *
      * @since 1.0.0
      *
@@ -264,7 +264,7 @@ class MarkdownField extends InputField {
     \**************************************************************************/
 
     /**
-     * Create input element
+     * Create input element.
      *
      * @since 1.0.0
      *
@@ -313,7 +313,7 @@ class MarkdownField extends InputField {
     }
 
     /**
-     * Create outer field element
+     * Create outer field element.
      *
      * @since 1.0.0
      *
@@ -323,6 +323,7 @@ class MarkdownField extends InputField {
     {
         $element = parent::element();
         $element->addClass('field-with-visualmarkdown');
+
         return $element;
     }
 
@@ -331,17 +332,17 @@ class MarkdownField extends InputField {
     \**************************************************************************/
 
     /**
-     * Return a translation from the internal translation storage
+     * Return a translation from the internal translation storage.
      *
      * @since 1.3.2
      *
-     * @param  string $key
-     * @param  string $default
+     * @param string $key
+     * @param string $default
+     *
      * @return string
      */
     public function lang($key, $default = '')
     {
         return (isset($this->translation[$key]) ? $this->translation[$key] : $default);
     }
-
 }

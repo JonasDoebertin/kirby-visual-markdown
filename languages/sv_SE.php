@@ -3,6 +3,7 @@
 /**
  * @language Svenska
  * @direction ltr
+ *
  * @author Ole-Martin Bratteng <ole-martin@bratteng.me>, Andreas Nymark <andreas@nymark.me>
  */
 
@@ -35,7 +36,6 @@ return array(
     'action.name.issuesLink'        => 'Rapportera ett fel',
     'action.tooltip.licenseLink'    => 'Stöd utvecklingen genom att köpa en licens',
     'action.name.licenseLink'       => 'Köp en licens',
-
 
     /* Shortcuts modal texts */
     'modal.shortcuts.title'                => 'Kortkommandon',
