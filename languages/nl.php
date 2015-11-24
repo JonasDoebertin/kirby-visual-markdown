@@ -3,6 +3,7 @@
 /**
  * @language Nederlands
  * @direction ltr
+ *
  * @author Maurits Misana
  */
 
@@ -35,7 +36,6 @@ return array(
     'action.name.issuesLink'        => 'Een probleem melden',
     'action.tooltip.licenseLink'    => 'Ondersteun de verdere ontwikkeling door het kopen van een morele licentie',
     'action.name.licenseLink'       => 'Een licentie kopen',
-
 
     /* Shortcuts modal texts */
     'modal.shortcuts.title'                => 'Sneltoetsen',

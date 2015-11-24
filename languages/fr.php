@@ -3,6 +3,7 @@
 /**
  * @language Français
  * @direction ltr
+ *
  * @author Philippe Gervaise
  */
 
@@ -35,7 +36,6 @@ return array(
     'action.name.issuesLink'        => 'Signaler un Bug',
     'action.tooltip.licenseLink'    => 'Soutenir le développement en achetant une license morale',
     'action.name.licenseLink'       => 'Acheter une licence',
-
 
     /* Shortcuts modal texts */
     'modal.shortcuts.title'                => 'Raccourcis Clavier',

@@ -3,6 +3,7 @@
 /**
  * @language Dansk
  * @direction ltr
+ *
  * @author Ole-Martin Bratteng <ole-martin@bratteng.me>
  */
 
@@ -35,7 +36,6 @@ return array(
     'action.name.issuesLink'        => 'Rapporter en fejl',
     'action.tooltip.licenseLink'    => 'Støtte udviklingen ved at købe en moralsk licens',
     'action.name.licenseLink'       => 'Køb en licens',
-
 
     /* Shortcuts modal texts */
     'modal.shortcuts.title'                => 'Tastaturgenveje',
