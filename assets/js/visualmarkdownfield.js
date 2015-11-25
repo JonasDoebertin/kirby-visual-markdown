@@ -129,6 +129,13 @@ var VisualMarkdownField = function ($, $field) {
             self.deactivate();
         });
 
+        /**
+         * FIX: Add an indicator that this field is already initialized to
+         * prevent double initialization of a Visual MArkdown Editor field.
+         * See: https://github.com/JonasDoebertin/kirby-visual-markdown/issues/61
+         */
+        self.$field.data('initialized', true);
+
     };
 
     /**
@@ -286,7 +293,9 @@ var VisualMarkdownField = function ($, $field) {
      * @since 1.0.0
      */
     $.fn.markdownfield = function () {
-        return new VisualMarkdownField($, this);
+        if (!this.data('initialized')) {
+            return new VisualMarkdownField($, this);
+        }
     };
 
 })(jQuery);
