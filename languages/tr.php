@@ -3,11 +3,10 @@
 /**
  * @language Turkish
  * @direction ltr
- * 
  * @author Alkın Kasap <admin@alkinkasap.net>
  */
 
-return array(
+return [
 
     /* Main toolbar icons */
     'action.tooltip.header1'       => 'Birinci Başlık',
@@ -37,7 +36,6 @@ return array(
     'action.tooltip.licenseLink'    => 'Moral Lisans Alarak Yapımcıyı Destekleyin',
     'action.name.licenseLink'       => 'Lisans Al',
 
-
     /* Shortcuts modal texts */
     'modal.shortcuts.title'                => 'Klavye Kısayolları',
     'modal.shortcuts.heading.action'       => 'Action',
@@ -53,5 +51,5 @@ return array(
     'modal.shortcuts.action.image'         => 'Resim',
     'modal.shortcuts.action.link'          => 'Bağlantı',
     'modal.shortcuts.action.email'         => 'Eposta Bağlantısı',
-
-);
+    
+];

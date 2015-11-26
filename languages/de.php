@@ -3,11 +3,10 @@
 /**
  * @language Deutsch
  * @direction ltr
- *
  * @author Jonas Döbertin <hello@jd-powered.net>
  */
 
-return array(
+return [
 
     /* Main toolbar icons */
     'action.tooltip.header1'       => 'Hauptüberschrift',
@@ -53,4 +52,4 @@ return array(
     'modal.shortcuts.action.link'          => 'Link',
     'modal.shortcuts.action.email'         => 'E-Mail',
 
-);
+];

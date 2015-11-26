@@ -3,11 +3,10 @@
 /**
  * @language Dansk
  * @direction ltr
- *
  * @author Ole-Martin Bratteng <ole-martin@bratteng.me>
  */
 
-return array(
+return [
 
     /* Main toolbar icons */
     'action.tooltip.header1'       => 'Titel',
@@ -53,4 +52,4 @@ return array(
     'modal.shortcuts.action.link'          => 'Link',
     'modal.shortcuts.action.email'         => 'E-Mail',
 
-);
+];

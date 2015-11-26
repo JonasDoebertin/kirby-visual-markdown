@@ -3,11 +3,10 @@
 /**
  * @language Français
  * @direction ltr
- *
  * @author Philippe Gervaise
  */
 
-return array(
+return [
 
     /* Main toolbar icons */
     'action.tooltip.header1'       => 'Titre principal',
@@ -53,4 +52,4 @@ return array(
     'modal.shortcuts.action.link'          => 'Lien',
     'modal.shortcuts.action.email'         => 'Courriel',
 
-);
+];

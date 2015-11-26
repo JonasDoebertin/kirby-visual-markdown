@@ -3,11 +3,10 @@
 /**
  * @language Svenska
  * @direction ltr
- *
  * @author Ole-Martin Bratteng <ole-martin@bratteng.me>, Andreas Nymark <andreas@nymark.me>
  */
 
-return array(
+return [
 
     /* Main toolbar icons */
     'action.tooltip.header1'       => 'Rubrik',
@@ -52,5 +51,5 @@ return array(
     'modal.shortcuts.action.image'         => 'Bild',
     'modal.shortcuts.action.link'          => 'Länk',
     'modal.shortcuts.action.email'         => 'E-maillänk',
-
-);
+    
+];

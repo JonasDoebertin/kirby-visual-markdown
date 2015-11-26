@@ -3,11 +3,10 @@
 /**
  * @language Nederlands
  * @direction ltr
- *
  * @author Maurits Misana
  */
 
-return array(
+return [
 
     /* Main toolbar icons */
     'action.tooltip.header1'       => 'Eerstegraads kop',
@@ -53,4 +52,4 @@ return array(
     'modal.shortcuts.action.link'          => 'Link',
     'modal.shortcuts.action.email'         => 'E-mail',
 
-);
+];

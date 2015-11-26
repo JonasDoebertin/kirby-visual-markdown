@@ -10,6 +10,7 @@
 **Changes:**
 
 * Drop support for Kirby 2.1 and below
+* Drop support for PHP 5.3 and below
 * Only enable fixed toolbar if field is focused
 * Updated to CodeMirror 5.8
 
