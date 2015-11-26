@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 1.5.0 (TBA)
+## Version 1.5.0
 
 **Features:**
 
