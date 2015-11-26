@@ -51,5 +51,5 @@ return [
     'modal.shortcuts.action.image'         => 'Bilde',
     'modal.shortcuts.action.link'          => 'Link',
     'modal.shortcuts.action.email'         => 'E-Post',
-    
+
 ];

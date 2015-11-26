@@ -51,5 +51,5 @@ return [
     'modal.shortcuts.action.image'         => 'Resim',
     'modal.shortcuts.action.link'          => 'Bağlantı',
     'modal.shortcuts.action.email'         => 'Eposta Bağlantısı',
-    
+
 ];

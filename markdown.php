@@ -29,7 +29,7 @@ class MarkdownField extends InputField
      * @var array
      * @since 1.0.0
      */
-    public static $assets = array(
+    public static $assets = [
         'js' => [
             'screenfull-2.0.0.min.js',
             'codemirror-compressed-5.8.0.min.js',
@@ -41,7 +41,7 @@ class MarkdownField extends InputField
             'codemirror-5.8.0.css',
             'visualmarkdown.css',
         ],
-    );
+    ];
 
     /**
      * Option: Show/Hide toolbar.
@@ -317,8 +317,8 @@ class MarkdownField extends InputField
      * Return a translation from the internal translation storage.
      *
      * @since 1.3.2
-     * @param string $key
-     * @param string $default
+     * @param  string $key
+     * @param  string $default
      * @return string
      */
     public function lang($key, $default = '')
