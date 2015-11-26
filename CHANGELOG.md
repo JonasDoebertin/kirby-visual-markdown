@@ -1,5 +1,23 @@
 # Changelog
 
+## Version 1.5.0
+
+**Features:**
+
+* Smarter header toggling
+* Smarter list toggling
+
+**Changes:**
+
+* Drop support for Kirby 2.1 and below
+* Drop support for PHP 5.3 and below
+* Only enable fixed toolbar if field is focused
+* Updated to CodeMirror 5.8
+
+**Bugfixes**
+
+* More compatible way of getting the current panel language
+
 ## Version 1.4.0
 
 **Features:**

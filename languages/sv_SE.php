@@ -6,7 +6,7 @@
  * @author Ole-Martin Bratteng <ole-martin@bratteng.me>, Andreas Nymark <andreas@nymark.me>
  */
 
-return array(
+return [
 
     /* Main toolbar icons */
     'action.tooltip.header1'       => 'Rubrik',
@@ -36,7 +36,6 @@ return array(
     'action.tooltip.licenseLink'    => 'Stöd utvecklingen genom att köpa en licens',
     'action.name.licenseLink'       => 'Köp en licens',
 
-
     /* Shortcuts modal texts */
     'modal.shortcuts.title'                => 'Kortkommandon',
     'modal.shortcuts.heading.action'       => 'Utför',
@@ -53,4 +52,4 @@ return array(
     'modal.shortcuts.action.link'          => 'Länk',
     'modal.shortcuts.action.email'         => 'E-maillänk',
 
-);
+];

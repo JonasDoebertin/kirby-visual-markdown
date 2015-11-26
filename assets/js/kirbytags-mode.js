@@ -1,7 +1,7 @@
 /**
  * Visual Markdown Editor Field for Kirby 2
  *
- * @version   1.3.4
+ * @version   1.5.0
  * @author    Jonas Döbertin <hello@jd-powered.net>
  * @copyright Jonas Döbertin <hello@jd-powered.net>
  * @link      https://github.com/JonasDoebertin/kirby-visual-markdown
@@ -13,7 +13,7 @@
  *
  * @since 1.3.0
  */
-CodeMirror.defineMode('kirbytext', function(config, modeConfig) {
+CodeMirror.defineMode('kirbytext', function (config, modeConfig) {
     'use strict';
 
     var states = {
@@ -23,13 +23,12 @@ CodeMirror.defineMode('kirbytext', function(config, modeConfig) {
             {
                 regex: /[^\]]\((?=[a-z0-9]+:)/i,
                 token: 'kirbytext-open',
-                next:  'attribute'
-            },
-            {
+                next: 'attribute'
+            }, {
                 regex: /\((?=[a-z0-9]+:)/i,
-                sol:   true,
+                sol: true,
                 token: 'kirbytext-open',
-                next:  'attribute'
+                next: 'attribute'
             }
         ],
 
@@ -38,13 +37,13 @@ CodeMirror.defineMode('kirbytext', function(config, modeConfig) {
             {
                 regex: /[a-z0-9]+: ?(?!\/\/)/i,
                 token: 'kirbytext-attribute',
-                next:  'value'
+                next: 'value'
             },
             // Match a Kirbytext tags closing bracket
             {
                 regex: /\)/,
                 token: 'kirbytext-close',
-                next:  'start'
+                next: 'start'
             }
         ],
 
@@ -53,12 +52,11 @@ CodeMirror.defineMode('kirbytext', function(config, modeConfig) {
             {
                 regex: /[^\)]+? (?=(?:[a-z0-9]+:))/i,
                 token: 'kirbytext-value',
-                next:  'attribute'
-            },
-            {
+                next: 'attribute'
+            }, {
                 regex: /[^\)]+?(?=\))/i,
                 token: 'kirbytext-value',
-                next:  'attribute'
+                next: 'attribute'
             },
         ],
         meta: {}

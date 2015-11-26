@@ -1,0 +1,16 @@
+{
+    "js": {
+        "indent_size": 4,
+        "indent_char": " ",
+        "indent_level": 0,
+        "indent_with_tabs": false,
+        "preserve_newlines": true,
+        "max_preserve_newlines": 2,
+        "space_in_paren": false,
+        "space_after_anon_function": true,
+        "brace_style": "end-expand",
+        "space_before_conditional": true,
+        "end_with_newline": true,
+        "jslint_happy": true
+    }
+}

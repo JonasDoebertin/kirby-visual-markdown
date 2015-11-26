@@ -12,6 +12,11 @@ If you like what I'm doing for the community and you want to support further dev
 
 *Cheers, Jonas*
 
+## Requirements
+
+* **Kirby 2.2 or above**
+* **PHP 5.4 or above**
+
 ## Installation
 
 ### Copy & Pasting

@@ -6,7 +6,7 @@
  * @author Philippe Gervaise
  */
 
-return array(
+return [
 
     /* Main toolbar icons */
     'action.tooltip.header1'       => 'Titre principal',
@@ -36,7 +36,6 @@ return array(
     'action.tooltip.licenseLink'    => 'Soutenir le développement en achetant une license morale',
     'action.name.licenseLink'       => 'Acheter une licence',
 
-
     /* Shortcuts modal texts */
     'modal.shortcuts.title'                => 'Raccourcis Clavier',
     'modal.shortcuts.heading.action'       => 'Action',
@@ -53,4 +52,4 @@ return array(
     'modal.shortcuts.action.link'          => 'Lien',
     'modal.shortcuts.action.email'         => 'Courriel',
 
-);
+];

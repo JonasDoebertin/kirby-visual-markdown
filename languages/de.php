@@ -6,7 +6,7 @@
  * @author Jonas Döbertin <hello@jd-powered.net>
  */
 
-return array(
+return [
 
     /* Main toolbar icons */
     'action.tooltip.header1'       => 'Hauptüberschrift',
@@ -36,7 +36,6 @@ return array(
     'action.tooltip.licenseLink'    => 'Unterstütze die zukünftige Weiterentwicklung',
     'action.name.licenseLink'       => 'Eine Lizenz kaufen',
 
-
     /* Shortcuts modal texts */
     'modal.shortcuts.title'                => 'Tastenkürzel',
     'modal.shortcuts.heading.action'       => 'Aktion',
@@ -53,4 +52,4 @@ return array(
     'modal.shortcuts.action.link'          => 'Link',
     'modal.shortcuts.action.email'         => 'E-Mail',
 
-);
+];

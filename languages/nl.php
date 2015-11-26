@@ -6,7 +6,7 @@
  * @author Maurits Misana
  */
 
-return array(
+return [
 
     /* Main toolbar icons */
     'action.tooltip.header1'       => 'Eerstegraads kop',
@@ -36,7 +36,6 @@ return array(
     'action.tooltip.licenseLink'    => 'Ondersteun de verdere ontwikkeling door het kopen van een morele licentie',
     'action.name.licenseLink'       => 'Een licentie kopen',
 
-
     /* Shortcuts modal texts */
     'modal.shortcuts.title'                => 'Sneltoetsen',
     'modal.shortcuts.heading.action'       => 'Actie',
@@ -53,4 +52,4 @@ return array(
     'modal.shortcuts.action.link'          => 'Link',
     'modal.shortcuts.action.email'         => 'E-mail',
 
-);
+];

@@ -6,7 +6,7 @@
  * @author Ole-Martin Bratteng <ole-martin@bratteng.me>
  */
 
-return array(
+return [
 
     /* Main toolbar icons */
     'action.tooltip.header1'       => 'Tittel',
@@ -36,7 +36,6 @@ return array(
     'action.tooltip.licenseLink'    => 'Støtt videre utvikling ved å kjøpe en moral lisens',
     'action.name.licenseLink'       => 'Kjøp en lisens',
 
-
     /* Shortcuts modal texts */
     'modal.shortcuts.title'                => 'Tastatursnarveier',
     'modal.shortcuts.heading.action'       => 'Handling',
@@ -53,4 +52,4 @@ return array(
     'modal.shortcuts.action.link'          => 'Link',
     'modal.shortcuts.action.email'         => 'E-Post',
 
-);
+];
