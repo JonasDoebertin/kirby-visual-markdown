@@ -266,7 +266,7 @@ class MarkdownField extends InputField
         $input->tag('textarea');
         $input->removeAttr('type');
         $input->removeAttr('value');
-        $input->html($this->value() ?: false);
+        $input->html($this->value() ? htmlentities($this->value(), ENT_NOQUOTES, 'UTF-8') : false);
         $input->data([
             'field'         => 'markdownfield',
             'toolbar'       => ($this->toolbar) ? 'true' : 'false',
