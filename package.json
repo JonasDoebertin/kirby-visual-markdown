@@ -1,0 +1,8 @@
+{
+    "name": "markdown",
+    "description": "Visual Markdown Editor for Kirby CMS",
+    "author": "Jonas Döbertin <hello@jd-powered.net>",
+    "license": "GPLv3",
+    "version": "1.5.1",
+    "type": "kirby-field"
+}
