@@ -4,7 +4,7 @@
  *
  * @version   1.5.0
  * @author    Jonas Döbertin <hello@jd-powered.net>
- * @copyright Jonas Döbertin <hello@jd-powered.net>
+ * @copyright © 2017 Jonas Döbertin
  * @link      https://github.com/JonasDoebertin/kirby-visual-markdown
  * @license   GNU GPL v3.0 <http://opensource.org/licenses/GPL-3.0>
  */
@@ -14,14 +14,14 @@
  *
  * @since 1.0.0
  */
-class MarkdownField extends InputField
+class VisualMarkdownField extends InputField
 {
     /**
      * Language files directory.
      *
      * @since 1.2.0
      */
-    const LANG_DIR = 'languages';
+    const LANG_DIR = '..' . DS . '..' . DS . 'translations';
 
     /**
      * Define frontend assets.
@@ -146,7 +146,7 @@ class MarkdownField extends InputField
     public function __construct()
     {
         // Build translation file path
-        $baseDir = __DIR__ . DS . self::LANG_DIR . DS;
+        $langDir = __DIR__ . DS . self::LANG_DIR . DS;
 
         // Get panel language
         if (version_compare(panel()->version(), '2.2', '>=')) {
@@ -156,10 +156,10 @@ class MarkdownField extends InputField
         }
 
         // Load language files
-        if (file_exists($baseDir . $lang . '.php')) {
-            $this->translation = include $baseDir . $lang . '.php';
+        if (file_exists($langDir . $lang . '.php')) {
+            $this->translation = include $langDir . $lang . '.php';
         } else {
-            $this->translation = include $baseDir . 'en.php';
+            $this->translation = include $langDir . 'en.php';
         }
     }
 
@@ -259,7 +259,7 @@ class MarkdownField extends InputField
         $modals = tpl::load(__DIR__ . DS . 'partials' . DS . 'modals.php', ['field' => $this]);
 
         // Set up translation
-        $translation = tpl::load(__DIR__ . DS . 'partials' . DS . 'translation.php', ['translations' => $this->translation]);
+        $translation = tpl::load(__DIR__ . DS . 'partials' . DS . 'translation.php', ['translation' => $this->translation]);
 
         // Set up textarea
         $input = parent::input();
