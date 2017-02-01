@@ -26,7 +26,7 @@
                         <?= $field->lang('modal.shortcuts.action.bold', 'Bold') ?>
                     </th>
                     <td>
-                        <kbd>Ctrl</kbd><kbd>H</kbd> or <kbd>&#8984;</kbd><kbd>B</kbd>
+                        <kbd>Ctrl</kbd><kbd>B</kbd> or <kbd>&#8984;</kbd><kbd>B</kbd>
                     </td>
                 </tr>
                 <tr>
@@ -34,7 +34,7 @@
                         <?= $field->lang('modal.shortcuts.action.italic', 'Italic') ?>
                     </th>
                     <td>
-                        <kbd>Ctrl</kbd><kbd>H</kbd> or <kbd>&#8984;</kbd><kbd>I</kbd>
+                        <kbd>Ctrl</kbd><kbd>I</kbd> or <kbd>&#8984;</kbd><kbd>I</kbd>
                     </td>
                 </tr>
                 <tr>
