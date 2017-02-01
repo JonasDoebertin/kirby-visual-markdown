@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 1.5.1
+
+**Features:**
+
+* Add compatibility for Kirby CLI
+
 ## Version 1.5.0
 
 **Features:**
