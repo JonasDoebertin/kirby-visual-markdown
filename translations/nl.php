@@ -19,7 +19,7 @@ return [
     'action.tooltip.unorderedList' => 'Ongeordende lijst',
     'action.tooltip.orderedList'   => 'Genummerde lijst',
     'action.tooltip.link'          => 'Link invoegen',
-    'action.tooltip.email'         => 'E-mail link invoegen',
+    'action.tooltip.email'         => 'E-maillink invoegen',
     'action.tooltip.image'         => 'Afbeelding invoegen',
     'action.tooltip.line'          => 'Horizontale scheidingslijn invoegen',
     'action.tooltip.fullscreen'    => 'Schermvullende weergave openen/sluiten',
@@ -31,9 +31,9 @@ return [
     'action.name.markdownLink'      => 'Markdown Help',
     'action.tooltip.kirbytextLink'  => 'Tekstopmaak met Kirbytext',
     'action.name.kirbytextLink'     => 'Kirbytext Help',
-    'action.tooltip.issuesLink'     => 'Een probleem openen op Github',
+    'action.tooltip.issuesLink'     => 'Een probleem melden op Github',
     'action.name.issuesLink'        => 'Een probleem melden',
-    'action.tooltip.licenseLink'    => 'Ondersteun de verdere ontwikkeling door het kopen van een morele licentie',
+    'action.tooltip.licenseLink'    => 'Ondersteun de verdere ontwikkeling door een morele licentie te kopen',
     'action.name.licenseLink'       => 'Een licentie kopen',
 
     /* Shortcuts modal texts */
