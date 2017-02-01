@@ -376,7 +376,7 @@ var VisualMarkdownEditor = function ($, field, $element, options) {
 
             // Generate elements
             $item = $('<li>').addClass('visualmarkdown-action-' + tool.action);
-            $anchor = $('<a>').attr('href', '#');
+            $anchor = $('<a>').attr('href', '#').attr('tabindex', '-1');
 
             if (($.inArray(tool.action, self.options.tools) === -1) && ($.inArray(tool.action, alwaysVisibleItems) === -1)) {
                 $item.addClass('visualmarkdown-action-hidden');
