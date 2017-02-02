@@ -122,10 +122,12 @@ fields:
 * `header2`
 * `bold`
 * `italic`
+* `strikethrough`
 * `blockquote`
 * `unorderedList`
 * `orderedList`
 * `link`
+* `email`
 * `image`
 * `line`
 
