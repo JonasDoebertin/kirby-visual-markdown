@@ -1,4 +1,3 @@
 filter:
     excluded_paths:
-        - assets/js/codemirror-*     # All CodeMirror dependencies
-        - assets/js/screenfull-*     # All Screenfull dependencies
+        - fields/visualmarkdown/assets/*

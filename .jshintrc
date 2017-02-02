@@ -20,9 +20,6 @@
     "jquery"    : true,
 
     "globals"   : {
-        "CodeMirror"               : true,
-        "VisualMarkdownEditor"     : true,
-        "VisualMarkdownTranslation": true,
-        "screenfull"               : true
+        "jQuery": true
     }
 }
