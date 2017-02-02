@@ -1,12 +1,18 @@
-/**
- * Visual Markdown Editor Field for Kirby 2
+/*
+ * Visual Markdown Editor Field for Kirby 2.
  *
  * @version   1.5.0
  * @author    Jonas Döbertin <hello@jd-powered.net>
- * @copyright Jonas Döbertin <hello@jd-powered.net>
+ * @copyright © 2017 Jonas Döbertin
  * @link      https://github.com/JonasDoebertin/kirby-visual-markdown
  * @license   GNU GPL v3.0 <http://opensource.org/licenses/GPL-3.0>
  */
+
+import CodeMirror from 'codemirror';
+import MarkdownMode from 'codemirror/mode/markdown/markdown';
+import OverlayAddon from 'codemirror/addon/mode/overlay';
+import SimpleAddon from 'codemirror/addon/mode/simple';
+import XmlMode from 'codemirror/mode/xml/xml';
 
 /**
  * Kirbytext CodeMirror Syntax Mode

@@ -1,0 +1,28 @@
+/*
+ * Visual Markdown Editor Field for Kirby 2.
+ *
+ * @version   1.5.0
+ * @author    Jonas Döbertin <hello@jd-powered.net>
+ * @copyright © 2017 Jonas Döbertin
+ * @link      https://github.com/JonasDoebertin/kirby-visual-markdown
+ * @license   GNU GPL v3.0 <http://opensource.org/licenses/GPL-3.0>
+ */
+
+/**
+ * WRAPPER
+ */
+.markdownfield-wrapper {
+    border: 2px solid #ddd;
+
+    .field-with-error & {
+        border-color: #b3000a;
+    }
+
+    &.markdownfield-wrapper-focused {
+        border-color: #8dae28;
+    }
+
+    &.markdownfield-wrapper-over {
+        border-color: #000000;
+    }
+}

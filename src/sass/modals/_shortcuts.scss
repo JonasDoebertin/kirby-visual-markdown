@@ -1,0 +1,63 @@
+/*
+ * Visual Markdown Editor Field for Kirby 2.
+ *
+ * @version   1.5.0
+ * @author    Jonas Döbertin <hello@jd-powered.net>
+ * @copyright © 2017 Jonas Döbertin
+ * @link      https://github.com/JonasDoebertin/kirby-visual-markdown
+ * @license   GNU GPL v3.0 <http://opensource.org/licenses/GPL-3.0>
+ */
+
+/**
+ * SHORTCUTS
+ */
+.visualmarkdown-shortcuts {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+
+    th {
+        text-align: left;
+        font-weight: 400;
+        padding-bottom: 1em;
+    }
+
+    td {
+        text-align: right;
+        padding-bottom: 1em;
+    }
+
+    tr:hover th {
+        font-weight: bold;
+    }
+
+    tr:last-child th,
+    tr:last-child td {
+        padding: 0;
+    }
+
+    kbd {
+        display: inline-block;
+        font-size: 0.8em;
+        text-align: center;
+        min-width: 1.5em;
+        padding: 0.4em 0.5em 0.3em;
+        margin: 0px 2px;
+        border-radius: 0.3em;
+        background: #ffffff;
+        -webkit-box-shadow: 0 0 1px #ffffff inset,
+            0 0 5px rgb(200, 200, 200) inset,
+            0 .1em 0 rgb(200, 200, 200),
+            0 .11em 0 rgba(0, 0, 0, .4),
+            0 .1em .2em rgba(0, 0, 0, .6);
+        box-shadow: 0 0 1px #ffffff inset,
+            0 0 5px rgb(200, 200, 200) inset,
+            0 .1em 0 rgb(200, 200, 200),
+            0 .11em 0 rgba(0, 0, 0, .4),
+            0 .1em .2em rgba(0, 0, 0, .6);
+    }
+
+    tr:hover kbd {
+        background: #f3f3f3;
+    }
+}

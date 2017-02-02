@@ -31,14 +31,10 @@ class VisualMarkdownField extends InputField
      */
     public static $assets = [
         'js' => [
-            'screenfull-2.0.0.min.js',
-            'codemirror-compressed-5.8.0.min.js',
-            'kirbytags-mode.js',
-            'visualmarkdownfield.js',
-            'visualmarkdowneditor.js',
+            'visualmarkdown.js',
         ],
         'css' => [
-            'codemirror-5.8.0.css',
+            'codemirror.css',
             'visualmarkdown.css',
         ],
     ];

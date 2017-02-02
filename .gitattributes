@@ -1,7 +1,12 @@
 /.idea export-ignore
 /bin export-ignore
+/src export-ignore
+/.editorconfig export-ignore
 /.gitattributes export-ignore
 /.gitignore export-ignore
 /.jsbeatifyrc export-ignore
 /.jshintrc export-ignore
 /.scrutinizer.yml export-ignore
+/.webpack.config.js
+/.webpack.mix.js
+/yarn.lock

@@ -1,12 +1,17 @@
-/**
- * Visual Markdown Editor Field for Kirby 2
+/*
+ * Visual Markdown Editor Field for Kirby 2.
  *
  * @version   1.5.0
  * @author    Jonas Döbertin <hello@jd-powered.net>
- * @copyright Jonas Döbertin <hello@jd-powered.net>
+ * @copyright © 2017 Jonas Döbertin
  * @link      https://github.com/JonasDoebertin/kirby-visual-markdown
  * @license   GNU GPL v3.0 <http://opensource.org/licenses/GPL-3.0>
  */
+
+import CodeMirror from 'codemirror';
+import ContinueListAddon from 'codemirror/addon/edit/continuelist';
+import KirbyTagsMode from './kirbytags-mode';
+import Screenfull from 'screenfull';
 
 /**
  * Visual Markdown Editor CodeMirror Wrapper
@@ -439,7 +444,7 @@ var VisualMarkdownEditor = function ($, field, $element, options) {
         var wrapper;
 
         // Abort if fullscreen mode isn't supported
-        if (!screenfull.enabled) {
+        if (!Screenfull.enabled) {
             return;
         }
 
@@ -447,13 +452,12 @@ var VisualMarkdownEditor = function ($, field, $element, options) {
         wrapper = $(self.codemirror.getWrapperElement()).closest('.markdownfield-wrapper');
 
         // Enable fullscreen mode
-        if (!screenfull.isFullscreen) {
-            screenfull.request(wrapper.get(0));
-
-            // Disable fullscreen mode
+        if (!Screenfull.isFullscreen) {
+            Screenfull.request(wrapper.get(0));
         }
+        // Disable fullscreen mode
         else {
-            screenfull.exit();
+            Screenfull.exit();
         }
     };
 
@@ -625,12 +629,12 @@ var VisualMarkdownEditor = function ($, field, $element, options) {
         formatting = formatting + ' ';
 
         /*
-            SPECIAL CASE: In case we're toggling header formatting and the line
-            already starts with header formatting, we'll remove the current
-            header formatting before appling the new one.
+         SPECIAL CASE: In case we're toggling header formatting and the line
+         already starts with header formatting, we'll remove the current
+         header formatting before appling the new one.
 
-            Exception: The lines current header level is the same as the new
-            formattings header level. In this case we'll only remove the current header formatting.
+         Exception: The lines current header level is the same as the new
+         formattings header level. In this case we'll only remove the current header formatting.
          */
         if (self.isHeader(line) && self.isHeader(formatting) && (self.getHeaderLevel(line) !== self.getHeaderLevel(formatting))) {
             // Remove header formatting
@@ -891,20 +895,20 @@ var VisualMarkdownEditor = function ($, field, $element, options) {
      */
     this.translateHeaderValue = function (value) {
         switch (value) {
-        case 'h6':
-            return '######';
-        case 'h5':
-            return '#####';
-        case 'h4':
-            return '####';
-        case 'h3':
-            return '###';
-        case 'h2':
-            return '##';
-        case 'h1':
-            return '#';
-        default:
-            return '#';
+            case 'h6':
+                return '######';
+            case 'h5':
+                return '#####';
+            case 'h4':
+                return '####';
+            case 'h3':
+                return '###';
+            case 'h2':
+                return '##';
+            case 'h1':
+                return '#';
+            default:
+                return '#';
         }
     };
 
@@ -972,3 +976,5 @@ var VisualMarkdownEditor = function ($, field, $element, options) {
     return this.init(options);
 
 };
+
+export default VisualMarkdownEditor;

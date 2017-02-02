@@ -1,12 +1,15 @@
-/**
- * Visual Markdown Editor Field for Kirby 2
+/*
+ * Visual Markdown Editor Field for Kirby 2.
  *
  * @version   1.5.0
  * @author    Jonas Döbertin <hello@jd-powered.net>
- * @copyright Jonas Döbertin <hello@jd-powered.net>
+ * @copyright © 2017 Jonas Döbertin
  * @link      https://github.com/JonasDoebertin/kirby-visual-markdown
  * @license   GNU GPL v3.0 <http://opensource.org/licenses/GPL-3.0>
  */
+
+import Screenfull from 'screenfull';
+import VisualMarkdownEditor from './../editor/editor';
 
 /**
  * Visual Markdown Editor Field
@@ -47,33 +50,33 @@ var VisualMarkdownField = function ($, $field) {
     this.init = function () {
 
         /*
-            Initialize VisualMarkdownEditor
+         Initialize VisualMarkdownEditor
          */
         self.editor = new VisualMarkdownEditor($, self, self.$field, self.options);
 
         /*
-            Store some references to the underlying codemirror instance
-            our field instance and the toolbar and editor elements
+         Store some references to the underlying codemirror instance
+         our field instance and the toolbar and editor elements
          */
         self.codemirror = self.editor.getCodeMirrorInstance();
         self.$toolbar = self.$field.siblings('.visualmarkdown-toolbar');
         self.$editor = self.$field.siblings('.CodeMirror');
 
         /*
-            Set up change event handler
+         Set up change event handler
          */
         self.codemirror.on('change', self.updateStorage);
 
         /*
-            Set up focus and blur event handlers
+         Set up focus and blur event handlers
          */
         self.codemirror.on('focus', self.attachFocusStyles);
         self.codemirror.on('blur', self.detachFocusStyles);
 
         /*
-            Set up fullscreen mode change event handler
+         Set up fullscreen mode change event handler
          */
-        $(document).bind(screenfull.raw.fullscreenchange, self.changeFullscreenModeHandler);
+        $(document).bind(Screenfull.raw.fullscreenchange, self.changeFullscreenModeHandler);
 
         /**
          * Make the editor field accept Kirby typical
@@ -165,12 +168,12 @@ var VisualMarkdownField = function ($, $field) {
     this.changeFullscreenModeHandler = function () {
 
         // Add indication class if fullscreen mode was entered
-        if (screenfull.isFullscreen && (screenfull.element === self.$wrapper.get(0))) {
+        if (Screenfull.isFullscreen && (Screenfull.element === self.$wrapper.get(0))) {
             self.attachFullscreenStyles();
         }
 
         // Remove indicator class if fullscreen mode was exited
-        if (!screenfull.isFullscreen) {
+        if (!Screenfull.isFullscreen) {
             self.detachFullscreenStyles();
         }
 
@@ -267,35 +270,4 @@ var VisualMarkdownField = function ($, $field) {
 
 };
 
-(function ($) {
-    'use strict';
-
-    /**
-     * Set up special "destroyed" event.
-     *
-     * @since 1.0.0
-     */
-    $.event.special.destroyed = {
-        remove: function (event) {
-            if (event.handler) {
-                event.handler.apply(this, arguments);
-            }
-        }
-    };
-
-    /**
-     * Tell the Panel to run our initialization.
-     *
-     * This callback will fire for every Visual Markdown Field
-     * on the current panel page.
-     *
-     * @see https://github.com/getkirby/panel/issues/228#issuecomment-58379016
-     * @since 1.0.0
-     */
-    $.fn.markdownfield = function () {
-        if (!this.data('initialized')) {
-            return new VisualMarkdownField($, this);
-        }
-    };
-
-})(jQuery);
+export default VisualMarkdownField;

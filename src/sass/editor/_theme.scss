@@ -1,0 +1,322 @@
+/*
+ * Visual Markdown Editor Field for Kirby 2.
+ *
+ * @version   1.5.0
+ * @author    Jonas Döbertin <hello@jd-powered.net>
+ * @copyright © 2017 Jonas Döbertin
+ * @link      https://github.com/JonasDoebertin/kirby-visual-markdown
+ * @license   GNU GPL v3.0 <http://opensource.org/licenses/GPL-3.0>
+ */
+
+/**
+ *  CODEMIRROR THEME
+ */
+.cm-s-visualmarkdown {
+    font: 1em/1.75 monospace;
+    color: #111111;
+    box-sizing: border-box;
+    height: auto;
+    margin: auto;
+    position: relative;
+    z-index: 0;
+}
+
+.cm-s-visualmarkdown div.CodeMirror-cursor {
+    border-left: 2px solid #8dae28;
+}
+
+.cm-s-visualmarkdown .CodeMirror-scroll {
+    height: auto !important;
+    overflow: visible !important;
+    box-sizing: border-box;
+    padding: 1em 2em 2em;
+    margin-bottom: 0;
+    margin-right: -2em;
+}
+
+/**
+ * MARKDOWN SYNTAX ELEMENTS
+ */
+
+/* Header 1 */
+.cm-s-visualmarkdown .cm-header-1,
+.cm-s-visualmarkdown .has-header-1 {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Header 2*/
+.cm-s-visualmarkdown .cm-header-2,
+.cm-s-visualmarkdown .has-header-2 {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Inline HTML */
+.cm-s-visualmarkdown .cm-tag,
+.cm-s-visualmarkdown .cm-attribute,
+.cm-s-visualmarkdown .cm-string {
+    color: #8dae28;
+}
+
+/* Markdown Link Captions */
+.cm-s-visualmarkdown .cm-link {
+    text-decoration: none;
+}
+
+/* Markdown Link URLs */
+.cm-s-visualmarkdown .cm-formatting-link-string + .cm-string {
+    color: #bdc3c7;
+    text-decoration: underline;
+}
+
+/* Inline Code & Code Blocks */
+.cm-s-visualmarkdown .cm-comment:not(.cm-formatting-code):not(.cm-formatting-code-block) {
+    font-family: Monaco, Consolas, monospace;
+    font-size: 90%;
+}
+
+/**
+ * KIRBYTEXT SYNTAX ELEMENTS
+ */
+.cm-s-visualmarkdown .cm-kirbytext-open,
+.cm-s-visualmarkdown .cm-kirbytext-close {
+    font-weight: bold;
+    color: #FF4136;
+}
+
+.cm-s-visualmarkdown .cm-kirbytext-attribute {
+    font-weight: bold;
+    color: #7d868c;
+}
+
+.cm-s-visualmarkdown .cm-kirbytext-value {}
+
+/**
+ * FORMATTING
+ */
+.cm-s-visualmarkdown .cm-formatting {}
+.cm-s-visualmarkdown .cm-formatting-header,
+.cm-s-visualmarkdown .cm-formatting-quote,
+.cm-s-visualmarkdown .cm-formatting-list,
+.cm-s-visualmarkdown .cm-formatting-link,
+.cm-s-visualmarkdown .cm-formatting-link-string,
+.cm-s-visualmarkdown .cm-hr,
+.cm-s-visualmarkdown .cm-formatting-code,
+.cm-s-visualmarkdown .cm-formatting-code-block,
+.cm-s-visualmarkdown .cm-formatting-task,
+.cm-s-visualmarkdown .cm-formatting-strikethrough {
+    color: #bdc3c7;
+    text-decoration: none;
+}
+
+.cm-s-visualmarkdown .cm-formatting-header-4 {
+    font-size: 80%;
+}
+.cm-s-visualmarkdown .cm-formatting-header-5 {
+    font-size: 65%;
+}
+.cm-s-visualmarkdown .cm-formatting-header-6 {
+    font-size: 55%;
+}
+
+.cm-s-visualmarkdown .cm-formatting-list-ul {
+    font-weight: bold;
+}
+
+.cm-s-visualmarkdown .cm-formatting-task {
+    font-family: Monaco, Consolas, monospace;
+    font-size: 90%;
+}
+
+.cm-s-visualmarkdown .cm-formatting-task.cm-property {
+    color: #8dae28;
+}
+
+/**
+ * Strike-Through
+ */
+.cm-s-visualmarkdown .cm-strikethrough {
+    color: #FF4136;
+}
+
+.cm-s-visualmarkdown .cm-formatting-strikethrough.cm-strikethrough {
+    color: #bdc3c7;
+}
+
+
+/**
+ * TOOLBAR THEME
+ */
+.markdownfield-wrapper .visualmarkdown-toolbar {
+    background: #ffffff;
+    border-bottom: 1px solid #efefef;
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+.markdownfield-wrapper .visualmarkdown-toolbar-fixed {
+    position: fixed;
+    top: 48px;
+    z-index: 999;
+}
+
+.markdownfield-wrapper .visualmarkdown-toolbar li {
+    display: inline-block;
+    position: relative;
+    vertical-align: top;
+}
+
+.markdownfield-wrapper .visualmarkdown-toolbar > li.visualmarkdown-action-header2 a {
+    font-family: Georgia, Garamond, serif;
+    font-size: 18px;
+}
+
+.markdownfield-wrapper .visualmarkdown-toolbar > li.visualmarkdown-action-fullscreen {
+    position: absolute;
+    right: 0;
+}
+
+.markdownfield-wrapper .visualmarkdown-toolbar > li.visualmarkdown-action-hidden {
+    display: none;
+}
+
+.markdownfield-wrapper .visualmarkdown-toolbar > li.visualmarkdown-action-divider + li {
+    padding-left: 0.5em;
+    margin-left: 0.5em;
+    border-left: 1px solid #efefef;
+}
+
+.markdownfield-wrapper .visualmarkdown-toolbar > li:nth-last-child(2) {
+    margin-right: 40px;
+}
+
+.markdownfield-wrapper .visualmarkdown-toolbar > li > a {
+    color: #8d9194;
+    cursor: pointer;
+    display: block;
+    font-size: 16px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    transition: color .2s linear;
+    width: 40px;
+}
+
+.markdownfield-wrapper .visualmarkdown-toolbar > li:hover > a {
+    color: #000000;
+}
+
+/**
+ * SUBITEMS
+ */
+.markdownfield-wrapper .visualmarkdown-toolbar ul {
+    display: none;
+    position: absolute;
+    top: 35px;
+    width: 12em;
+    background: #ffffff;
+    box-shadow: 0 2px 5px rgba(0,0,0,.3), 0 0 15px rgba(0,0,0,.2);
+    z-index: 100;
+}
+
+.markdownfield-wrapper .visualmarkdown-toolbar li:hover ul {
+    display: block;
+}
+
+.markdownfield-wrapper .visualmarkdown-toolbar ul li {
+    width: 100%;
+}
+
+.markdownfield-wrapper .visualmarkdown-toolbar ul li.visualmarkdown-action-divider {
+    display: none;
+}
+
+.markdownfield-wrapper .visualmarkdown-toolbar ul  .visualmarkdown-action-divider + li {
+    padding-top: 0.5em;
+    margin-top: 0.5em;
+    border-top: 1px solid #efefef;
+}
+
+.markdownfield-wrapper .visualmarkdown-toolbar ul li a {
+    color: #74787a;
+    cursor: pointer;
+    display: block;
+    font-size: 16px;
+    /*height: 40px;*/
+    line-height: 40px;
+    text-align: left;
+    transition: color .2s linear;
+    padding: 0 1em;
+}
+
+.markdownfield-wrapper .visualmarkdown-toolbar ul li:hover a {
+    color: #000000;
+}
+
+/**
+ * FIELD ICON
+ */
+.field-with-visualmarkdown.field-with-icon .CodeMirror-scroll {
+    margin-right: 1em;
+}
+
+.field-with-visualmarkdown.field-with-icon .field-icon {
+    z-index: 0;
+}
+
+/**
+ * MODAL
+ */
+.visualmarkdown-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    background: rgba(30, 30, 30, 0.8);
+    z-index: 1000;
+    display: none;
+}
+
+.visualmarkdown-modal-wrap {
+    position: fixed;
+    top: 50%;
+    left: 1.5em;
+    right: 1.5em;
+    background: #fff;
+    box-shadow: rgba(0, 0, 0, 0.1) 0 2px 10px;
+    overflow: auto;
+    padding: 1.5em 2em 2em;
+    z-index: 2;
+    border-radius: 3px;
+    -webkit-transform: translate(0, -50%);
+    -moz-transform: translate(0, -50%);
+    -ms-transform: translate(0, -50%);
+    transform: translate(0, -50%);
+}
+
+@media screen and (min-width: 30em) {
+    .visualmarkdown-modal-wrap {
+        left: 50%;
+        right: auto;
+        width: 28em;
+        margin: 0;
+        -webkit-transform: translate(-50%, -50%);
+        -moz-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+}
+
+.visualmarkdown-modal-title {
+    font-weight: 300;
+    font-size: 1.5em;
+    margin: 0 0 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #dddddd;
+}
