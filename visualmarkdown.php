@@ -13,4 +13,4 @@ if (!function_exists('panel')) {
     return;
 }
 
-$kirby->set('field', 'visualmarkdown', __DIR__ . DS . 'fields' . DS . 'visualmarkdown');
+$kirby->set('field', 'visualmarkdown', __DIR__ . DS . 'field');

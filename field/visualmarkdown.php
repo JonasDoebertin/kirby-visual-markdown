@@ -21,7 +21,7 @@ class VisualMarkdownField extends InputField
      *
      * @since 1.2.0
      */
-    const LANG_DIR = '..' . DS . '..' . DS . 'translations';
+    const LANG_DIR = '..' . DS . 'translations';
 
     /**
      * Define frontend assets.
