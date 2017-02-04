@@ -188,7 +188,6 @@ class VisualMarkdownField extends InputField
 
             case 'header1':
             case 'header2':
-                echo $option; die;
                 $this->validateHeaderOption($option, $value);
                 break;
 
