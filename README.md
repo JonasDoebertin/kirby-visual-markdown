@@ -86,6 +86,17 @@ You don't have to change your templates in order to support this field. Just use
 </article>
 ```
 
+## Global Configuration
+
+You may specify the default header levels to be used with the *H1* and *H2* toolbar buttons (`h1` to `h6`) globally in your sites `config.php` file.
+
+```php
+c::set('plugin.visualmarkdown.header1', 'h2');
+c::set('plugin.visualmarkdown.header2', 'h3');
+```
+
+Please note that redefining the header levels on a per template level in your blueprints (see below) will always take precedence over these default values.
+
 ## Options
 
 ### toolbar

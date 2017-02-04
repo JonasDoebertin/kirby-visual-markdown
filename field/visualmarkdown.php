@@ -157,6 +157,13 @@ class VisualMarkdownField extends InputField
         } else {
             $this->translation = include $langDir . 'en.php';
         }
+
+        // Apply default header values from configuration
+        $this->header1 = c::get('plugin.visualmarkdown.header1');
+        $this->validateHeaderOption('header1', $this->header1);
+
+        $this->header2 = c::get('plugin.visualmarkdown.header2');
+        $this->validateHeaderOption('header2', $this->header2);
     }
 
     /**
@@ -181,6 +188,7 @@ class VisualMarkdownField extends InputField
 
             case 'header1':
             case 'header2':
+                echo $option; die;
                 $this->validateHeaderOption($option, $value);
                 break;
 
