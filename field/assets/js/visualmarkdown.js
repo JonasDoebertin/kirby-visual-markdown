@@ -10813,11 +10813,11 @@ __WEBPACK_IMPORTED_MODULE_0_codemirror___default.a.defineMode('kirbytext', funct
         start: [
         // Match a Kirbytext tags opening bracket
         {
-            regex: /[^\]]\((?=[a-z0-9]+:)/i,
+            regex: /[^\]]\((?=[a-z0-9-]+:)/i,
             token: 'kirbytext-open',
             next: 'attribute'
         }, {
-            regex: /\((?=[a-z0-9]+:)/i,
+            regex: /\((?=[a-z0-9-]+:)/i,
             sol: true,
             token: 'kirbytext-open',
             next: 'attribute'
@@ -10826,7 +10826,7 @@ __WEBPACK_IMPORTED_MODULE_0_codemirror___default.a.defineMode('kirbytext', funct
         attribute: [
         // Match a Kirbytext tags attributes
         {
-            regex: /[a-z0-9]+: ?(?!\/\/)/i,
+            regex: /[a-z0-9-]+: ?(?!\/\/)/i,
             token: 'kirbytext-attribute',
             next: 'value'
         },
@@ -10847,6 +10847,12 @@ __WEBPACK_IMPORTED_MODULE_0_codemirror___default.a.defineMode('kirbytext', funct
             regex: /[^\)]+?(?=\))/i,
             token: 'kirbytext-value',
             next: 'attribute'
+        },
+        // Match a Kirbytext tags closing bracket
+        {
+            regex: /\)/,
+            token: 'kirbytext-close',
+            next: 'start'
         }],
         meta: {}
 
