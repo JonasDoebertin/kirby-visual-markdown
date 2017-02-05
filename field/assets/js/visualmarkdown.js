@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "./";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 14);
+/******/ 	return __webpack_require__(__webpack_require__.s = 16);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -9741,7 +9741,7 @@ if (!CodeMirror.mimeModes.hasOwnProperty("text/html"))
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(jQuery) {Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__field_field__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__field_field__ = __webpack_require__(9);
 /*!
  * Visual Markdown Editor Field for Kirby 2.
  *
@@ -9781,7 +9781,7 @@ jQuery.fn.markdownfield = function () {
         return new __WEBPACK_IMPORTED_MODULE_0__field_field__["a" /* default */](jQuery, this);
     }
 };
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(13)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(15)))
 
 /***/ }),
 /* 4 */
@@ -9796,11 +9796,13 @@ jQuery.fn.markdownfield = function () {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_codemirror__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_codemirror___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_codemirror__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_codemirror_addon_edit_continuelist__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_codemirror_addon_edit_continuelist__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_codemirror_addon_edit_continuelist___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_codemirror_addon_edit_continuelist__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__kirbytags_mode__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_screenfull__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_screenfull___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_screenfull__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__keymaps__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__kirbytags_mode__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_screenfull__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_screenfull___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_screenfull__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__tools__ = __webpack_require__(8);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 /*
@@ -9812,6 +9814,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
  * @link      https://github.com/JonasDoebertin/kirby-visual-markdown
  * @license   GNU GPL v3.0 <http://opensource.org/licenses/GPL-3.0>
  */
+
+
 
 
 
@@ -10067,102 +10071,6 @@ var VisualMarkdownEditor = function VisualMarkdownEditor($, field, $element, opt
     };
 
     /**
-     * Toolbar Icons
-     *
-     * @since 1.2.0
-     */
-    this.tools = [{
-        action: 'header1',
-        className: 'fa fa-header'
-    }, {
-        action: 'header2',
-        className: 'markdownfield-icon-text markdownfield-icon-header2',
-        showName: true
-    }, {
-        action: 'divider'
-    }, {
-        action: 'bold',
-        className: 'fa fa-bold'
-    }, {
-        action: 'italic',
-        className: 'fa fa-italic'
-    }, {
-        action: 'strikethrough',
-        className: 'fa fa-strikethrough'
-    }, {
-        action: 'blockquote',
-        className: 'fa fa-quote-left'
-    }, {
-        action: 'unorderedList',
-        className: 'fa fa-list'
-    }, {
-        action: 'orderedList',
-        className: 'fa fa-list-ol'
-    }, {
-        action: 'divider'
-    }, {
-        action: 'link',
-        className: 'fa fa-link'
-    }, {
-        action: 'email',
-        className: 'fa fa-envelope'
-    }, {
-        action: 'image',
-        className: 'fa fa-image'
-    }, {
-        action: 'line',
-        className: 'fa fa-minus'
-    }, {
-        action: 'divider'
-    }, {
-        action: 'help',
-        className: 'fa fa-question-circle',
-        nested: [{
-            action: 'shortcutsModal',
-            showName: true
-        }, {
-            action: 'markdownLink',
-            showName: true
-        }, {
-            action: 'kirbytextLink',
-            showName: true
-        }, {
-            action: 'divider'
-        }, {
-            action: 'issuesLink',
-            showName: true
-        }, {
-            action: 'licenseLink',
-            showName: true
-        }]
-    }];
-
-    /**
-     * Keymaps
-     *
-     * @since 1.2.0
-     */
-    this.keyMaps = {
-        'Cmd-H': 'header1',
-        'Ctrl-H': 'header1',
-        'Cmd-Alt-H': 'header2',
-        'Ctrl-Alt-H': 'header2',
-        'Cmd-B': 'bold',
-        'Ctrl-B': 'bold',
-        'Cmd-I': 'italic',
-        'Ctrl-I': 'italic',
-        'Ctrl-Alt-U': 'strikethrough',
-        'Ctrl-Q': 'blockquote',
-        'Ctrl-L': 'unorderedList',
-        'Ctrl-Alt-L': 'orderedList',
-        'Ctrl-Alt-I': 'image',
-        'Cmd-K': 'link',
-        'Ctrl-K': 'link',
-        'Cmd-E': 'email',
-        'Ctrl-E': 'email'
-    };
-
-    /**
      * Initialization
      *
      * @since 1.2.0
@@ -10172,7 +10080,7 @@ var VisualMarkdownEditor = function VisualMarkdownEditor($, field, $element, opt
         self.options = $.extend({}, self.defaults, options);
 
         // Register key bindings
-        self.registerKeyMaps(self.keyMaps);
+        self.registerKeyMaps(__WEBPACK_IMPORTED_MODULE_2__keymaps__["a" /* default */]);
 
         // Check if readonly option is set
         if (self.options.readonly) {
@@ -10185,7 +10093,7 @@ var VisualMarkdownEditor = function VisualMarkdownEditor($, field, $element, opt
 
         // Initialize toolbar
         if (!self.isSafari) {
-            self.tools.push({
+            __WEBPACK_IMPORTED_MODULE_5__tools__["a" /* default */].push({
                 name: 'fullscreen',
                 action: 'fullscreen',
                 className: 'fa fa-expand'
@@ -10223,7 +10131,7 @@ var VisualMarkdownEditor = function VisualMarkdownEditor($, field, $element, opt
      */
     this.initToolbar = function () {
         var toolbar = $('<ul>').addClass('visualmarkdown-toolbar'),
-            tools = self.generateToolbarItems(self.tools),
+            tools = self.generateToolbarItems(__WEBPACK_IMPORTED_MODULE_5__tools__["a" /* default */]),
             wrapper = self.codemirror.getWrapperElement();
 
         tools.forEach(function (tool) {
@@ -10241,15 +10149,15 @@ var VisualMarkdownEditor = function VisualMarkdownEditor($, field, $element, opt
     this.registerKeyMaps = function () {
         var name, obj;
 
-        for (name in self.keyMaps) {
-            if (self.keyMaps.hasOwnProperty(name)) {
+        for (name in __WEBPACK_IMPORTED_MODULE_2__keymaps__["a" /* default */]) {
+            if (__WEBPACK_IMPORTED_MODULE_2__keymaps__["a" /* default */].hasOwnProperty(name)) {
                 // Abort if action doesn't have a callback
-                if (_typeof(self.actions[self.keyMaps[name]]) !== 'object') {
-                    throw 'VisualMarkdownEditor: \"' + self.keyMaps[name] + '\" is not a registered action';
+                if (_typeof(self.actions[__WEBPACK_IMPORTED_MODULE_2__keymaps__["a" /* default */][name]]) !== 'object') {
+                    throw 'VisualMarkdownEditor: \"' + __WEBPACK_IMPORTED_MODULE_2__keymaps__["a" /* default */][name] + '\" is not a registered action';
                 }
 
                 obj = {};
-                obj[name] = self.actions[self.keyMaps[name]].callback.bind(self);
+                obj[name] = self.actions[__WEBPACK_IMPORTED_MODULE_2__keymaps__["a" /* default */][name]].callback.bind(self);
                 $.extend(self.options.codemirror.extraKeys, obj);
             }
         }
@@ -10335,7 +10243,7 @@ var VisualMarkdownEditor = function VisualMarkdownEditor($, field, $element, opt
         var wrapper;
 
         // Abort if fullscreen mode isn't supported
-        if (!__WEBPACK_IMPORTED_MODULE_3_screenfull___default.a.enabled) {
+        if (!__WEBPACK_IMPORTED_MODULE_4_screenfull___default.a.enabled) {
             return;
         }
 
@@ -10343,12 +10251,12 @@ var VisualMarkdownEditor = function VisualMarkdownEditor($, field, $element, opt
         wrapper = $(self.codemirror.getWrapperElement()).closest('.markdownfield-wrapper');
 
         // Enable fullscreen mode
-        if (!__WEBPACK_IMPORTED_MODULE_3_screenfull___default.a.isFullscreen) {
-            __WEBPACK_IMPORTED_MODULE_3_screenfull___default.a.request(wrapper.get(0));
+        if (!__WEBPACK_IMPORTED_MODULE_4_screenfull___default.a.isFullscreen) {
+            __WEBPACK_IMPORTED_MODULE_4_screenfull___default.a.request(wrapper.get(0));
         }
         // Disable fullscreen mode
         else {
-                __WEBPACK_IMPORTED_MODULE_3_screenfull___default.a.exit();
+                __WEBPACK_IMPORTED_MODULE_4_screenfull___default.a.exit();
             }
     };
 
@@ -10865,13 +10773,53 @@ var VisualMarkdownEditor = function VisualMarkdownEditor($, field, $element, opt
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/*
+ * Visual Markdown Editor Field for Kirby 2.
+ *
+ * @version   1.5.0
+ * @author    Jonas Döbertin <hello@jd-powered.net>
+ * @copyright © 2017 Jonas Döbertin
+ * @link      https://github.com/JonasDoebertin/kirby-visual-markdown
+ * @license   GNU GPL v3.0 <http://opensource.org/licenses/GPL-3.0>
+ */
+
+/**
+ * Keymaps
+ *
+ * @since 1.2.0
+ */
+/* harmony default export */ __webpack_exports__["a"] = {
+  'Cmd-H': 'header1',
+  'Ctrl-H': 'header1',
+  'Cmd-Alt-H': 'header2',
+  'Ctrl-Alt-H': 'header2',
+  'Cmd-B': 'bold',
+  'Ctrl-B': 'bold',
+  'Cmd-I': 'italic',
+  'Ctrl-I': 'italic',
+  'Ctrl-Alt-U': 'strikethrough',
+  'Ctrl-Q': 'blockquote',
+  'Ctrl-L': 'unorderedList',
+  'Ctrl-Alt-L': 'orderedList',
+  'Ctrl-Alt-I': 'image',
+  'Cmd-K': 'link',
+  'Ctrl-K': 'link',
+  'Cmd-E': 'email',
+  'Ctrl-E': 'email'
+};
+
+/***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_codemirror__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_codemirror___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_codemirror__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_codemirror_mode_markdown_markdown__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_codemirror_mode_markdown_markdown__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_codemirror_mode_markdown_markdown___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_codemirror_mode_markdown_markdown__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_codemirror_addon_mode_overlay__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_codemirror_addon_mode_overlay__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_codemirror_addon_mode_overlay___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_codemirror_addon_mode_overlay__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_codemirror_addon_mode_simple__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_codemirror_addon_mode_simple__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_codemirror_addon_mode_simple___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_codemirror_addon_mode_simple__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_codemirror_mode_xml_xml__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_codemirror_mode_xml_xml___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_codemirror_mode_xml_xml__);
@@ -10955,7 +10903,93 @@ __WEBPACK_IMPORTED_MODULE_0_codemirror___default.a.defineMode('kirbytext', funct
 });
 
 /***/ }),
-/* 7 */
+/* 8 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/*
+ * Visual Markdown Editor Field for Kirby 2.
+ *
+ * @version   1.5.0
+ * @author    Jonas Döbertin <hello@jd-powered.net>
+ * @copyright © 2017 Jonas Döbertin
+ * @link      https://github.com/JonasDoebertin/kirby-visual-markdown
+ * @license   GNU GPL v3.0 <http://opensource.org/licenses/GPL-3.0>
+ */
+
+/**
+ * Toolbar Icons
+ *
+ * @since 1.2.0
+ */
+/* harmony default export */ __webpack_exports__["a"] = [{
+    action: 'header1',
+    className: 'fa fa-header'
+}, {
+    action: 'header2',
+    className: 'markdownfield-icon-text markdownfield-icon-header2',
+    showName: true
+}, {
+    action: 'divider'
+}, {
+    action: 'bold',
+    className: 'fa fa-bold'
+}, {
+    action: 'italic',
+    className: 'fa fa-italic'
+}, {
+    action: 'strikethrough',
+    className: 'fa fa-strikethrough'
+}, {
+    action: 'blockquote',
+    className: 'fa fa-quote-left'
+}, {
+    action: 'unorderedList',
+    className: 'fa fa-list'
+}, {
+    action: 'orderedList',
+    className: 'fa fa-list-ol'
+}, {
+    action: 'divider'
+}, {
+    action: 'link',
+    className: 'fa fa-link'
+}, {
+    action: 'email',
+    className: 'fa fa-envelope'
+}, {
+    action: 'image',
+    className: 'fa fa-image'
+}, {
+    action: 'line',
+    className: 'fa fa-minus'
+}, {
+    action: 'divider'
+}, {
+    action: 'help',
+    className: 'fa fa-question-circle',
+    nested: [{
+        action: 'shortcutsModal',
+        showName: true
+    }, {
+        action: 'markdownLink',
+        showName: true
+    }, {
+        action: 'kirbytextLink',
+        showName: true
+    }, {
+        action: 'divider'
+    }, {
+        action: 'issuesLink',
+        showName: true
+    }, {
+        action: 'licenseLink',
+        showName: true
+    }]
+}];
+
+/***/ }),
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11232,7 +11266,7 @@ var VisualMarkdownField = function VisualMarkdownField($, $field) {
 /* harmony default export */ __webpack_exports__["a"] = VisualMarkdownField;
 
 /***/ }),
-/* 8 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -11289,7 +11323,7 @@ var VisualMarkdownField = function VisualMarkdownField($, $field) {
 
 
 /***/ }),
-/* 9 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -11385,7 +11419,7 @@ CodeMirror.overlayMode = function(base, overlay, combine) {
 
 
 /***/ }),
-/* 10 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -11604,7 +11638,7 @@ CodeMirror.overlayMode = function(base, overlay, combine) {
 
 
 /***/ }),
-/* 11 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -11612,7 +11646,7 @@ CodeMirror.overlayMode = function(base, overlay, combine) {
 
 (function(mod) {
   if (true) // CommonJS
-    mod(__webpack_require__(0), __webpack_require__(1), __webpack_require__(12));
+    mod(__webpack_require__(0), __webpack_require__(1), __webpack_require__(14));
   else if (typeof define == "function" && define.amd) // AMD
     define(["../../lib/codemirror", "../xml/xml", "../meta"], mod);
   else // Plain browser env
@@ -12423,7 +12457,7 @@ CodeMirror.defineMIME("text/x-markdown", "markdown");
 
 
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -12641,13 +12675,13 @@ CodeMirror.defineMIME("text/x-markdown", "markdown");
 
 
 /***/ }),
-/* 13 */
+/* 15 */
 /***/ (function(module, exports) {
 
 module.exports = jQuery;
 
 /***/ }),
-/* 14 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(3);

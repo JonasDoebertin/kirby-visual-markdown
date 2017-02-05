@@ -10,6 +10,7 @@
 
 import CodeMirror from 'codemirror';
 import ContinueListAddon from 'codemirror/addon/edit/continuelist';
+import Keymaps from './keymaps';
 import KirbyTagsMode from './kirbytags-mode';
 import Screenfull from 'screenfull';
 import Tools from './tools';
@@ -266,31 +267,6 @@ var VisualMarkdownEditor = function ($, field, $element, options) {
     };
 
     /**
-     * Keymaps
-     *
-     * @since 1.2.0
-     */
-    this.keyMaps = {
-        'Cmd-H': 'header1',
-        'Ctrl-H': 'header1',
-        'Cmd-Alt-H': 'header2',
-        'Ctrl-Alt-H': 'header2',
-        'Cmd-B': 'bold',
-        'Ctrl-B': 'bold',
-        'Cmd-I': 'italic',
-        'Ctrl-I': 'italic',
-        'Ctrl-Alt-U': 'strikethrough',
-        'Ctrl-Q': 'blockquote',
-        'Ctrl-L': 'unorderedList',
-        'Ctrl-Alt-L': 'orderedList',
-        'Ctrl-Alt-I': 'image',
-        'Cmd-K': 'link',
-        'Ctrl-K': 'link',
-        'Cmd-E': 'email',
-        'Ctrl-E': 'email',
-    };
-
-    /**
      * Initialization
      *
      * @since 1.2.0
@@ -300,7 +276,7 @@ var VisualMarkdownEditor = function ($, field, $element, options) {
         self.options = $.extend({}, self.defaults, options);
 
         // Register key bindings
-        self.registerKeyMaps(self.keyMaps);
+        self.registerKeyMaps(Keymaps);
 
         // Check if readonly option is set
         if (self.options.readonly) {
@@ -369,15 +345,15 @@ var VisualMarkdownEditor = function ($, field, $element, options) {
     this.registerKeyMaps = function () {
         var name, obj;
 
-        for (name in self.keyMaps) {
-            if (self.keyMaps.hasOwnProperty(name)) {
+        for (name in Keymaps) {
+            if (Keymaps.hasOwnProperty(name)) {
                 // Abort if action doesn't have a callback
-                if (typeof (self.actions[self.keyMaps[name]]) !== 'object') {
-                    throw 'VisualMarkdownEditor: \"' + self.keyMaps[name] + '\" is not a registered action';
+                if (typeof (self.actions[Keymaps[name]]) !== 'object') {
+                    throw 'VisualMarkdownEditor: \"' + Keymaps[name] + '\" is not a registered action';
                 }
 
                 obj = {};
-                obj[name] = self.actions[self.keyMaps[name]].callback.bind(self);
+                obj[name] = self.actions[Keymaps[name]].callback.bind(self);
                 $.extend(self.options.codemirror.extraKeys, obj);
             }
         }
