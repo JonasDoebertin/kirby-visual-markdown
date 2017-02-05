@@ -64,6 +64,7 @@ var VisualMarkdownEditor = function ($, field, $element, options) {
      * Default options
      */
     this.defaults = {
+        readonly: false,
         toolbar: true,
         header1: 'h1',
         header2: 'h2',
@@ -73,6 +74,7 @@ var VisualMarkdownEditor = function ($, field, $element, options) {
             tabSize: 4,
             indentWithTabs: false,
             lineWrapping: true,
+            readOnly: false,
             extraKeys: {
                 'Enter': 'newlineAndIndentContinueMarkdownList',
                 'Alt-Enter': function () {
@@ -105,80 +107,160 @@ var VisualMarkdownEditor = function ($, field, $element, options) {
      * @since 1.2.0
      */
     this.actions = {
-        header1: function () {
-            var header = self.translateHeaderValue(self.options.header1);
-            self.toggleBefore(header, false);
-        },
-        header2: function () {
-            var header = self.translateHeaderValue(self.options.header2);
-            self.toggleBefore(header, false);
-        },
-        bold: function () {
-            self.toggleAround('**', '**');
-        },
-        italic: function () {
-            self.toggleAround('*', '*');
-        },
-        strikethrough: function () {
-            self.toggleAround('~~', '~~');
-        },
-        blockquote: function () {
-            self.toggleBefore('>', false);
-        },
-        orderedList: function () {
-            self.insertBefore('1. ', 3);
-        },
-        unorderedList: function () {
-            self.toggleBefore('*', true);
-        },
-        link: function () {
-            if (self.options.kirbytext) {
-                self.insertAround('(link: http:// text: ', ')');
-            }
-            else {
-                self.insertAround('[', '](http://)');
+        header1: {
+            optional: true,
+            type: 'editor',
+            callback() {
+                let header = self.translateHeaderValue(self.options.header1);
+                self.toggleBefore(header, false);
             }
         },
-        email: function () {
-            if (self.options.kirbytext) {
-                self.insertAround('(email: user@example.com text: ', ')');
-            }
-            else {
-                self.insert('<user@example.com>');
-            }
-        },
-        image: function () {
-            if (self.options.kirbytext) {
-                self.insert('(image: filename.jpg)');
-            }
-            else {
-                self.insert('![alt text](http://)');
+        header2: {
+            optional: true,
+            type: 'editor',
+            callback() {
+                var header = self.translateHeaderValue(self.options.header2);
+                self.toggleBefore(header, false);
             }
         },
-        line: function () {
-            self.insert('****');
+        bold: {
+            optional: true,
+            type: 'editor',
+            callback() {
+                self.toggleAround('**', '**');
+            }
         },
-        code: function () {
-            self.insertAround('```\r\n', '\r\n```');
+        italic: {
+            optional: true,
+            type: 'editor',
+            callback() {
+                self.toggleAround('*', '*');
+            }
         },
-        shortcutsModal: function () {
-            self.showShortcutsModal();
+        strikethrough: {
+            optional: true,
+            type: 'editor',
+            callback() {
+                self.toggleAround('~~', '~~');
+            }
         },
-        markdownLink: function () {
-            window.open('http://daringfireball.net/projects/markdown/syntax');
+        blockquote: {
+            optional: true,
+            type: 'editor',
+            callback() {
+                self.toggleBefore('>', false);
+            }
         },
-        kirbytextLink: function () {
-            window.open('http://getkirby.com/docs/content/text');
+        orderedList: {
+            optional: true,
+            type: 'editor',
+            callback() {
+                self.insertBefore('1. ', 3);
+            }
         },
-        issuesLink: function () {
-            window.open('https://github.com/JonasDoebertin/kirby-visual-markdown/issues');
+        unorderedList: {
+            optional: true,
+            type: 'editor',
+            callback() {
+                self.toggleBefore('*', true);
+            }
         },
-        licenseLink: function () {
-            window.open('https://gumroad.com/l/visualmarkdown');
+        link: {
+            optional: true,
+            type: 'editor',
+            callback() {
+                if (self.options.kirbytext) {
+                    self.insertAround('(link: http:// text: ', ')');
+                }
+                else {
+                    self.insertAround('[', '](http://)');
+                }
+            }
         },
-        help: function () {},
-        fullscreen: function () {
-            self.toggleFullscreenMode();
+        email: {
+            optional: true,
+            type: 'editor',
+            callback() {
+                if (self.options.kirbytext) {
+                    self.insertAround('(email: user@example.com text: ', ')');
+                }
+                else {
+                    self.insert('<user@example.com>');
+                }
+            }
+        },
+        image: {
+            optional: true,
+            type: 'editor',
+            callback() {
+                if (self.options.kirbytext) {
+                    self.insert('(image: filename.jpg)');
+                }
+                else {
+                    self.insert('![alt text](http://)');
+                }
+            }
+        },
+        line: {
+            optional: true,
+            type: 'editor',
+            callback() {
+                self.insert('****');
+            }
+        },
+        code: {
+            optional: true,
+            type: 'editor',
+            callback() {
+                self.insertAround('```\r\n', '\r\n```');
+            }
+        },
+        shortcutsModal: {
+            optional: false,
+            type: 'help',
+            callback() {
+                self.showShortcutsModal();
+            }
+        },
+        markdownLink: {
+            optional: true,
+            type: 'help',
+            callback() {
+                window.open('http://daringfireball.net/projects/markdown/syntax');
+            }
+        },
+        kirbytextLink: {
+            optional: true,
+            type: 'help',
+            callback() {
+                window.open('http://getkirby.com/docs/content/text');
+            }
+        },
+        issuesLink: {
+            optional: true,
+            type: 'help',
+            callback() {
+                window.open('https://github.com/JonasDoebertin/kirby-visual-markdown/issues');
+            }
+        },
+        licenseLink: {
+            optional: true,
+            type: 'help',
+            callback() {
+                window.open('https://gumroad.com/l/visualmarkdown');
+            }
+        },
+        help: {
+            optional: true,
+            type: 'help',
+            callback() {}
+        },
+        fullscreen: {
+            optional: false,
+            type: 'display',
+            callback() {
+                self.toggleFullscreenMode();
+            }
         }
     };
 
@@ -290,6 +372,11 @@ var VisualMarkdownEditor = function ($, field, $element, options) {
         // Register key bindings
         self.registerKeyMaps(self.keyMaps);
 
+        // Check if readonly option is set
+        if (self.options.readonly) {
+            self.options.codemirror.readOnly = 'nocursor';
+        }
+
         // Initialize CodeMirror
         self.codemirror = CodeMirror.fromTextArea(self.$element.get(0), self.options.codemirror);
         self.$wrapper = $(self.codemirror.getWrapperElement());
@@ -355,12 +442,12 @@ var VisualMarkdownEditor = function ($, field, $element, options) {
         for (name in self.keyMaps) {
             if (self.keyMaps.hasOwnProperty(name)) {
                 // Abort if action doesn't have a callback
-                if (typeof (self.actions[self.keyMaps[name]]) !== 'function') {
+                if (typeof (self.actions[self.keyMaps[name]]) !== 'object') {
                     throw 'VisualMarkdownEditor: \"' + self.keyMaps[name] + '\" is not a registered action';
                 }
 
                 obj = {};
-                obj[name] = self.actions[self.keyMaps[name]].bind(self);
+                obj[name] = self.actions[self.keyMaps[name]].callback.bind(self);
                 $.extend(self.options.codemirror.extraKeys, obj);
             }
         }
@@ -414,8 +501,10 @@ var VisualMarkdownEditor = function ($, field, $element, options) {
                     self.field.inAction = true;
                 });
                 $anchor.on('click', function (event) {
-                    self.codemirror.focus();
-                    self.actions[tool.action].call(self);
+                    if (!self.options.readonly) {
+                        self.codemirror.focus();
+                        self.actions[tool.action].callback.call(self);
+                    }
                     self.field.inAction = false;
                     event.preventDefault();
                 });

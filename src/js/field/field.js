@@ -35,6 +35,7 @@ var VisualMarkdownField = function ($, $field) {
     this.isFullscreen = false;
 
     this.options = {
+        readonly: $field.is('[readonly]'),
         toolbar: $field.data('toolbar'),
         header1: $field.data('header1'),
         header2: $field.data('header2'),
