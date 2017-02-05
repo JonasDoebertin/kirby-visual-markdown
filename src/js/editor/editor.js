@@ -12,6 +12,7 @@ import CodeMirror from 'codemirror';
 import ContinueListAddon from 'codemirror/addon/edit/continuelist';
 import KirbyTagsMode from './kirbytags-mode';
 import Screenfull from 'screenfull';
+import Tools from './tools';
 
 /**
  * Visual Markdown Editor CodeMirror Wrapper
@@ -265,77 +266,6 @@ var VisualMarkdownEditor = function ($, field, $element, options) {
     };
 
     /**
-     * Toolbar Icons
-     *
-     * @since 1.2.0
-     */
-    this.tools = [{
-        action: 'header1',
-        className: 'fa fa-header',
-    }, {
-        action: 'header2',
-        className: 'markdownfield-icon-text markdownfield-icon-header2',
-        showName: true,
-    }, {
-        action: 'divider'
-    }, {
-        action: 'bold',
-        className: 'fa fa-bold'
-    }, {
-        action: 'italic',
-        className: 'fa fa-italic'
-    }, {
-        action: 'strikethrough',
-        className: 'fa fa-strikethrough'
-    }, {
-        action: 'blockquote',
-        className: 'fa fa-quote-left'
-    }, {
-        action: 'unorderedList',
-        className: 'fa fa-list'
-    }, {
-        action: 'orderedList',
-        className: 'fa fa-list-ol'
-    }, {
-        action: 'divider'
-    }, {
-        action: 'link',
-        className: 'fa fa-link'
-    }, {
-        action: 'email',
-        className: 'fa fa-envelope'
-    }, {
-        action: 'image',
-        className: 'fa fa-image'
-    }, {
-        action: 'line',
-        className: 'fa fa-minus'
-    }, {
-        action: 'divider'
-    }, {
-        action: 'help',
-        className: 'fa fa-question-circle',
-        nested: [{
-            action: 'shortcutsModal',
-            showName: true
-        }, {
-            action: 'markdownLink',
-            showName: true
-        }, {
-            action: 'kirbytextLink',
-            showName: true
-        }, {
-            action: 'divider'
-        }, {
-            action: 'issuesLink',
-            showName: true
-        }, {
-            action: 'licenseLink',
-            showName: true
-        }]
-    }];
-
-    /**
      * Keymaps
      *
      * @since 1.2.0
@@ -383,7 +313,7 @@ var VisualMarkdownEditor = function ($, field, $element, options) {
 
         // Initialize toolbar
         if (!self.isSafari) {
-            self.tools.push({
+            Tools.push({
                 name: 'fullscreen',
                 action: 'fullscreen',
                 className: 'fa fa-expand'
@@ -421,7 +351,7 @@ var VisualMarkdownEditor = function ($, field, $element, options) {
      */
     this.initToolbar = function () {
         var toolbar = $('<ul>').addClass('visualmarkdown-toolbar'),
-            tools = self.generateToolbarItems(self.tools),
+            tools = self.generateToolbarItems(Tools),
             wrapper = self.codemirror.getWrapperElement();
 
         tools.forEach(function (tool) {
