@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 
+* Global header level configuration (in config.php)
+
 ### Changed
 
 * Updated to CodeMirror 5.23
