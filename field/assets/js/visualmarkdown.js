@@ -10996,6 +10996,10 @@ __WEBPACK_IMPORTED_MODULE_0_codemirror___default.a.defineMode('kirbytext', funct
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_screenfull__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_screenfull___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_screenfull__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__editor_editor__ = __webpack_require__(5);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 /*
  * Visual Markdown Editor Field for Kirby 2.
  *
@@ -11013,212 +11017,242 @@ __WEBPACK_IMPORTED_MODULE_0_codemirror___default.a.defineMode('kirbytext', funct
  * Visual Markdown Editor Field
  *
  * @since 1.0.0
+ * @since 1.6.0 Upgraded to ES6 class
  */
-var VisualMarkdownField = function VisualMarkdownField($, $field) {
-    'use strict';
 
-    var self = this;
+var _class = function () {
+  /**
+   * Initialize editor field.
+   *
+   * @since 1.0.0
+   * @since 1.6.0 Upgraded to ES6 class constructor
+   *
+   * @param $
+   * @param $field
+   */
+  function _class($, $field) {
+    var _this = this;
 
+    _classCallCheck(this, _class);
+
+    /*
+     Prepare some jQuery elements for later reference
+     */
     this.$field = $field;
-    this.$draggable = $('.sidebar').find('.draggable');
     this.$wrapper = $field.closest('.markdownfield-wrapper');
-    this.$toolbar = null;
-    this.$editor = null;
+    this.$draggable = $('.sidebar').find('.draggable');
 
-    this.editor = null;
-
+    /*
+     Initialize state flags
+     */
     this.inAction = false;
     this.isFixed = false;
     this.isFocused = false;
     this.isFullscreen = false;
 
-    this.options = {
-        readonly: $field.is('[readonly]'),
-        toolbar: $field.data('toolbar'),
-        header1: $field.data('header1'),
-        header2: $field.data('header2'),
-        tools: $field.data('tools').split(','),
-        kirbytext: $field.data('kirbytext')
-    };
+    /*
+     Initialize VisualMarkdownEditor
+     */
+    this.editor = new __WEBPACK_IMPORTED_MODULE_1__editor_editor__["a" /* default */]($, this, this.$field, {
+      readonly: this.$field.is('[readonly]'),
+      toolbar: this.$field.data('toolbar'),
+      header1: this.$field.data('header1'),
+      header2: this.$field.data('header2'),
+      tools: this.$field.data('tools').split(','),
+      kirbytext: this.$field.data('kirbytext')
+    });
+
+    /*
+     Store some references to the underlying CodeMirror instance,
+     our field instance and the toolbar and editor elements
+     */
+    this.codemirror = this.editor.getCodeMirrorInstance();
+    this.$toolbar = this.$field.siblings('.visualmarkdown-toolbar');
+    this.$editor = this.$field.siblings('.CodeMirror');
+
+    /*
+     Set up change event handler
+     */
+    this.codemirror.on('change', this.updateStorage.bind(this));
+
+    /*
+     Set up focus and blur event handlers
+     */
+    this.codemirror.on('focus', this.attachFocusStyles.bind(this));
+    this.codemirror.on('blur', this.detachFocusStyles.bind(this));
+
+    /*
+     Set up fullscreen mode change event handler
+     */
+    $(document).bind(__WEBPACK_IMPORTED_MODULE_0_screenfull___default.a.raw.fullscreenchange, this.changeFullscreenModeHandler.bind(this));
 
     /**
-     * Initialize editor field
+     * Make the editor field accept Kirby typical
+     * file/page drag and drop events.
      *
      * @since 1.0.0
      */
-    this.init = function () {
-
-        /*
-         Initialize VisualMarkdownEditor
-         */
-        self.editor = new __WEBPACK_IMPORTED_MODULE_1__editor_editor__["a" /* default */]($, self, self.$field, self.options);
-
-        /*
-         Store some references to the underlying codemirror instance
-         our field instance and the toolbar and editor elements
-         */
-        self.codemirror = self.editor.getCodeMirrorInstance();
-        self.$toolbar = self.$field.siblings('.visualmarkdown-toolbar');
-        self.$editor = self.$field.siblings('.CodeMirror');
-
-        /*
-         Set up change event handler
-         */
-        self.codemirror.on('change', self.updateStorage);
-
-        /*
-         Set up focus and blur event handlers
-         */
-        self.codemirror.on('focus', self.attachFocusStyles);
-        self.codemirror.on('blur', self.detachFocusStyles);
-
-        /*
-         Set up fullscreen mode change event handler
-         */
-        $(document).bind(__WEBPACK_IMPORTED_MODULE_0_screenfull___default.a.raw.fullscreenchange, self.changeFullscreenModeHandler);
-
-        /**
-         * Make the editor field accept Kirby typical
-         * file/page drag and drop events.
-         *
-         * @since 1.0.0
-         */
-        self.$wrapper.droppable({
-            hoverClass: 'markdownfield-wrapper-over',
-            accept: self.draggable,
-            drop: function drop(event, element) {
-                self.editor.insert(element.draggable.data('text'));
-            }
-        });
-
-        /**
-         * Observe page scroll events to switch to sticky toolbar
-         *
-         * @since 1.4.0
-         */
-        $('.mainbar').scroll(function () {
-
-            /**
-             * Switch to fixed toolbar, if
-             * - the fullscreen mode isn't enabled
-             * - the toolbar isn't fixed already
-             * - the scroll position is within the fields wrapper
-             * - the field is focused
-             */
-            if (!self.isFullscreen && !self.isFixed && self.scrollTopWithinWrapper() && self.isFocused) {
-                self.enableFixedToolbar();
-            }
-
-            /**
-             * Switch back to regular toolbar, if
-             * - the fullscreen mode isn't enabled
-             * - the toolbar is fixed
-             * - the scroll position is not within the fields wrapper
-             */
-            else if (!self.isFullscreen && self.isFixed && !self.scrollTopWithinWrapper()) {
-                    self.disableFixedToolbar();
-                }
-        });
-
-        /**
-         * Observe when the field element is destroyed (=the user leaves the
-         * current view) and deactivate MirrorMark accordingly.
-         *
-         * @since 1.0.0
-         */
-        self.$field.bind('destroyed', function () {
-            self.deactivate();
-        });
-
-        /**
-         * FIX: Add an indicator that this field is already initialized to
-         * prevent double initialization of a Visual MArkdown Editor field.
-         * See: https://github.com/JonasDoebertin/kirby-visual-markdown/issues/61
-         */
-        self.$field.data('initialized', true);
-    };
+    this.$wrapper.droppable({
+      hoverClass: 'markdownfield-wrapper-over',
+      accept: this.$draggable,
+      drop: function drop(event, element) {
+        this.editor.insert(element.draggable.data('text'));
+      }
+    });
 
     /**
-     * Update storage input element
+     * Observe page scroll events to switch to sticky toolbar
+     *
+     * @since 1.4.0
+     */
+    $('.mainbar').scroll(function () {
+
+      /**
+       * Switch to fixed toolbar, if
+       * - the fullscreen mode isn't enabled
+       * - the toolbar isn't fixed already
+       * - the scroll position is within the fields wrapper
+       * - the field is focused
+       */
+      if (!_this.isFullscreen && !_this.isFixed && _this.scrollTopWithinWrapper() && _this.isFocused) {
+        _this.enableFixedToolbar();
+      }
+
+      /**
+       * Switch back to regular toolbar, if
+       * - the fullscreen mode isn't enabled
+       * - the toolbar is fixed
+       * - the scroll position is not within the fields wrapper
+       */
+      else if (!_this.isFullscreen && _this.isFixed && !_this.scrollTopWithinWrapper()) {
+          _this.disableFixedToolbar();
+        }
+    });
+
+    /**
+     * Observe when the field element is destroyed (=the user leaves the
+     * current view) and deactivate MirrorMark accordingly.
      *
      * @since 1.0.0
      */
-    this.updateStorage = function () {
-        self.$field.text(self.codemirror.getValue());
-    };
+    this.$field.bind('destroyed', function () {
+      _this.deactivate();
+    });
+
+    /**
+     * FIX: Add an indicator that this field is already initialized to
+     * prevent double initialization of a Visual Markdown Editor field.
+     * See: https://github.com/JonasDoebertin/kirby-visual-markdown/issues/61
+     */
+    this.$field.data('initialized', true);
+  }
+
+  /**
+   * Update storage input element
+   *
+   * @since 1.0.0
+   */
+
+
+  _createClass(_class, [{
+    key: 'updateStorage',
+    value: function updateStorage() {
+      this.$field.text(this.codemirror.getValue());
+    }
+  }, {
+    key: 'deactivate',
+
 
     /**
      * Deactivate plugin instance
      *
      * @since 1.0.0
      */
-    this.deactivate = function () {
-        self.updateStorage();
-        self.editor.deactivate();
-    };
+    value: function deactivate() {
+      this.updateStorage();
+      this.editor.deactivate();
+    }
+  }, {
+    key: 'changeFullscreenModeHandler',
+
 
     /**
      * Handle fullscreen mode change event
      *
      * @since 1.0.1
      */
-    this.changeFullscreenModeHandler = function () {
+    value: function changeFullscreenModeHandler() {
+      this;
+      // Add indication class if fullscreen mode was entered
+      if (__WEBPACK_IMPORTED_MODULE_0_screenfull___default.a.isFullscreen && __WEBPACK_IMPORTED_MODULE_0_screenfull___default.a.element === this.$wrapper.get(0)) {
+        this.attachFullscreenStyles();
+      }
 
-        // Add indication class if fullscreen mode was entered
-        if (__WEBPACK_IMPORTED_MODULE_0_screenfull___default.a.isFullscreen && __WEBPACK_IMPORTED_MODULE_0_screenfull___default.a.element === self.$wrapper.get(0)) {
-            self.attachFullscreenStyles();
-        }
+      // Remove indicator class if fullscreen mode was exited
+      if (!__WEBPACK_IMPORTED_MODULE_0_screenfull___default.a.isFullscreen) {
+        this.detachFullscreenStyles();
+      }
+    }
+  }, {
+    key: 'attachFocusStyles',
 
-        // Remove indicator class if fullscreen mode was exited
-        if (!__WEBPACK_IMPORTED_MODULE_0_screenfull___default.a.isFullscreen) {
-            self.detachFullscreenStyles();
-        }
-    };
 
     /**
      * Add focus style classes to the editor wrapper
      *
      * @since 1.0.0
      */
-    this.attachFocusStyles = function () {
-        self.isFocused = true;
-        self.$wrapper.addClass('markdownfield-wrapper-focused');
-        if (!self.isFullscreen && self.scrollTopWithinWrapper()) {
-            self.enableFixedToolbar();
-        }
-    };
+    value: function attachFocusStyles() {
+      this.isFocused = true;
+      this.$wrapper.addClass('markdownfield-wrapper-focused');
+      if (!this.isFullscreen && this.scrollTopWithinWrapper()) {
+        this.enableFixedToolbar();
+      }
+    }
+  }, {
+    key: 'detachFocusStyles',
+
 
     /**
      * Remove focus style classes from the editor wrapper
      *
      * @since 1.0.0
      */
-    this.detachFocusStyles = function () {
-        self.isFocused = false;
-        self.$wrapper.removeClass('markdownfield-wrapper-focused');
-        self.disableFixedToolbar();
-    };
+    value: function detachFocusStyles() {
+      this.isFocused = false;
+      this.$wrapper.removeClass('markdownfield-wrapper-focused');
+      this.disableFixedToolbar();
+    }
+  }, {
+    key: 'attachFullscreenStyles',
+
 
     /**
      * Add fullscreen style classes to the editor wrapper
      *
      * @since 1.0.1
      */
-    this.attachFullscreenStyles = function () {
-        self.isFullscreen = true;
-        self.disableFixedToolbar();
-        self.$wrapper.addClass('markdownfield-wrapper-fullscreen');
-    };
+    value: function attachFullscreenStyles() {
+      this.isFullscreen = true;
+      this.disableFixedToolbar();
+      this.$wrapper.addClass('markdownfield-wrapper-fullscreen');
+    }
+  }, {
+    key: 'detachFullscreenStyles',
+
 
     /**
      * Remove fullscreen style classes from the editor wrapper
      *
      * @since 1.0.1
      */
-    this.detachFullscreenStyles = function () {
-        self.isFullscreen = false;
-        self.$wrapper.removeClass('markdownfield-wrapper-fullscreen');
-    };
+    value: function detachFullscreenStyles() {
+      this.isFullscreen = false;
+      this.$wrapper.removeClass('markdownfield-wrapper-fullscreen');
+    }
+  }, {
+    key: 'scrollTopWithinWrapper',
+
 
     /**
      * Chick if the documents scrollTop is within the fields wrapper element.
@@ -11226,44 +11260,48 @@ var VisualMarkdownField = function VisualMarkdownField($, $field) {
      * @since 1.4.0
      * @return boolean
      */
-    this.scrollTopWithinWrapper = function () {
-        var topOffset = self.$wrapper.offset().top + 2,
-            bottomOffset = self.$wrapper.offset().top + self.$wrapper.outerHeight() - self.$toolbar.outerHeight() - 2;
+    value: function scrollTopWithinWrapper() {
+      var topOffset = this.$wrapper.offset().top + 2,
+          bottomOffset = this.$wrapper.offset().top + this.$wrapper.outerHeight() - this.$toolbar.outerHeight() - 2;
 
-        return topOffset <= 48 && bottomOffset >= 48;
-    };
+      return topOffset <= 48 && bottomOffset >= 48;
+    }
+  }, {
+    key: 'enableFixedToolbar',
+
 
     /**
      * Enable the fixed toolbar.
      *
      * @since 1.4.0
      */
-    this.enableFixedToolbar = function () {
-        self.isFixed = true;
-        self.$toolbar.addClass('visualmarkdown-toolbar-fixed').css('max-width', self.$wrapper.width());
-        self.$wrapper.css('padding-top', self.$toolbar.outerHeight());
-    };
+    value: function enableFixedToolbar() {
+      this.isFixed = true;
+      this.$toolbar.addClass('visualmarkdown-toolbar-fixed').css('max-width', this.$wrapper.width());
+      this.$wrapper.css('padding-top', this.$toolbar.outerHeight());
+    }
+  }, {
+    key: 'disableFixedToolbar',
+
 
     /**
      * Disable the fixed toolbar.
      *
      * @since 1.4.0
      */
-    this.disableFixedToolbar = function () {
-        if (!self.inAction) {
-            self.isFixed = false;
-            self.$toolbar.removeClass('visualmarkdown-toolbar-fixed').css('max-width', '');
-            self.$wrapper.css('padding-top', 0);
-        }
-    };
+    value: function disableFixedToolbar() {
+      if (!this.inAction) {
+        this.isFixed = false;
+        this.$toolbar.removeClass('visualmarkdown-toolbar-fixed').css('max-width', '');
+        this.$wrapper.css('padding-top', 0);
+      }
+    }
+  }]);
 
-    /**
-     * Run initialization
-     */
-    return this.init();
-};
+  return _class;
+}();
 
-/* harmony default export */ __webpack_exports__["a"] = VisualMarkdownField;
+/* harmony default export */ __webpack_exports__["a"] = _class;
 
 /***/ }),
 /* 10 */

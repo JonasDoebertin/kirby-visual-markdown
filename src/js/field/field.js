@@ -15,69 +15,69 @@ import VisualMarkdownEditor from './../editor/editor';
  * Visual Markdown Editor Field
  *
  * @since 1.0.0
+ * @since 1.6.0 Upgraded to ES6 class
  */
-var VisualMarkdownField = function ($, $field) {
-    'use strict';
-
-    var self = this;
-
-    this.$field = $field;
-    this.$draggable = $('.sidebar').find('.draggable');
-    this.$wrapper = $field.closest('.markdownfield-wrapper');
-    this.$toolbar = null;
-    this.$editor = null;
-
-    this.editor = null;
-
-    this.inAction = false;
-    this.isFixed = false;
-    this.isFocused = false;
-    this.isFullscreen = false;
-
-    this.options = {
-        readonly: $field.is('[readonly]'),
-        toolbar: $field.data('toolbar'),
-        header1: $field.data('header1'),
-        header2: $field.data('header2'),
-        tools: $field.data('tools').split(','),
-        kirbytext: $field.data('kirbytext')
-    };
-
+export default class {
     /**
-     * Initialize editor field
+     * Initialize editor field.
      *
      * @since 1.0.0
+     * @since 1.6.0 Upgraded to ES6 class constructor
+     *
+     * @param $
+     * @param $field
      */
-    this.init = function () {
+    constructor($, $field) {
+        /*
+         Prepare some jQuery elements for later reference
+         */
+        this.$field = $field;
+        this.$wrapper = $field.closest('.markdownfield-wrapper');
+        this.$draggable = $('.sidebar').find('.draggable');
+
+        /*
+         Initialize state flags
+         */
+        this.inAction = false;
+        this.isFixed = false;
+        this.isFocused = false;
+        this.isFullscreen = false;
 
         /*
          Initialize VisualMarkdownEditor
          */
-        self.editor = new VisualMarkdownEditor($, self, self.$field, self.options);
+        this.editor = new VisualMarkdownEditor($, this, this.$field, {
+            readonly: this.$field.is('[readonly]'),
+            toolbar: this.$field.data('toolbar'),
+            header1: this.$field.data('header1'),
+            header2: this.$field.data('header2'),
+            tools: this.$field.data('tools').split(','),
+            kirbytext: this.$field.data('kirbytext')
+        });
 
         /*
-         Store some references to the underlying codemirror instance
+         Store some references to the underlying CodeMirror instance,
          our field instance and the toolbar and editor elements
          */
-        self.codemirror = self.editor.getCodeMirrorInstance();
-        self.$toolbar = self.$field.siblings('.visualmarkdown-toolbar');
-        self.$editor = self.$field.siblings('.CodeMirror');
+        this.codemirror = this.editor.getCodeMirrorInstance();
+        this.$toolbar = this.$field.siblings('.visualmarkdown-toolbar');
+        this.$editor = this.$field.siblings('.CodeMirror');
 
         /*
          Set up change event handler
          */
-        self.codemirror.on('change', self.updateStorage);
+        this.codemirror.on('change', this.updateStorage.bind(this));
 
         /*
          Set up focus and blur event handlers
          */
-        self.codemirror.on('focus', self.attachFocusStyles);
-        self.codemirror.on('blur', self.detachFocusStyles);
+        this.codemirror.on('focus', this.attachFocusStyles.bind(this));
+        this.codemirror.on('blur', this.detachFocusStyles.bind(this));
 
         /*
          Set up fullscreen mode change event handler
          */
-        $(document).bind(Screenfull.raw.fullscreenchange, self.changeFullscreenModeHandler);
+        $(document).bind(Screenfull.raw.fullscreenchange, this.changeFullscreenModeHandler.bind(this));
 
         /**
          * Make the editor field accept Kirby typical
@@ -85,11 +85,11 @@ var VisualMarkdownField = function ($, $field) {
          *
          * @since 1.0.0
          */
-        self.$wrapper.droppable({
+        this.$wrapper.droppable({
             hoverClass: 'markdownfield-wrapper-over',
-            accept: self.draggable,
+            accept: this.$draggable,
             drop: function (event, element) {
-                self.editor.insert(element.draggable.data('text'));
+                this.editor.insert(element.draggable.data('text'));
             }
         });
 
@@ -98,7 +98,7 @@ var VisualMarkdownField = function ($, $field) {
          *
          * @since 1.4.0
          */
-        $('.mainbar').scroll(function () {
+        $('.mainbar').scroll(() => {
 
             /**
              * Switch to fixed toolbar, if
@@ -107,8 +107,8 @@ var VisualMarkdownField = function ($, $field) {
              * - the scroll position is within the fields wrapper
              * - the field is focused
              */
-            if (!self.isFullscreen && !self.isFixed && self.scrollTopWithinWrapper() && self.isFocused) {
-                self.enableFixedToolbar();
+            if (!this.isFullscreen && !this.isFixed && this.scrollTopWithinWrapper() && this.isFocused) {
+                this.enableFixedToolbar();
             }
 
             /**
@@ -117,10 +117,9 @@ var VisualMarkdownField = function ($, $field) {
              * - the toolbar is fixed
              * - the scroll position is not within the fields wrapper
              */
-            else if (!self.isFullscreen && self.isFixed && !self.scrollTopWithinWrapper()) {
-                self.disableFixedToolbar();
+            else if (!this.isFullscreen && this.isFixed && !this.scrollTopWithinWrapper()) {
+                this.disableFixedToolbar();
             }
-
         });
 
         /**
@@ -129,26 +128,25 @@ var VisualMarkdownField = function ($, $field) {
          *
          * @since 1.0.0
          */
-        self.$field.bind('destroyed', function () {
-            self.deactivate();
+        this.$field.bind('destroyed', () => {
+            this.deactivate();
         });
 
         /**
          * FIX: Add an indicator that this field is already initialized to
-         * prevent double initialization of a Visual MArkdown Editor field.
+         * prevent double initialization of a Visual Markdown Editor field.
          * See: https://github.com/JonasDoebertin/kirby-visual-markdown/issues/61
          */
-        self.$field.data('initialized', true);
-
-    };
+        this.$field.data('initialized', true);
+    }
 
     /**
      * Update storage input element
      *
      * @since 1.0.0
      */
-    this.updateStorage = function () {
-        self.$field.text(self.codemirror.getValue());
+    updateStorage() {
+        this.$field.text(this.codemirror.getValue());
     };
 
     /**
@@ -156,9 +154,9 @@ var VisualMarkdownField = function ($, $field) {
      *
      * @since 1.0.0
      */
-    this.deactivate = function () {
-        self.updateStorage();
-        self.editor.deactivate();
+    deactivate() {
+        this.updateStorage();
+        this.editor.deactivate();
     };
 
     /**
@@ -166,18 +164,16 @@ var VisualMarkdownField = function ($, $field) {
      *
      * @since 1.0.1
      */
-    this.changeFullscreenModeHandler = function () {
-
+    changeFullscreenModeHandler() {this
         // Add indication class if fullscreen mode was entered
-        if (Screenfull.isFullscreen && (Screenfull.element === self.$wrapper.get(0))) {
-            self.attachFullscreenStyles();
+        if (Screenfull.isFullscreen && (Screenfull.element === this.$wrapper.get(0))) {
+            this.attachFullscreenStyles();
         }
 
         // Remove indicator class if fullscreen mode was exited
         if (!Screenfull.isFullscreen) {
-            self.detachFullscreenStyles();
+            this.detachFullscreenStyles();
         }
-
     };
 
     /**
@@ -185,11 +181,11 @@ var VisualMarkdownField = function ($, $field) {
      *
      * @since 1.0.0
      */
-    this.attachFocusStyles = function () {
-        self.isFocused = true;
-        self.$wrapper.addClass('markdownfield-wrapper-focused');
-        if (!self.isFullscreen && self.scrollTopWithinWrapper()) {
-            self.enableFixedToolbar();
+    attachFocusStyles() {
+        this.isFocused = true;
+        this.$wrapper.addClass('markdownfield-wrapper-focused');
+        if (!this.isFullscreen && this.scrollTopWithinWrapper()) {
+            this.enableFixedToolbar();
         }
     };
 
@@ -198,10 +194,10 @@ var VisualMarkdownField = function ($, $field) {
      *
      * @since 1.0.0
      */
-    this.detachFocusStyles = function () {
-        self.isFocused = false;
-        self.$wrapper.removeClass('markdownfield-wrapper-focused');
-        self.disableFixedToolbar();
+    detachFocusStyles() {
+        this.isFocused = false;
+        this.$wrapper.removeClass('markdownfield-wrapper-focused');
+        this.disableFixedToolbar();
     };
 
     /**
@@ -209,10 +205,10 @@ var VisualMarkdownField = function ($, $field) {
      *
      * @since 1.0.1
      */
-    this.attachFullscreenStyles = function () {
-        self.isFullscreen = true;
-        self.disableFixedToolbar();
-        self.$wrapper.addClass('markdownfield-wrapper-fullscreen');
+    attachFullscreenStyles() {
+        this.isFullscreen = true;
+        this.disableFixedToolbar();
+        this.$wrapper.addClass('markdownfield-wrapper-fullscreen');
     };
 
     /**
@@ -220,9 +216,9 @@ var VisualMarkdownField = function ($, $field) {
      *
      * @since 1.0.1
      */
-    this.detachFullscreenStyles = function () {
-        self.isFullscreen = false;
-        self.$wrapper.removeClass('markdownfield-wrapper-fullscreen');
+    detachFullscreenStyles() {
+        this.isFullscreen = false;
+        this.$wrapper.removeClass('markdownfield-wrapper-fullscreen');
     };
 
     /**
@@ -231,9 +227,9 @@ var VisualMarkdownField = function ($, $field) {
      * @since 1.4.0
      * @return boolean
      */
-    this.scrollTopWithinWrapper = function () {
-        var topOffset    = self.$wrapper.offset().top + 2,
-            bottomOffset = self.$wrapper.offset().top + self.$wrapper.outerHeight() - self.$toolbar.outerHeight() - 2;
+    scrollTopWithinWrapper() {
+        const topOffset  = this.$wrapper.offset().top + 2,
+            bottomOffset = this.$wrapper.offset().top + this.$wrapper.outerHeight() - this.$toolbar.outerHeight() - 2;
 
         return ((topOffset <= 48) && (bottomOffset >= 48));
     };
@@ -243,11 +239,11 @@ var VisualMarkdownField = function ($, $field) {
      *
      * @since 1.4.0
      */
-    this.enableFixedToolbar = function () {
-        self.isFixed = true;
-        self.$toolbar.addClass('visualmarkdown-toolbar-fixed')
-            .css('max-width', self.$wrapper.width());
-        self.$wrapper.css('padding-top', self.$toolbar.outerHeight());
+    enableFixedToolbar() {
+        this.isFixed = true;
+        this.$toolbar.addClass('visualmarkdown-toolbar-fixed')
+            .css('max-width', this.$wrapper.width());
+        this.$wrapper.css('padding-top', this.$toolbar.outerHeight());
     };
 
     /**
@@ -255,20 +251,12 @@ var VisualMarkdownField = function ($, $field) {
      *
      * @since 1.4.0
      */
-    this.disableFixedToolbar = function () {
-        if (!self.inAction) {
-            self.isFixed = false;
-            self.$toolbar.removeClass('visualmarkdown-toolbar-fixed')
+    disableFixedToolbar() {
+        if (!this.inAction) {
+            this.isFixed = false;
+            this.$toolbar.removeClass('visualmarkdown-toolbar-fixed')
                 .css('max-width', '');
-            self.$wrapper.css('padding-top', 0);
+            this.$wrapper.css('padding-top', 0);
         }
     };
-
-    /**
-     * Run initialization
-     */
-    return this.init();
-
-};
-
-export default VisualMarkdownField;
+}
