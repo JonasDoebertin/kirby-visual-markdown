@@ -11,5 +11,5 @@ trim_trailing_whitespace = true
 [*.{txt,md,mdown,markdown}]
 trim_trailing_whitespace = false
 
-[{yarn.lock}]
+[{package.json,yarn.lock}]
 indent_size = 2
