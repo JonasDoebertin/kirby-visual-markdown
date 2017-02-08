@@ -16,12 +16,12 @@
 export default [
     {
         action: 'header1',
-        className: 'fa fa-header',
+        className: 'fa fa-header'
     },
     {
         action: 'header2',
         className: 'markdownfield-icon-text markdownfield-icon-header2',
-        showName: true,
+        showName: true
     },
     {
         action: 'divider'

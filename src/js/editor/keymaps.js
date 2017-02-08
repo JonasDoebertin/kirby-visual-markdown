@@ -30,5 +30,5 @@ export default {
     'Cmd-K': 'link',
     'Ctrl-K': 'link',
     'Cmd-E': 'email',
-    'Ctrl-E': 'email',
+    'Ctrl-E': 'email'
 };

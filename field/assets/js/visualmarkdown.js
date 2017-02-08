@@ -10879,11 +10879,11 @@ __WEBPACK_IMPORTED_MODULE_0_codemirror___default.a.defineMode('kirbytext', funct
         value: [
         // Match a Kirbytext tags attribute value
         {
-            regex: /[^\)]+? (?=(?:[a-z0-9]+:))/i,
+            regex: /[^)]+? (?=(?:[a-z0-9]+:))/i,
             token: 'kirbytext-value',
             next: 'attribute'
         }, {
-            regex: /[^\)]+?(?=\))/i,
+            regex: /[^)]+?(?=\))/i,
             token: 'kirbytext-value',
             next: 'attribute'
         },
@@ -11106,7 +11106,6 @@ var _class = function () {
      * @since 1.4.0
      */
     $('.mainbar').scroll(function () {
-
       /**
        * Switch to fixed toolbar, if
        * - the fullscreen mode isn't enabled
@@ -11116,17 +11115,16 @@ var _class = function () {
        */
       if (!_this.isFullscreen && !_this.isFixed && _this.scrollTopWithinWrapper() && _this.isFocused) {
         _this.enableFixedToolbar();
-      }
 
-      /**
-       * Switch back to regular toolbar, if
-       * - the fullscreen mode isn't enabled
-       * - the toolbar is fixed
-       * - the scroll position is not within the fields wrapper
-       */
-      else if (!_this.isFullscreen && _this.isFixed && !_this.scrollTopWithinWrapper()) {
-          _this.disableFixedToolbar();
-        }
+        /**
+         * Switch back to regular toolbar, if
+         * - the fullscreen mode isn't enabled
+         * - the toolbar is fixed
+         * - the scroll position is not within the fields wrapper
+         */
+      } else if (!_this.isFullscreen && _this.isFixed && !_this.scrollTopWithinWrapper()) {
+        _this.disableFixedToolbar();
+      }
     });
 
     /**
@@ -11159,30 +11157,29 @@ var _class = function () {
     value: function updateStorage() {
       this.$field.text(this.codemirror.getValue());
     }
-  }, {
-    key: 'deactivate',
-
 
     /**
      * Deactivate plugin instance
      *
      * @since 1.0.0
      */
+
+  }, {
+    key: 'deactivate',
     value: function deactivate() {
       this.updateStorage();
       this.editor.deactivate();
     }
-  }, {
-    key: 'changeFullscreenModeHandler',
-
 
     /**
      * Handle fullscreen mode change event
      *
      * @since 1.0.1
      */
+
+  }, {
+    key: 'changeFullscreenModeHandler',
     value: function changeFullscreenModeHandler() {
-      this;
       // Add indication class if fullscreen mode was entered
       if (__WEBPACK_IMPORTED_MODULE_0_screenfull___default.a.isFullscreen && __WEBPACK_IMPORTED_MODULE_0_screenfull___default.a.element === this.$wrapper.get(0)) {
         this.attachFullscreenStyles();
@@ -11193,15 +11190,15 @@ var _class = function () {
         this.detachFullscreenStyles();
       }
     }
-  }, {
-    key: 'attachFocusStyles',
-
 
     /**
      * Add focus style classes to the editor wrapper
      *
      * @since 1.0.0
      */
+
+  }, {
+    key: 'attachFocusStyles',
     value: function attachFocusStyles() {
       this.isFocused = true;
       this.$wrapper.addClass('markdownfield-wrapper-focused');
@@ -11209,50 +11206,47 @@ var _class = function () {
         this.enableFixedToolbar();
       }
     }
-  }, {
-    key: 'detachFocusStyles',
-
 
     /**
      * Remove focus style classes from the editor wrapper
      *
      * @since 1.0.0
      */
+
+  }, {
+    key: 'detachFocusStyles',
     value: function detachFocusStyles() {
       this.isFocused = false;
       this.$wrapper.removeClass('markdownfield-wrapper-focused');
       this.disableFixedToolbar();
     }
-  }, {
-    key: 'attachFullscreenStyles',
-
 
     /**
      * Add fullscreen style classes to the editor wrapper
      *
      * @since 1.0.1
      */
+
+  }, {
+    key: 'attachFullscreenStyles',
     value: function attachFullscreenStyles() {
       this.isFullscreen = true;
       this.disableFixedToolbar();
       this.$wrapper.addClass('markdownfield-wrapper-fullscreen');
     }
-  }, {
-    key: 'detachFullscreenStyles',
-
 
     /**
      * Remove fullscreen style classes from the editor wrapper
      *
      * @since 1.0.1
      */
+
+  }, {
+    key: 'detachFullscreenStyles',
     value: function detachFullscreenStyles() {
       this.isFullscreen = false;
       this.$wrapper.removeClass('markdownfield-wrapper-fullscreen');
     }
-  }, {
-    key: 'scrollTopWithinWrapper',
-
 
     /**
      * Chick if the documents scrollTop is within the fields wrapper element.
@@ -11260,35 +11254,38 @@ var _class = function () {
      * @since 1.4.0
      * @return boolean
      */
+
+  }, {
+    key: 'scrollTopWithinWrapper',
     value: function scrollTopWithinWrapper() {
-      var topOffset = this.$wrapper.offset().top + 2,
-          bottomOffset = this.$wrapper.offset().top + this.$wrapper.outerHeight() - this.$toolbar.outerHeight() - 2;
+      var topOffset = this.$wrapper.offset().top + 2;
+      var bottomOffset = this.$wrapper.offset().top + this.$wrapper.outerHeight() - this.$toolbar.outerHeight() - 2;
 
       return topOffset <= 48 && bottomOffset >= 48;
     }
-  }, {
-    key: 'enableFixedToolbar',
-
 
     /**
      * Enable the fixed toolbar.
      *
      * @since 1.4.0
      */
+
+  }, {
+    key: 'enableFixedToolbar',
     value: function enableFixedToolbar() {
       this.isFixed = true;
       this.$toolbar.addClass('visualmarkdown-toolbar-fixed').css('max-width', this.$wrapper.width());
       this.$wrapper.css('padding-top', this.$toolbar.outerHeight());
     }
-  }, {
-    key: 'disableFixedToolbar',
-
 
     /**
      * Disable the fixed toolbar.
      *
      * @since 1.4.0
      */
+
+  }, {
+    key: 'disableFixedToolbar',
     value: function disableFixedToolbar() {
       if (!this.inAction) {
         this.isFixed = false;

@@ -99,7 +99,6 @@ export default class {
          * @since 1.4.0
          */
         $('.mainbar').scroll(() => {
-
             /**
              * Switch to fixed toolbar, if
              * - the fullscreen mode isn't enabled
@@ -109,7 +108,6 @@ export default class {
              */
             if (!this.isFullscreen && !this.isFixed && this.scrollTopWithinWrapper() && this.isFocused) {
                 this.enableFixedToolbar();
-            }
 
             /**
              * Switch back to regular toolbar, if
@@ -117,7 +115,7 @@ export default class {
              * - the toolbar is fixed
              * - the scroll position is not within the fields wrapper
              */
-            else if (!this.isFullscreen && this.isFixed && !this.scrollTopWithinWrapper()) {
+            } else if (!this.isFullscreen && this.isFixed && !this.scrollTopWithinWrapper()) {
                 this.disableFixedToolbar();
             }
         });
@@ -147,7 +145,7 @@ export default class {
      */
     updateStorage() {
         this.$field.text(this.codemirror.getValue());
-    };
+    }
 
     /**
      * Deactivate plugin instance
@@ -157,14 +155,14 @@ export default class {
     deactivate() {
         this.updateStorage();
         this.editor.deactivate();
-    };
+    }
 
     /**
      * Handle fullscreen mode change event
      *
      * @since 1.0.1
      */
-    changeFullscreenModeHandler() {this
+    changeFullscreenModeHandler() {
         // Add indication class if fullscreen mode was entered
         if (Screenfull.isFullscreen && (Screenfull.element === this.$wrapper.get(0))) {
             this.attachFullscreenStyles();
@@ -174,7 +172,7 @@ export default class {
         if (!Screenfull.isFullscreen) {
             this.detachFullscreenStyles();
         }
-    };
+    }
 
     /**
      * Add focus style classes to the editor wrapper
@@ -187,7 +185,7 @@ export default class {
         if (!this.isFullscreen && this.scrollTopWithinWrapper()) {
             this.enableFixedToolbar();
         }
-    };
+    }
 
     /**
      * Remove focus style classes from the editor wrapper
@@ -198,7 +196,7 @@ export default class {
         this.isFocused = false;
         this.$wrapper.removeClass('markdownfield-wrapper-focused');
         this.disableFixedToolbar();
-    };
+    }
 
     /**
      * Add fullscreen style classes to the editor wrapper
@@ -209,7 +207,7 @@ export default class {
         this.isFullscreen = true;
         this.disableFixedToolbar();
         this.$wrapper.addClass('markdownfield-wrapper-fullscreen');
-    };
+    }
 
     /**
      * Remove fullscreen style classes from the editor wrapper
@@ -219,7 +217,7 @@ export default class {
     detachFullscreenStyles() {
         this.isFullscreen = false;
         this.$wrapper.removeClass('markdownfield-wrapper-fullscreen');
-    };
+    }
 
     /**
      * Chick if the documents scrollTop is within the fields wrapper element.
@@ -228,11 +226,11 @@ export default class {
      * @return boolean
      */
     scrollTopWithinWrapper() {
-        const topOffset  = this.$wrapper.offset().top + 2,
-            bottomOffset = this.$wrapper.offset().top + this.$wrapper.outerHeight() - this.$toolbar.outerHeight() - 2;
+        const topOffset = this.$wrapper.offset().top + 2;
+        const bottomOffset = this.$wrapper.offset().top + this.$wrapper.outerHeight() - this.$toolbar.outerHeight() - 2;
 
         return ((topOffset <= 48) && (bottomOffset >= 48));
-    };
+    }
 
     /**
      * Enable the fixed toolbar.
@@ -244,7 +242,7 @@ export default class {
         this.$toolbar.addClass('visualmarkdown-toolbar-fixed')
             .css('max-width', this.$wrapper.width());
         this.$wrapper.css('padding-top', this.$toolbar.outerHeight());
-    };
+    }
 
     /**
      * Disable the fixed toolbar.
@@ -258,5 +256,5 @@ export default class {
                 .css('max-width', '');
             this.$wrapper.css('padding-top', 0);
         }
-    };
+    }
 }

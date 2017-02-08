@@ -56,11 +56,11 @@ CodeMirror.defineMode('kirbytext', function (config, modeConfig) {
         value: [
             // Match a Kirbytext tags attribute value
             {
-                regex: /[^\)]+? (?=(?:[a-z0-9]+:))/i,
+                regex: /[^)]+? (?=(?:[a-z0-9]+:))/i,
                 token: 'kirbytext-value',
                 next: 'attribute'
             }, {
-                regex: /[^\)]+?(?=\))/i,
+                regex: /[^)]+?(?=\))/i,
                 token: 'kirbytext-value',
                 next: 'attribute'
             },
@@ -81,5 +81,4 @@ CodeMirror.defineMode('kirbytext', function (config, modeConfig) {
         CodeMirror.getMode(config, modeConfig),
         CodeMirror.simpleMode(config, states)
     );
-
 });
