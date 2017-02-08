@@ -9798,12 +9798,16 @@ jQuery.fn.markdownfield = function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_codemirror___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_codemirror__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_codemirror_addon_edit_continuelist__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_codemirror_addon_edit_continuelist___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_codemirror_addon_edit_continuelist__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__keymaps__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__kirbytags_mode__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_screenfull__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_screenfull___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_screenfull__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_screenfull__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_screenfull___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_screenfull__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__keymaps__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__kirbytags_mode__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__tools__ = __webpack_require__(8);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /*
  * Visual Markdown Editor Field for Kirby 2.
@@ -9827,946 +9831,985 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
  *
  * @since 1.2.0
  */
-var VisualMarkdownEditor = function VisualMarkdownEditor($, field, $element, options) {
-    'use strict';
 
-    var self = this;
-
-    /**
-     * Field handler object
-     */
-    this.field = field;
-
-    /**
-     * Main field element
-     */
-    this.$element = $element;
-
-    /**
-     * Editor wrapper element
-     */
-    this.$wrapper = null;
-
-    /**
-     * All available modals
-     */
-    this.modals = {
-        shortcuts: $('[data-visualmarkdown-modal=shortcuts]')
-    };
-
-    /**
-     * CodeMirror instance
-     */
-    this.codemirror = null;
-
-    /**
-     * Translation object including all translated strings
-     */
-    this.translation = VisualMarkdownTranslation;
-
-    /**
-     * Current options
-     */
-    this.options = {};
-
-    /**
-     * Default options
-     */
-    this.defaults = {
-        readonly: false,
-        toolbar: true,
-        header1: 'h1',
-        header2: 'h2',
-        kirbytext: true,
-        codemirror: {
-            theme: 'visualmarkdown',
-            tabSize: 4,
-            indentWithTabs: false,
-            lineWrapping: true,
-            readOnly: false,
-            extraKeys: {
-                'Enter': 'newlineAndIndentContinueMarkdownList',
-                'Alt-Enter': function AltEnter() {
-                    self.savePanelForm();
-                },
-                'Cmd-Enter': function CmdEnter() {
-                    self.savePanelForm();
-                }
-            },
-            mode: {
-                name: 'kirbytext',
-                highlightFormatting: true,
-                underscoresBreakWords: false,
-                maxBlockquoteDepth: 0,
-                fencedCodeBlocks: true,
-                taskLists: true,
-                strikethrough: true
-            }
-        }
-    };
-
-    /**
-     * Will be `true` when we're on a Safari browser
-     */
-    this.isSafari = new RegExp('(Version)/(\\d+)\\.(\\d+)(?:\\.(\\d+))?.*Safari/').test(navigator.userAgent);
-
-    /**
-     * Actions
-     *
-     * @since 1.2.0
-     */
-    this.actions = {
-        header1: {
-            optional: true,
-            type: 'editor',
-            callback: function callback() {
-                var header = self.translateHeaderValue(self.options.header1);
-                self.toggleBefore(header, false);
-            }
-        },
-        header2: {
-            optional: true,
-            type: 'editor',
-            callback: function callback() {
-                var header = self.translateHeaderValue(self.options.header2);
-                self.toggleBefore(header, false);
-            }
-        },
-        bold: {
-            optional: true,
-            type: 'editor',
-            callback: function callback() {
-                self.toggleAround('**', '**');
-            }
-        },
-        italic: {
-            optional: true,
-            type: 'editor',
-            callback: function callback() {
-                self.toggleAround('*', '*');
-            }
-        },
-        strikethrough: {
-            optional: true,
-            type: 'editor',
-            callback: function callback() {
-                self.toggleAround('~~', '~~');
-            }
-        },
-        blockquote: {
-            optional: true,
-            type: 'editor',
-            callback: function callback() {
-                self.toggleBefore('>', false);
-            }
-        },
-        orderedList: {
-            optional: true,
-            type: 'editor',
-            callback: function callback() {
-                self.insertBefore('1. ', 3);
-            }
-        },
-        unorderedList: {
-            optional: true,
-            type: 'editor',
-            callback: function callback() {
-                self.toggleBefore('*', true);
-            }
-        },
-        link: {
-            optional: true,
-            type: 'editor',
-            callback: function callback() {
-                if (self.options.kirbytext) {
-                    self.insertAround('(link: http:// text: ', ')');
-                } else {
-                    self.insertAround('[', '](http://)');
-                }
-            }
-        },
-        email: {
-            optional: true,
-            type: 'editor',
-            callback: function callback() {
-                if (self.options.kirbytext) {
-                    self.insertAround('(email: user@example.com text: ', ')');
-                } else {
-                    self.insert('<user@example.com>');
-                }
-            }
-        },
-        image: {
-            optional: true,
-            type: 'editor',
-            callback: function callback() {
-                if (self.options.kirbytext) {
-                    self.insert('(image: filename.jpg)');
-                } else {
-                    self.insert('![alt text](http://)');
-                }
-            }
-        },
-        line: {
-            optional: true,
-            type: 'editor',
-            callback: function callback() {
-                self.insert('****');
-            }
-        },
-        code: {
-            optional: true,
-            type: 'editor',
-            callback: function callback() {
-                self.insertAround('```\r\n', '\r\n```');
-            }
-        },
-        shortcutsModal: {
-            optional: false,
-            type: 'help',
-            callback: function callback() {
-                self.showShortcutsModal();
-            }
-        },
-        markdownLink: {
-            optional: true,
-            type: 'help',
-            callback: function callback() {
-                window.open('http://daringfireball.net/projects/markdown/syntax');
-            }
-        },
-        kirbytextLink: {
-            optional: true,
-            type: 'help',
-            callback: function callback() {
-                window.open('http://getkirby.com/docs/content/text');
-            }
-        },
-        issuesLink: {
-            optional: true,
-            type: 'help',
-            callback: function callback() {
-                window.open('https://github.com/JonasDoebertin/kirby-visual-markdown/issues');
-            }
-        },
-        licenseLink: {
-            optional: true,
-            type: 'help',
-            callback: function callback() {
-                window.open('https://gumroad.com/l/visualmarkdown');
-            }
-        },
-        help: {
-            optional: true,
-            type: 'help',
-            callback: function callback() {}
-        },
-        fullscreen: {
-            optional: false,
-            type: 'display',
-            callback: function callback() {
-                self.toggleFullscreenMode();
-            }
-        }
-    };
-
+var _class = function () {
     /**
      * Initialization
      *
      * @since 1.2.0
      */
-    this.init = function (options) {
-        // Merge defaults with options
-        self.options = $.extend({}, self.defaults, options);
+    function _class($, field, $element, options) {
+        var _this = this;
+
+        _classCallCheck(this, _class);
+
+        // Store references to jQuery global, the field handler
+        // instance and the fields main element.
+        this.$ = $;
+        this.field = field;
+        this.$element = $element;
+
+        // Prepare options
+        this.options = $.extend({}, this.defaults, options);
+        if (this.options.readonly) {
+            this.options.codemirror.readOnly = 'nocursor';
+        }
+
+        // Initialize CodeMirror and save a reference to its wrapper element
+        this.codemirror = __WEBPACK_IMPORTED_MODULE_0_codemirror___default.a.fromTextArea(this.$element.get(0), this.options.codemirror);
+        this.codemirror.on('renderLine', this.renderLine.bind(this));
+        this.$wrapper = $(this.codemirror.getWrapperElement());
 
         // Register key bindings
-        self.registerKeyMaps(__WEBPACK_IMPORTED_MODULE_2__keymaps__["a" /* default */]);
-
-        // Check if readonly option is set
-        if (self.options.readonly) {
-            self.options.codemirror.readOnly = 'nocursor';
-        }
-
-        // Initialize CodeMirror
-        self.codemirror = __WEBPACK_IMPORTED_MODULE_0_codemirror___default.a.fromTextArea(self.$element.get(0), self.options.codemirror);
-        self.$wrapper = $(self.codemirror.getWrapperElement());
+        this.registerKeyMaps(__WEBPACK_IMPORTED_MODULE_3__keymaps__["a" /* default */]);
 
         // Initialize toolbar
-        if (!self.isSafari) {
-            __WEBPACK_IMPORTED_MODULE_5__tools__["a" /* default */].push({
-                name: 'fullscreen',
-                action: 'fullscreen',
-                className: 'fa fa-expand'
-            });
-        }
-        if (self.options.toolbar) {
-            self.initToolbar();
+        if (this.options.toolbar) {
+            if (!this.isSafari()) {
+                __WEBPACK_IMPORTED_MODULE_5__tools__["a" /* default */].push({
+                    name: 'fullscreen',
+                    action: 'fullscreen',
+                    className: 'fa fa-expand'
+                });
+            }
+            this.initToolbar();
         }
 
-        // Bind change handler
-        self.codemirror.on('renderLine', self.renderLine);
-
-        // Bind modal close handlers
-        $.each(self.modals, function (index, modal) {
-            modal.on('click', self.hideModals);
+        // Initialize modals
+        this.modals = {
+            $shortcuts: $('[data-visualmarkdown-modal=shortcuts]')
+        };
+        Object.keys(this.modals).forEach(function (key) {
+            _this.modals[key].on('click', _this.hideModals.bind(_this));
         });
 
         // Refresh CodeMirror DOM
-        self.codemirror.refresh();
-    };
+        this.codemirror.refresh();
+    }
 
     /**
-     * Deactivate and destroy
+     * Get default options.
      *
-     * @since 1.2.0
+     * @since 1.6.0
+     * @returns {*}
      */
-    this.deactivate = function () {
-        self.codemirror.toTextArea();
-    };
 
-    /**
-     * Initialize the toolbar
-     *
-     * @since 1.2.0
-     */
-    this.initToolbar = function () {
-        var toolbar = $('<ul>').addClass('visualmarkdown-toolbar'),
-            tools = self.generateToolbarItems(__WEBPACK_IMPORTED_MODULE_5__tools__["a" /* default */]),
-            wrapper = self.codemirror.getWrapperElement();
 
-        tools.forEach(function (tool) {
-            toolbar.append(tool);
-        });
+    _createClass(_class, [{
+        key: 'isSafari',
 
-        $(wrapper).parent().prepend(toolbar);
-    };
 
-    /**
-     * Register keymaps by extending the extraKeys object
-     *
-     * @since 1.2.0
-     */
-    this.registerKeyMaps = function () {
-        var name, obj;
+        /**
+         * Check if we're running in Safari.
+         *
+         * @since 1.6.0
+         * @returns {boolean}
+         */
+        value: function isSafari() {
+            return new RegExp('(Version)/(\\d+)\\.(\\d+)(?:\\.(\\d+))?.*Safari/').test(navigator.userAgent);
+        }
 
-        for (name in __WEBPACK_IMPORTED_MODULE_2__keymaps__["a" /* default */]) {
-            if (__WEBPACK_IMPORTED_MODULE_2__keymaps__["a" /* default */].hasOwnProperty(name)) {
-                // Abort if action doesn't have a callback
-                if (_typeof(self.actions[__WEBPACK_IMPORTED_MODULE_2__keymaps__["a" /* default */][name]]) !== 'object') {
-                    throw 'VisualMarkdownEditor: \"' + __WEBPACK_IMPORTED_MODULE_2__keymaps__["a" /* default */][name] + '\" is not a registered action';
+        /**
+         * Deactivate and destroy
+         *
+         * @since 1.2.0
+         */
+
+    }, {
+        key: 'deactivate',
+        value: function deactivate() {
+            this.codemirror.toTextArea();
+        }
+
+        /**
+         * Initialize the toolbar
+         *
+         * @since 1.2.0
+         */
+
+    }, {
+        key: 'initToolbar',
+        value: function initToolbar() {
+            var toolbar = this.$('<ul>').addClass('visualmarkdown-toolbar');
+            var tools = this.generateToolbarItems(__WEBPACK_IMPORTED_MODULE_5__tools__["a" /* default */]);
+            var wrapper = this.codemirror.getWrapperElement();
+
+            tools.forEach(function (tool) {
+                toolbar.append(tool);
+            });
+
+            this.$(wrapper).parent().prepend(toolbar);
+        }
+
+        /**
+         * Register keymaps by extending the extraKeys object
+         *
+         * @since 1.2.0
+         */
+
+    }, {
+        key: 'registerKeyMaps',
+        value: function registerKeyMaps() {
+            var name = void 0;
+            var obj = void 0;
+
+            for (name in __WEBPACK_IMPORTED_MODULE_3__keymaps__["a" /* default */]) {
+                if (Object.prototype.hasOwnProperty.call(__WEBPACK_IMPORTED_MODULE_3__keymaps__["a" /* default */], name)) {
+                    // Abort if action doesn't have a callback
+                    if (_typeof(this.actions[__WEBPACK_IMPORTED_MODULE_3__keymaps__["a" /* default */][name]]) !== 'object') {
+                        throw 'VisualMarkdownEditor: "' + __WEBPACK_IMPORTED_MODULE_3__keymaps__["a" /* default */][name] + '" is not a registered action';
+                    }
+
+                    obj = {};
+                    obj[name] = this.actions[__WEBPACK_IMPORTED_MODULE_3__keymaps__["a" /* default */][name]].callback.bind(this);
+                    this.$.extend(this.options.codemirror.extraKeys, obj);
+                }
+            }
+        }
+
+        /**
+         * Generate a list of <li> tags for the available tools
+         *
+         * @since 1.2.0
+         */
+
+    }, {
+        key: 'generateToolbarItems',
+        value: function generateToolbarItems(tools) {
+            var _this2 = this;
+
+            var alwaysVisibleItems = ['help', 'fullscreen'];
+
+            return tools.map(function (tool) {
+                var $item = void 0;
+                var $anchor = void 0;
+                var $subItems = void 0;
+
+                // Generate elements
+                $item = _this2.$('<li>').addClass('visualmarkdown-action-' + tool.action);
+                $anchor = _this2.$('<a>').attr('href', '#').attr('tabindex', '-1');
+
+                if (_this2.$.inArray(tool.action, _this2.options.tools) === -1 && _this2.$.inArray(tool.action, alwaysVisibleItems) === -1) {
+                    $item.addClass('visualmarkdown-action-hidden');
                 }
 
-                obj = {};
-                obj[name] = self.actions[__WEBPACK_IMPORTED_MODULE_2__keymaps__["a" /* default */][name]].callback.bind(self);
-                $.extend(self.options.codemirror.extraKeys, obj);
-            }
-        }
-    };
+                // Don't do anything with divider elements.
+                // They are just an empty <li> tag with a "divider" class.
+                if (tool.action === 'divider') {
+                    return $item;
+                }
 
-    /**
-     * Generate a list of <li> tags for the available tools
-     *
-     * @since 1.2.0
-     */
-    this.generateToolbarItems = function (tools) {
-        var alwaysVisibleItems = ['help', 'fullscreen'];
+                // Add the tools name as anchor class.
+                if (tool.className) {
+                    $anchor.addClass(tool.className);
+                }
 
-        return tools.map(function (tool) {
+                // Add the tooltip if available
+                if (VisualMarkdownTranslation['action.tooltip.' + tool.action]) {
+                    $anchor.attr('title', VisualMarkdownTranslation['action.tooltip.' + tool.action]);
+                }
 
-            // Define variables
-            var $item, $anchor, $subItems;
+                // Add the tools name as text, if necessary and available.
+                if (tool.showName && VisualMarkdownTranslation['action.name.' + tool.action]) {
+                    $anchor.text(VisualMarkdownTranslation['action.name.' + tool.action]);
+                }
 
-            // Generate elements
-            $item = $('<li>').addClass('visualmarkdown-action-' + tool.action);
-            $anchor = $('<a>').attr('href', '#').attr('tabindex', '-1');
-
-            if ($.inArray(tool.action, self.options.tools) === -1 && $.inArray(tool.action, alwaysVisibleItems) === -1) {
-                $item.addClass('visualmarkdown-action-hidden');
-            }
-
-            // Don't do anything with divider elements.
-            // They are just an empty <li> tag with a "divider" class.
-            if (tool.action === 'divider') {
-                return $item;
-            }
-
-            // Add the tools name as anchor class.
-            if (tool.className) {
-                $anchor.addClass(tool.className);
-            }
-
-            // Add the tooltip if available
-            if (self.translation['action.tooltip.' + tool.action]) {
-                $anchor.attr('title', self.translation['action.tooltip.' + tool.action]);
-            }
-
-            // Add the tools name as text, if necessary and available.
-            if (tool.showName && self.translation['action.name.' + tool.action]) {
-                $anchor.text(self.translation['action.name.' + tool.action]);
-            }
-
-            // Bind the action callback to the anchors "click" event.
-            if (tool.action) {
-                $anchor.on('mousedown', function () {
-                    self.field.inAction = true;
-                });
-                $anchor.on('click', function (event) {
-                    if (!self.options.readonly) {
-                        self.codemirror.focus();
-                        self.actions[tool.action].callback.call(self);
-                    }
-                    self.field.inAction = false;
-                    event.preventDefault();
-                });
-            }
-
-            // Join the list item and the anchor.
-            $item.append($anchor);
-
-            // Generate nested items
-            if (tool.nested) {
-                $subItems = $('<ul>').append(self.generateToolbarItems(tool.nested));
-                $item.addClass('visualmarkdown-action-with-subactions');
-                $item.append($subItems);
-            }
-
-            return $item;
-        });
-    };
-
-    /**
-     * Handle a click on the toggle fullscreen mode icon
-     *
-     * @since 1.2.0
-     */
-    this.toggleFullscreenMode = function () {
-        var wrapper;
-
-        // Abort if fullscreen mode isn't supported
-        if (!__WEBPACK_IMPORTED_MODULE_4_screenfull___default.a.enabled) {
-            return;
-        }
-
-        // Find related wrapper element
-        wrapper = $(self.codemirror.getWrapperElement()).closest('.markdownfield-wrapper');
-
-        // Enable fullscreen mode
-        if (!__WEBPACK_IMPORTED_MODULE_4_screenfull___default.a.isFullscreen) {
-            __WEBPACK_IMPORTED_MODULE_4_screenfull___default.a.request(wrapper.get(0));
-        }
-        // Disable fullscreen mode
-        else {
-                __WEBPACK_IMPORTED_MODULE_4_screenfull___default.a.exit();
-            }
-    };
-
-    /**
-     * Insert a string at cursor position
-     *
-     * @since 1.2.0
-     */
-    this.insert = function (insertion) {
-        var doc = self.codemirror.getDoc(),
-            cursor = doc.getCursor();
-
-        doc.replaceRange(insertion, {
-            line: cursor.line,
-            ch: cursor.ch
-        });
-    };
-
-    /**
-     * Insert a string at the start and end of a selection
-     *
-     * @since 1.2.0
-     */
-    this.insertAround = function (start, end) {
-        var doc = self.codemirror.getDoc(),
-            cursor = doc.getCursor(),
-            selection;
-
-        if (doc.somethingSelected()) {
-
-            selection = doc.getSelection();
-            doc.replaceSelection(start + selection + end);
-        } else {
-
-            // If no selection then insert start and end args and set cursor position between the two.
-            doc.replaceRange(start + end, {
-                line: cursor.line,
-                ch: cursor.ch
-            });
-            doc.setCursor({
-                line: cursor.line,
-                ch: cursor.ch + start.length
-            });
-        }
-    };
-
-    /**
-     * Insert a string before a selection
-     *
-     * @since 1.2.0
-     */
-    this.insertBefore = function (insertion, cursorOffset) {
-        var doc = self.codemirror.getDoc(),
-            cursor = doc.getCursor(),
-            selections,
-            pos,
-            i;
-
-        if (doc.somethingSelected()) {
-
-            selections = doc.listSelections();
-            selections.forEach(function (selection) {
-                pos = [selection.head.line, selection.anchor.line].sort();
-
-                for (i = pos[0]; i <= pos[1]; i++) {
-                    doc.replaceRange(insertion, {
-                        line: i,
-                        ch: 0
+                // Bind the action callback to the anchors "click" event.
+                if (tool.action) {
+                    $anchor.on('mousedown', function () {
+                        _this2.field.inAction = true;
+                    });
+                    $anchor.on('click', function (event) {
+                        if (!_this2.options.readonly) {
+                            _this2.codemirror.focus();
+                            _this2.actions[tool.action].callback.call(_this2);
+                        }
+                        _this2.field.inAction = false;
+                        event.preventDefault();
                     });
                 }
 
-                doc.setCursor({
-                    line: pos[0],
-                    ch: cursorOffset || 0
-                });
+                // Join the list item and the anchor.
+                $item.append($anchor);
+
+                // Generate nested items
+                if (tool.nested) {
+                    $subItems = _this2.$('<ul>').append(_this2.generateToolbarItems(tool.nested));
+                    $item.addClass('visualmarkdown-action-with-subactions');
+                    $item.append($subItems);
+                }
+
+                return $item;
             });
-        } else {
+        }
+
+        /**
+         * Handle a click on the toggle fullscreen mode icon
+         *
+         * @since 1.2.0
+         */
+
+    }, {
+        key: 'toggleFullscreenMode',
+        value: function toggleFullscreenMode() {
+            var wrapper = void 0;
+
+            // Abort if fullscreen mode isn't supported
+            if (!__WEBPACK_IMPORTED_MODULE_2_screenfull___default.a.enabled) {
+                return;
+            }
+
+            // Find related wrapper element
+            wrapper = this.$(this.codemirror.getWrapperElement()).closest('.markdownfield-wrapper');
+
+            // Enable/Disable fullscreen mode
+            if (__WEBPACK_IMPORTED_MODULE_2_screenfull___default.a.isFullscreen) {
+                __WEBPACK_IMPORTED_MODULE_2_screenfull___default.a.exit();
+            } else {
+                __WEBPACK_IMPORTED_MODULE_2_screenfull___default.a.request(wrapper.get(0));
+            }
+        }
+
+        /**
+         * Insert a string at cursor position
+         *
+         * @since 1.2.0
+         */
+
+    }, {
+        key: 'insert',
+        value: function insert(insertion) {
+            var doc = this.codemirror.getDoc();
+            var cursor = doc.getCursor();
+
             doc.replaceRange(insertion, {
                 line: cursor.line,
-                ch: 0
-            });
-            doc.setCursor({
-                line: cursor.line,
-                ch: cursorOffset || 0
+                ch: cursor.ch
             });
         }
-    };
 
-    /**
-     * Find the starting position of a selection
-     *
-     * @since 1.2.0
-     */
-    this.getSelectionStart = function (selection) {
-        var swap = selection.anchor.line < selection.head.line || selection.anchor.line === selection.head.line && selection.anchor.ch <= selection.head.ch;
-        return swap ? selection.anchor : selection.head;
-    };
+        /**
+         * Insert a string at the start and end of a selection
+         *
+         * @since 1.2.0
+         */
 
-    /**
-     * Find the end position of a selection
-     *
-     * @since 1.2.0
-     */
-    this.getSelectionEnd = function (selection) {
-        var swap = selection.anchor.line < selection.head.line || selection.anchor.line === selection.head.line && selection.anchor.ch <= selection.head.ch;
-        return swap ? selection.head : selection.anchor;
-    };
+    }, {
+        key: 'insertAround',
+        value: function insertAround(start, end) {
+            var doc = this.codemirror.getDoc();
+            var cursor = doc.getCursor();
+            var selection = void 0;
 
-    /**
-     * Add/remove formatting before multiple selections
-     *
-     * @since 1.2.0
-     */
-    this.toggleBefore = function (formatting, multiline) {
-
-        var doc = self.codemirror.getDoc(),
-            selections = doc.listSelections(),
-            processedLines = [],
-            start,
-            end,
-            line;
-
-        // Initialize multiline parameter
-        if (multiline === undefined) {
-            multiline = false;
-        }
-
-        // Delegate to function handling all selections independently
-        selections.forEach(function (selection) {
-
-            // For cases were we need to toggle every line
-            // (lists, etc.) we'll call the handling function
-            // for every line of the current selection
-            if (multiline) {
-                start = self.getSelectionStart(selection).line;
-                end = self.getSelectionEnd(selection).line;
-                for (var i = start; i <= end; i++) {
-                    if (processedLines.indexOf(i) === -1) {
-                        self.toggleBeforeLine(formatting, i);
-                        processedLines.push(i);
-                    }
-                }
+            if (doc.somethingSelected()) {
+                selection = doc.getSelection();
+                doc.replaceSelection(start + selection + end);
+            } else {
+                // If no selection then insert start and end args and set cursor position between the two.
+                doc.replaceRange(start + end, {
+                    line: cursor.line,
+                    ch: cursor.ch
+                });
+                doc.setCursor({
+                    line: cursor.line,
+                    ch: cursor.ch + start.length
+                });
             }
-            // Otherwise we'll just use the selection start line
-            else {
-                    line = self.getSelectionStart(selection).line;
+        }
+
+        /**
+         * Insert a string before a selection
+         *
+         * @since 1.2.0
+         */
+
+    }, {
+        key: 'insertBefore',
+        value: function insertBefore(insertion, cursorOffset) {
+            var doc = this.codemirror.getDoc();
+            var cursor = doc.getCursor();
+            var selections = void 0;
+            var pos = void 0;
+            var i = void 0;
+
+            if (doc.somethingSelected()) {
+                selections = doc.listSelections();
+                selections.forEach(function (selection) {
+                    pos = [selection.head.line, selection.anchor.line].sort();
+
+                    for (i = pos[0]; i <= pos[1]; i++) {
+                        doc.replaceRange(insertion, {
+                            line: i,
+                            ch: 0
+                        });
+                    }
+
+                    doc.setCursor({
+                        line: pos[0],
+                        ch: cursorOffset || 0
+                    });
+                });
+            } else {
+                doc.replaceRange(insertion, {
+                    line: cursor.line,
+                    ch: 0
+                });
+                doc.setCursor({
+                    line: cursor.line,
+                    ch: cursorOffset || 0
+                });
+            }
+        }
+
+        /**
+         * Find the starting position of a selection
+         *
+         * @since 1.2.0
+         */
+
+    }, {
+        key: 'getSelectionStart',
+        value: function getSelectionStart(selection) {
+            var swap = selection.anchor.line < selection.head.line || selection.anchor.line === selection.head.line && selection.anchor.ch <= selection.head.ch;
+
+            return swap ? selection.anchor : selection.head;
+        }
+
+        /**
+         * Find the end position of a selection
+         *
+         * @since 1.2.0
+         */
+
+    }, {
+        key: 'getSelectionEnd',
+        value: function getSelectionEnd(selection) {
+            var swap = selection.anchor.line < selection.head.line || selection.anchor.line === selection.head.line && selection.anchor.ch <= selection.head.ch;
+
+            return swap ? selection.head : selection.anchor;
+        }
+
+        /**
+         * Add/remove formatting before multiple selections
+         *
+         * @since 1.2.0
+         */
+
+    }, {
+        key: 'toggleBefore',
+        value: function toggleBefore(formatting) {
+            var _this3 = this;
+
+            var multiline = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+            var doc = this.codemirror.getDoc();
+            var selections = doc.listSelections();
+            var processedLines = [];
+
+            // Delegate to function handling all selections independently
+            selections.forEach(function (selection) {
+                // For cases were we need to toggle every line
+                // (lists, etc.) we'll call the handling function
+                // for every line of the current selection
+                if (multiline) {
+                    var start = _this3.getSelectionStart(selection).line;
+                    var end = _this3.getSelectionEnd(selection).line;
+                    for (var i = start; i <= end; i++) {
+                        if (processedLines.indexOf(i) === -1) {
+                            _this3.toggleBeforeLine(formatting, i);
+                            processedLines.push(i);
+                        }
+                    }
+                    // Otherwise we'll just use the selection start line
+                } else {
+                    var line = _this3.getSelectionStart(selection).line;
                     if (processedLines.indexOf(line) === -1) {
-                        self.toggleBeforeLine(formatting, line);
+                        _this3.toggleBeforeLine(formatting, line);
                         processedLines.push(line);
                     }
                 }
-        });
-    };
-
-    /**
-     * Add/remove formatting before a single selection
-     *
-     * @since 1.2.0
-     */
-    this.toggleBeforeLine = function (formatting, index) {
-
-        var doc = self.codemirror.getDoc(),
-            line = doc.getLine(index);
-
-        // Add space character to formatting
-        formatting = formatting + ' ';
-
-        /*
-         SPECIAL CASE: In case we're toggling header formatting and the line
-         already starts with header formatting, we'll remove the current
-         header formatting before appling the new one.
-          Exception: The lines current header level is the same as the new
-         formattings header level. In this case we'll only remove the current header formatting.
-         */
-        if (self.isHeader(line) && self.isHeader(formatting) && self.getHeaderLevel(line) !== self.getHeaderLevel(formatting)) {
-            // Remove header formatting
-            var level = self.getHeaderLevel(line);
-            doc.replaceRange('', {
-                line: index,
-                ch: 0
-            }, {
-                line: index,
-                ch: level
-            });
-            // Remove leading space if present
-            if (doc.getLine(index).indexOf(' ') === 0) {
-                doc.replaceRange('', {
-                    line: index,
-                    ch: 0
-                }, {
-                    line: index,
-                    ch: 1
-                });
-            }
-            // Add new header formatting
-            doc.replaceRange(formatting, {
-                line: index,
-                ch: 0
             });
         }
-        // Remove existing formatting
-        else if (line.indexOf(formatting) === 0) {
-                // Remove formatting
+
+        /**
+         * Add/remove formatting before a single selection
+         *
+         * @since 1.2.0
+         */
+
+    }, {
+        key: 'toggleBeforeLine',
+        value: function toggleBeforeLine(formatting, index) {
+            var doc = this.codemirror.getDoc();
+            var line = doc.getLine(index);
+
+            // Add space character to formatting
+            formatting += ' ';
+
+            /*
+             SPECIAL CASE: In case we're toggling header formatting and the line
+             already starts with header formatting, we'll remove the current
+             header formatting before appling the new one.
+              Exception: The lines current header level is the same as the new
+             formattings header level. In this case we'll only remove the current header formatting.
+             */
+            if (this.isHeader(line) && this.isHeader(formatting) && this.getHeaderLevel(line) !== this.getHeaderLevel(formatting)) {
+                // Remove header formatting
+                var level = this.getHeaderLevel(line);
                 doc.replaceRange('', {
                     line: index,
                     ch: 0
                 }, {
                     line: index,
-                    ch: formatting.length
+                    ch: level
+                });
+                // Remove leading space if present
+                if (doc.getLine(index).indexOf(' ') === 0) {
+                    doc.replaceRange('', {
+                        line: index,
+                        ch: 0
+                    }, {
+                        line: index,
+                        ch: 1
+                    });
+                }
+                // Add new header formatting
+                doc.replaceRange(formatting, {
+                    line: index,
+                    ch: 0
                 });
             }
-            // Add new formatting
-            else {
+            // Remove existing formatting
+            else if (line.indexOf(formatting) === 0) {
+                    // Remove formatting
+                    doc.replaceRange('', {
+                        line: index,
+                        ch: 0
+                    }, {
+                        line: index,
+                        ch: formatting.length
+                    });
+                    // Add new formatting
+                } else {
                     doc.replaceRange(formatting, {
                         line: index,
                         ch: 0
                     });
                 }
-    };
-
-    /**
-     * Add/remove formatting around multiple selections
-     *
-     * @since 1.2.0
-     */
-    this.toggleAround = function (before, after) {
-
-        var doc = self.codemirror.getDoc(),
-            selections = doc.listSelections(),
-            offsets = [],
-            line;
-
-        // Delegate to function handling all selections independently
-        selections.forEach(function (selection) {
-
-            // Get selection start line and initialize offsets array value
-            line = self.getSelectionStart(selection).line;
-            if (typeof offsets[line] === 'undefined') {
-                offsets[line] = 0;
-            }
-
-            // Delegate to single selection toggle function
-            offsets[line] += self.toggleAroundSelection(before, after, selection, offsets[line]);
-        });
-    };
-
-    /**
-     * Add/remove formatting before a single selection
-     *
-     * @since 1.2.0
-     */
-    this.toggleAroundSelection = function (before, after, selection, offset) {
-
-        var doc = self.codemirror.getDoc(),
-            from,
-            to,
-            content,
-            selectionTo;
-
-        // Get from and to positions from selection
-        from = self.getSelectionStart(selection);
-        to = self.getSelectionEnd(selection);
-
-        // Apply offset
-        from.ch += offset;
-        to.ch += offset;
-
-        // Get selection content
-        content = doc.getRange(from, to);
-
-        // Check for existing formatting
-        if (content.indexOf(before) === 0 && content.lastIndexOf(after) === content.length - after.length) {
-
-            // Remove formatting
-            doc.replaceRange(content.substr(before.length, content.length - before.length - after.length), from, to);
-
-            // Reset selection
-            selectionTo = {
-                line: to.line,
-                ch: from.line === to.line ? to.ch - before.length - after.length : to.ch - after.length
-            };
-            doc.addSelection(from, selectionTo);
-
-            // Return offset
-            return -(before.length + after.length);
-        } else {
-
-            // Add formatting
-            doc.replaceRange(before + content + after, from, to);
-
-            // Reset selection
-            selectionTo = {
-                line: to.line,
-                ch: from.line === to.line ? to.ch + before.length + after.length : to.ch + after.length
-            };
-            doc.addSelection(from, selectionTo);
-
-            // Return offset
-            return before.length + after.length;
-        }
-    };
-
-    /**
-     * Apply special styles when a line gets rendered
-     *
-     * @since 1.2.0
-     */
-    this.renderLine = function (instance, line, element) {
-
-        var $line = $(element).children('span');
-
-        // Style hanging quote indents
-        self.maybeApplyHangingQuoteStyles(element, $line);
-
-        // Style header indents
-        self.maybeApplyHeaderStyles(element, $line);
-    };
-
-    /**
-     * Maybe apply hanging quote styles to a line
-     *
-     * @since 1.2.0
-     */
-    this.maybeApplyHangingQuoteStyles = function (element, $line) {
-
-        var $parts = $line.children('span'),
-            level = 0,
-            padding = 0,
-            $part;
-
-        // Abort if the line doesn't start with quote formatting
-        if (!$parts.first().hasClass('cm-formatting-quote')) {
-            return false;
         }
 
-        // Calculate quote level and required padding
-        $part = $parts.first();
-        while ($part.hasClass('cm-formatting-quote')) {
-            level++;
-            padding += self.getActualFormattingWidth($part);
-            $part = $part.next();
-        }
-        padding += level * 3;
+        /**
+         * Add/remove formatting around multiple selections
+         *
+         * @since 1.2.0
+         */
 
-        // Apply padding and text-indent styles
-        element.style.textIndent = '-' + padding + 'px';
-        element.style.paddingLeft = padding + 4 + 'px';
+    }, {
+        key: 'toggleAround',
+        value: function toggleAround(before, after) {
+            var _this4 = this;
 
-        // Apply class indicating that this line is a quote line
-        element.classList.add('has-quote');
-        element.classList.add('has-quote-' + level);
+            var doc = this.codemirror.getDoc();
+            var selections = doc.listSelections();
+            var offsets = [];
+            var line = void 0;
 
-        return true;
-    };
+            // Delegate to function handling all selections independently
+            selections.forEach(function (selection) {
+                // Get selection start line and initialize offsets array value
+                line = _this4.getSelectionStart(selection).line;
+                if (typeof offsets[line] === 'undefined') {
+                    offsets[line] = 0;
+                }
 
-    /**
-     * Maybe apply hanging quote styles to a line
-     *
-     * @since 1.2.0
-     */
-    this.maybeApplyHeaderStyles = function (element, $line) {
-
-        var $formatting = $line.children('span').first(),
-            padding = 0,
-            regex,
-            classes,
-            level;
-
-        // Abort if the line doesn't start with header formatting
-        if (!$formatting.hasClass('cm-formatting-header')) {
-            return false;
-        }
-
-        // Calculate required padding
-        padding = self.getActualFormattingWidth($formatting);
-
-        // Apply text-indent styles
-        element.style.textIndent = '-' + padding + 'px';
-
-        // Apply class indicating that this line is a header line
-        regex = new RegExp('cm-formatting-header-([1-6])');
-        classes = $formatting.attr('class');
-        level = regex.exec(classes)[1];
-        element.classList.add('has-header');
-        element.classList.add('has-header-' + level);
-
-        return true;
-    };
-
-    /**
-     * Show "Keyboard Shortcuts" modal
-     *
-     * @since 1.4.2
-     */
-    this.showShortcutsModal = function () {
-        self.modals.shortcuts.show();
-    };
-
-    /**
-     * Hide all (possibly) open modals
-     *
-     * @since 1.4.2
-     */
-    this.hideModals = function (e) {
-        if (e.target === this) {
-            $.each(self.modals, function (index, modal) {
-                modal.hide();
+                // Delegate to single selection toggle function
+                offsets[line] += _this4.toggleAroundSelection(before, after, selection, offsets[line]);
             });
         }
-    };
 
-    /**
-     * Return the underlying CodeMirror instance
-     *
-     * @since 1.2.0
-     */
-    this.getCodeMirrorInstance = function () {
-        return self.codemirror;
-    };
+        /**
+         * Add/remove formatting before a single selection
+         *
+         * @since 1.2.0
+         */
 
-    /**
-     * Translate a header value string (h1 to h6) into it's
-     * markdown representation.
-     *
-     * @since 1.2.0
-     */
-    this.translateHeaderValue = function (value) {
-        switch (value) {
-            case 'h6':
-                return '######';
-            case 'h5':
-                return '#####';
-            case 'h4':
-                return '####';
-            case 'h3':
-                return '###';
-            case 'h2':
-                return '##';
-            case 'h1':
-                return '#';
-            default:
-                return '#';
-        }
-    };
+    }, {
+        key: 'toggleAroundSelection',
+        value: function toggleAroundSelection(before, after, selection, offset) {
+            var doc = this.codemirror.getDoc();
 
-    /**
-     * Check if the string includes header formatting.
-     *
-     * @since 1.5.0
-     * @param string str
-     * @return boolean
-     */
-    this.isHeader = function (str) {
-        return str.indexOf('#') === 0;
-    };
+            // Get from and to positions from selection
+            var from = this.getSelectionStart(selection);
+            var to = this.getSelectionEnd(selection);
 
-    /**
-     * Returns the strings header level.
-     *
-     * @since 1.5.0
-     * @param string str
-     * @return boolean|integer
-     */
-    this.getHeaderLevel = function (str) {
-        var min = 1,
-            max = 6,
-            needle;
+            // Apply offset
+            from.ch += offset;
+            to.ch += offset;
 
-        for (var i = max; i >= min; i--) {
-            needle = new Array(i + 1).join('#');
-            if (str.indexOf(needle) === 0) {
-                return i;
+            // Get selection content
+            var content = doc.getRange(from, to);
+
+            // Check for existing formatting
+            if (content.indexOf(before) === 0 && content.lastIndexOf(after) === content.length - after.length) {
+                // Remove formatting
+                doc.replaceRange(content.substr(before.length, content.length - before.length - after.length), from, to);
+
+                // Reset selection
+                var selectionTo = {
+                    line: to.line,
+                    ch: from.line === to.line ? to.ch - before.length - after.length : to.ch - after.length
+                };
+                doc.addSelection(from, selectionTo);
+
+                // Return offset
+                return -(before.length + after.length);
+            } else {
+                // Add formatting
+                doc.replaceRange(before + content + after, from, to);
+
+                // Reset selection
+                var _selectionTo = {
+                    line: to.line,
+                    ch: from.line === to.line ? to.ch + before.length + after.length : to.ch + after.length
+                };
+                doc.addSelection(from, _selectionTo);
+
+                // Return offset
+                return before.length + after.length;
             }
         }
 
-        return false;
-    };
+        /**
+         * Apply special styles when a line gets rendered
+         *
+         * @since 1.2.0
+         */
 
-    /**
-     * Fetch the actual with of a DOM element
-     *
-     * @since 1.2.0
-     */
-    this.getActualFormattingWidth = function ($target) {
+    }, {
+        key: 'renderLine',
+        value: function renderLine(instance, line, element) {
+            var $line = this.$(element).children('span');
 
-        var styles = 'position: absolute !important; top: -1000px !important;',
-            width;
+            // Style hanging quote indents
+            this.maybeApplyHangingQuoteStyles(element, $line);
 
-        $target = $target.clone().attr('style', styles).appendTo(self.$wrapper);
-        width = $target.outerWidth();
-        $target.remove();
-        return width;
-    };
+            // Style header indents
+            this.maybeApplyHeaderStyles(element, $line);
+        }
 
-    /**
-     * Trigger the panel "save" event
-     *
-     * @since 1.2.0
-     */
-    this.savePanelForm = function () {
-        self.$wrapper.closest('.form').trigger('submit');
-    };
+        /**
+         * Maybe apply hanging quote styles to a line
+         *
+         * @since 1.2.0
+         */
 
-    /**
-     * Run initialization
-     */
-    return this.init(options);
-};
+    }, {
+        key: 'maybeApplyHangingQuoteStyles',
+        value: function maybeApplyHangingQuoteStyles(element, $line) {
+            var $parts = $line.children('span');
+            var level = 0;
+            var padding = 0;
+            var $part = void 0;
 
-/* harmony default export */ __webpack_exports__["a"] = VisualMarkdownEditor;
+            // Abort if the line doesn't start with quote formatting
+            if (!$parts.first().hasClass('cm-formatting-quote')) {
+                return false;
+            }
+
+            // Calculate quote level and required padding
+            $part = $parts.first();
+            while ($part.hasClass('cm-formatting-quote')) {
+                level++;
+                padding += this.getActualFormattingWidth($part);
+                $part = $part.next();
+            }
+            padding += level * 3;
+
+            // Apply padding and text-indent styles
+            element.style.textIndent = '-' + padding + 'px';
+            element.style.paddingLeft = padding + 4 + 'px';
+
+            // Apply class indicating that this line is a quote line
+            element.classList.add('has-quote');
+            element.classList.add('has-quote-' + level);
+
+            return true;
+        }
+
+        /**
+         * Maybe apply hanging quote styles to a line
+         *
+         * @since 1.2.0
+         */
+
+    }, {
+        key: 'maybeApplyHeaderStyles',
+        value: function maybeApplyHeaderStyles(element, $line) {
+            var $formatting = $line.children('span').first();
+
+            // Abort if the line doesn't start with header formatting
+            if (!$formatting.hasClass('cm-formatting-header')) {
+                return false;
+            }
+
+            // Calculate required padding
+            var padding = this.getActualFormattingWidth($formatting);
+
+            // Apply text-indent styles
+            element.style.textIndent = '-' + padding + 'px';
+
+            // Apply class indicating that this line is a header line
+            var regex = new RegExp('cm-formatting-header-([1-6])');
+            var classes = $formatting.attr('class');
+            var level = regex.exec(classes)[1];
+            element.classList.add('has-header');
+            element.classList.add('has-header-' + level);
+
+            return true;
+        }
+
+        /**
+         * Show "Keyboard Shortcuts" modal
+         *
+         * @since 1.4.2
+         */
+
+    }, {
+        key: 'showShortcutsModal',
+        value: function showShortcutsModal() {
+            this.modals.$shortcuts.show();
+        }
+
+        /**
+         * Hide all (possibly) open modals
+         *
+         * @since 1.4.2
+         */
+
+    }, {
+        key: 'hideModals',
+        value: function hideModals(e) {
+            if (e.target === this) {
+                this.$.each(this.modals, function (index, modal) {
+                    modal.hide();
+                });
+            }
+        }
+
+        /**
+         * Return the underlying CodeMirror instance
+         *
+         * @since 1.2.0
+         */
+
+    }, {
+        key: 'getCodeMirrorInstance',
+        value: function getCodeMirrorInstance() {
+            return this.codemirror;
+        }
+
+        /**
+         * Translate a header value string (h1 to h6) into it's
+         * markdown representation.
+         *
+         * @since 1.2.0
+         */
+
+    }, {
+        key: 'translateHeaderValue',
+        value: function translateHeaderValue(value) {
+            switch (value) {
+                case 'h6':
+                    return '######';
+                case 'h5':
+                    return '#####';
+                case 'h4':
+                    return '####';
+                case 'h3':
+                    return '###';
+                case 'h2':
+                    return '##';
+                default:
+                    return '#';
+            }
+        }
+
+        /**
+         * Check if the string includes header formatting.
+         *
+         * @since 1.5.0
+         * @param string str
+         * @return boolean
+         */
+
+    }, {
+        key: 'isHeader',
+        value: function isHeader(str) {
+            return str.indexOf('#') === 0;
+        }
+
+        /**
+         * Returns the strings header level.
+         *
+         * @since 1.5.0
+         * @param string str
+         * @return boolean|integer
+         */
+
+    }, {
+        key: 'getHeaderLevel',
+        value: function getHeaderLevel(str) {
+            var min = 1;
+            var max = 6;
+            var needle = void 0;
+
+            for (var i = max; i >= min; i--) {
+                needle = new Array(i + 1).join('#');
+                if (str.indexOf(needle) === 0) {
+                    return i;
+                }
+            }
+
+            return false;
+        }
+
+        /**
+         * Fetch the actual with of a DOM element
+         *
+         * @since 1.2.0
+         */
+
+    }, {
+        key: 'getActualFormattingWidth',
+        value: function getActualFormattingWidth($target) {
+            var styles = 'position: absolute !important; top: -1000px !important;';
+            var width = void 0;
+
+            $target = $target.clone().attr('style', styles).appendTo(this.$wrapper);
+            width = $target.outerWidth();
+            $target.remove();
+
+            return width;
+        }
+
+        /**
+         * Trigger the panel "save" event
+         *
+         * @since 1.2.0
+         */
+
+    }, {
+        key: 'savePanelForm',
+        value: function savePanelForm() {
+            this.$wrapper.closest('.form').trigger('submit');
+        }
+    }, {
+        key: 'defaults',
+        get: function get() {
+            return {
+                readonly: false,
+                toolbar: true,
+                header1: 'h1',
+                header2: 'h2',
+                kirbytext: true,
+                codemirror: {
+                    theme: 'visualmarkdown',
+                    tabSize: 4,
+                    indentWithTabs: false,
+                    lineWrapping: true,
+                    readOnly: false,
+                    extraKeys: {
+                        Enter: 'newlineAndIndentContinueMarkdownList',
+                        'Alt-Enter': function AltEnter() {
+                            this.savePanelForm();
+                        },
+                        'Cmd-Enter': function CmdEnter() {
+                            this.savePanelForm();
+                        }
+                    },
+                    mode: {
+                        name: 'kirbytext',
+                        highlightFormatting: true,
+                        underscoresBreakWords: false,
+                        maxBlockquoteDepth: 0,
+                        fencedCodeBlocks: true,
+                        taskLists: true,
+                        strikethrough: true
+                    }
+                }
+            };
+        }
+
+        /**
+         * Get available actions.
+         *
+         * @since 1.6.0
+         */
+
+    }, {
+        key: 'actions',
+        get: function get() {
+            return {
+                header1: {
+                    optional: true,
+                    type: 'editor',
+                    callback: function callback() {
+                        var header = this.translateHeaderValue(this.options.header1);
+                        this.toggleBefore(header, false);
+                    }
+                },
+                header2: {
+                    optional: true,
+                    type: 'editor',
+                    callback: function callback() {
+                        var header = this.translateHeaderValue(this.options.header2);
+                        this.toggleBefore(header, false);
+                    }
+                },
+                bold: {
+                    optional: true,
+                    type: 'editor',
+                    callback: function callback() {
+                        this.toggleAround('**', '**');
+                    }
+                },
+                italic: {
+                    optional: true,
+                    type: 'editor',
+                    callback: function callback() {
+                        this.toggleAround('*', '*');
+                    }
+                },
+                strikethrough: {
+                    optional: true,
+                    type: 'editor',
+                    callback: function callback() {
+                        this.toggleAround('~~', '~~');
+                    }
+                },
+                blockquote: {
+                    optional: true,
+                    type: 'editor',
+                    callback: function callback() {
+                        this.toggleBefore('>', false);
+                    }
+                },
+                orderedList: {
+                    optional: true,
+                    type: 'editor',
+                    callback: function callback() {
+                        this.insertBefore('1. ', 3);
+                    }
+                },
+                unorderedList: {
+                    optional: true,
+                    type: 'editor',
+                    callback: function callback() {
+                        this.toggleBefore('*', true);
+                    }
+                },
+                link: {
+                    optional: true,
+                    type: 'editor',
+                    callback: function callback() {
+                        if (this.options.kirbytext) {
+                            this.insertAround('(link: http:// text: ', ')');
+                        } else {
+                            this.insertAround('[', '](http://)');
+                        }
+                    }
+                },
+                email: {
+                    optional: true,
+                    type: 'editor',
+                    callback: function callback() {
+                        if (this.options.kirbytext) {
+                            this.insertAround('(email: user@example.com text: ', ')');
+                        } else {
+                            this.insert('<user@example.com>');
+                        }
+                    }
+                },
+                image: {
+                    optional: true,
+                    type: 'editor',
+                    callback: function callback() {
+                        if (this.options.kirbytext) {
+                            this.insert('(image: filename.jpg)');
+                        } else {
+                            this.insert('![alt text](http://)');
+                        }
+                    }
+                },
+                line: {
+                    optional: true,
+                    type: 'editor',
+                    callback: function callback() {
+                        this.insert('****');
+                    }
+                },
+                code: {
+                    optional: true,
+                    type: 'editor',
+                    callback: function callback() {
+                        this.insertAround('```\r\n', '\r\n```');
+                    }
+                },
+                shortcutsModal: {
+                    optional: false,
+                    type: 'help',
+                    callback: function callback() {
+                        this.showShortcutsModal();
+                    }
+                },
+                markdownLink: {
+                    optional: true,
+                    type: 'help',
+                    callback: function callback() {
+                        window.open('http://daringfireball.net/projects/markdown/syntax');
+                    }
+                },
+                kirbytextLink: {
+                    optional: true,
+                    type: 'help',
+                    callback: function callback() {
+                        window.open('http://getkirby.com/docs/content/text');
+                    }
+                },
+                issuesLink: {
+                    optional: true,
+                    type: 'help',
+                    callback: function callback() {
+                        window.open('https://github.com/JonasDoebertin/kirby-visual-markdown/issues');
+                    }
+                },
+                licenseLink: {
+                    optional: true,
+                    type: 'help',
+                    callback: function callback() {
+                        window.open('https://gumroad.com/l/visualmarkdown');
+                    }
+                },
+                help: {
+                    optional: true,
+                    type: 'help',
+                    callback: function callback() {}
+                },
+                fullscreen: {
+                    optional: false,
+                    type: 'display',
+                    callback: function callback() {
+                        this.toggleFullscreenMode();
+                    }
+                }
+            };
+        }
+    }]);
+
+    return _class;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = _class;
 
 /***/ }),
 /* 6 */
