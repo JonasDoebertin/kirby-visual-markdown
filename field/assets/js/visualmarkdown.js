@@ -9803,8 +9803,6 @@ jQuery.fn.markdownfield = function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__keymaps__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__kirbytags_mode__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__tools__ = __webpack_require__(8);
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -9865,13 +9863,6 @@ var _class = function () {
 
         // Initialize toolbar
         if (this.options.toolbar) {
-            if (!this.isSafari()) {
-                __WEBPACK_IMPORTED_MODULE_5__tools__["a" /* default */].push({
-                    name: 'fullscreen',
-                    action: 'fullscreen',
-                    className: 'fa fa-expand'
-                });
-            }
             this.initToolbar();
         }
 
@@ -9880,7 +9871,9 @@ var _class = function () {
             $shortcuts: $('[data-visualmarkdown-modal=shortcuts]')
         };
         Object.keys(this.modals).forEach(function (key) {
-            _this.modals[key].on('click', _this.hideModals.bind(_this));
+            _this.modals[key].on('click', function () {
+                _this.hideModals();
+            });
         });
 
         // Refresh CodeMirror DOM
@@ -9922,26 +9915,6 @@ var _class = function () {
         }
 
         /**
-         * Initialize the toolbar
-         *
-         * @since 1.2.0
-         */
-
-    }, {
-        key: 'initToolbar',
-        value: function initToolbar() {
-            var toolbar = this.$('<ul>').addClass('visualmarkdown-toolbar');
-            var tools = this.generateToolbarItems(__WEBPACK_IMPORTED_MODULE_5__tools__["a" /* default */]);
-            var wrapper = this.codemirror.getWrapperElement();
-
-            tools.forEach(function (tool) {
-                toolbar.append(tool);
-            });
-
-            this.$(wrapper).parent().prepend(toolbar);
-        }
-
-        /**
          * Register keymaps by extending the extraKeys object
          *
          * @since 1.2.0
@@ -9956,55 +9929,110 @@ var _class = function () {
             for (name in __WEBPACK_IMPORTED_MODULE_3__keymaps__["a" /* default */]) {
                 if (Object.prototype.hasOwnProperty.call(__WEBPACK_IMPORTED_MODULE_3__keymaps__["a" /* default */], name)) {
                     // Abort if action doesn't have a callback
-                    if (_typeof(this.actions[__WEBPACK_IMPORTED_MODULE_3__keymaps__["a" /* default */][name]]) !== 'object') {
+                    if (typeof this.actions[__WEBPACK_IMPORTED_MODULE_3__keymaps__["a" /* default */][name]] !== 'function') {
                         throw 'VisualMarkdownEditor: "' + __WEBPACK_IMPORTED_MODULE_3__keymaps__["a" /* default */][name] + '" is not a registered action';
                     }
 
                     obj = {};
-                    obj[name] = this.actions[__WEBPACK_IMPORTED_MODULE_3__keymaps__["a" /* default */][name]].callback.bind(this);
+                    obj[name] = this.actions[__WEBPACK_IMPORTED_MODULE_3__keymaps__["a" /* default */][name]].bind(this);
                     this.$.extend(this.options.codemirror.extraKeys, obj);
                 }
             }
         }
 
         /**
-         * Generate a list of <li> tags for the available tools
+         * Initialize the toolbar
          *
          * @since 1.2.0
          */
 
     }, {
-        key: 'generateToolbarItems',
-        value: function generateToolbarItems(tools) {
+        key: 'initToolbar',
+        value: function initToolbar() {
+            var $toolbar = this.$('<ul>').addClass('visualmarkdown-toolbar');
+
+            this.buildTools(this.filterTools(__WEBPACK_IMPORTED_MODULE_5__tools__["a" /* default */])).forEach(function (tool) {
+                $toolbar.append(tool);
+            });
+
+            this.$wrapper.parent().prepend($toolbar);
+        }
+
+        /**
+         * Filter out disabled tools.
+         *
+         * @param tools
+         * @returns {Array}
+         */
+
+    }, {
+        key: 'filterTools',
+        value: function filterTools(tools) {
             var _this2 = this;
 
-            var alwaysVisibleItems = ['help', 'fullscreen'];
+            return tools.map(function (tool) {
+                // Recursively filter nested tools
+                if (tool.nested) {
+                    tool.nested = _this2.filterTools(tool.nested);
+
+                    if (tool.nested.length === 0) {
+                        return false;
+                    }
+                }
+
+                switch (tool.type) {
+                    case 'divider':
+                        return tool;
+
+                    case 'edit':
+                        return _this2.options.tools.indexOf(tool.action) !== -1 ? tool : false;
+
+                    case 'help':
+                        return tool;
+
+                    case 'license':
+                        return !_this2.options.licensed ? tool : false;
+
+                    case 'fullscreen':
+                        return !_this2.isSafari() ? tool : false;
+
+                    default:
+                        return false;
+                }
+            }).filter(function (tool) {
+                return tool !== false;
+            });
+        }
+
+        /**
+         * Build
+         *
+         * @param tools
+         * @return Array
+         */
+
+    }, {
+        key: 'buildTools',
+        value: function buildTools(tools) {
+            var _this3 = this;
 
             return tools.map(function (tool) {
-                var $item = void 0;
-                var $anchor = void 0;
-                var $subItems = void 0;
-
                 // Generate elements
-                $item = _this2.$('<li>').addClass('visualmarkdown-action-' + tool.action);
-                $anchor = _this2.$('<a>').attr('href', '#').attr('tabindex', '-1');
-
-                if (_this2.$.inArray(tool.action, _this2.options.tools) === -1 && _this2.$.inArray(tool.action, alwaysVisibleItems) === -1) {
-                    $item.addClass('visualmarkdown-action-hidden');
-                }
+                var $item = _this3.$('<li>').addClass('visualmarkdown-tool-' + tool.type);
+                var $anchor = _this3.$('<a>').attr('href', '#').attr('tabindex', '-1');
 
                 // Don't do anything with divider elements.
                 // They are just an empty <li> tag with a "divider" class.
-                if (tool.action === 'divider') {
+                if (tool.type === 'divider') {
                     return $item;
                 }
 
-                // Add the tools name as anchor class.
+                // Add the tools classes to the anchor element
                 if (tool.className) {
                     $anchor.addClass(tool.className);
                 }
 
-                // Add the tooltip if available
+                // Add a tooltip if a translation is available
                 if (VisualMarkdownTranslation['action.tooltip.' + tool.action]) {
                     $anchor.attr('title', VisualMarkdownTranslation['action.tooltip.' + tool.action]);
                 }
@@ -10017,14 +10045,14 @@ var _class = function () {
                 // Bind the action callback to the anchors "click" event.
                 if (tool.action) {
                     $anchor.on('mousedown', function () {
-                        _this2.field.inAction = true;
+                        _this3.field.inAction = true;
                     });
                     $anchor.on('click', function (event) {
-                        if (!_this2.options.readonly) {
-                            _this2.codemirror.focus();
-                            _this2.actions[tool.action].callback.call(_this2);
+                        if (!_this3.options.readonly) {
+                            _this3.codemirror.focus();
+                            _this3.actions[tool.action].call(_this3);
                         }
-                        _this2.field.inAction = false;
+                        _this3.field.inAction = false;
                         event.preventDefault();
                     });
                 }
@@ -10034,9 +10062,7 @@ var _class = function () {
 
                 // Generate nested items
                 if (tool.nested) {
-                    $subItems = _this2.$('<ul>').append(_this2.generateToolbarItems(tool.nested));
-                    $item.addClass('visualmarkdown-action-with-subactions');
-                    $item.append($subItems);
+                    $item.append(_this3.$('<ul>').append(_this3.buildTools(tool.nested)));
                 }
 
                 return $item;
@@ -10198,7 +10224,7 @@ var _class = function () {
     }, {
         key: 'toggleBefore',
         value: function toggleBefore(formatting) {
-            var _this3 = this;
+            var _this4 = this;
 
             var multiline = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
@@ -10212,19 +10238,19 @@ var _class = function () {
                 // (lists, etc.) we'll call the handling function
                 // for every line of the current selection
                 if (multiline) {
-                    var start = _this3.getSelectionStart(selection).line;
-                    var end = _this3.getSelectionEnd(selection).line;
+                    var start = _this4.getSelectionStart(selection).line;
+                    var end = _this4.getSelectionEnd(selection).line;
                     for (var i = start; i <= end; i++) {
                         if (processedLines.indexOf(i) === -1) {
-                            _this3.toggleBeforeLine(formatting, i);
+                            _this4.toggleBeforeLine(formatting, i);
                             processedLines.push(i);
                         }
                     }
                     // Otherwise we'll just use the selection start line
                 } else {
-                    var line = _this3.getSelectionStart(selection).line;
+                    var line = _this4.getSelectionStart(selection).line;
                     if (processedLines.indexOf(line) === -1) {
-                        _this3.toggleBeforeLine(formatting, line);
+                        _this4.toggleBeforeLine(formatting, line);
                         processedLines.push(line);
                     }
                 }
@@ -10307,7 +10333,7 @@ var _class = function () {
     }, {
         key: 'toggleAround',
         value: function toggleAround(before, after) {
-            var _this4 = this;
+            var _this5 = this;
 
             var doc = this.codemirror.getDoc();
             var selections = doc.listSelections();
@@ -10317,13 +10343,13 @@ var _class = function () {
             // Delegate to function handling all selections independently
             selections.forEach(function (selection) {
                 // Get selection start line and initialize offsets array value
-                line = _this4.getSelectionStart(selection).line;
+                line = _this5.getSelectionStart(selection).line;
                 if (typeof offsets[line] === 'undefined') {
                     offsets[line] = 0;
                 }
 
                 // Delegate to single selection toggle function
-                offsets[line] += _this4.toggleAroundSelection(before, after, selection, offsets[line]);
+                offsets[line] += _this5.toggleAroundSelection(before, after, selection, offsets[line]);
             });
         }
 
@@ -10488,12 +10514,10 @@ var _class = function () {
 
     }, {
         key: 'hideModals',
-        value: function hideModals(e) {
-            if (e.target === this) {
-                this.$.each(this.modals, function (index, modal) {
-                    modal.hide();
-                });
-            }
+        value: function hideModals() {
+            this.$.each(this.modals, function (index, modal) {
+                modal.hide();
+            });
         }
 
         /**
@@ -10611,6 +10635,7 @@ var _class = function () {
                 toolbar: true,
                 header1: 'h1',
                 header2: 'h2',
+                licensed: false,
                 kirbytext: true,
                 codemirror: {
                     theme: 'visualmarkdown',
@@ -10650,157 +10675,77 @@ var _class = function () {
         key: 'actions',
         get: function get() {
             return {
-                header1: {
-                    optional: true,
-                    type: 'editor',
-                    callback: function callback() {
-                        var header = this.translateHeaderValue(this.options.header1);
-                        this.toggleBefore(header, false);
+                header1: function header1() {
+                    var header = this.translateHeaderValue(this.options.header1);
+                    this.toggleBefore(header, false);
+                },
+                header2: function header2() {
+                    var header = this.translateHeaderValue(this.options.header2);
+                    this.toggleBefore(header, false);
+                },
+                bold: function bold() {
+                    this.toggleAround('**', '**');
+                },
+                italic: function italic() {
+                    this.toggleAround('*', '*');
+                },
+                strikethrough: function strikethrough() {
+                    this.toggleAround('~~', '~~');
+                },
+                blockquote: function blockquote() {
+                    this.toggleBefore('>', false);
+                },
+                orderedList: function orderedList() {
+                    this.insertBefore('1. ', 3);
+                },
+                unorderedList: function unorderedList() {
+                    this.toggleBefore('*', true);
+                },
+                link: function link() {
+                    if (this.options.kirbytext) {
+                        this.insertAround('(link: http:// text: ', ')');
+                    } else {
+                        this.insertAround('[', '](http://)');
                     }
                 },
-                header2: {
-                    optional: true,
-                    type: 'editor',
-                    callback: function callback() {
-                        var header = this.translateHeaderValue(this.options.header2);
-                        this.toggleBefore(header, false);
+                email: function email() {
+                    if (this.options.kirbytext) {
+                        this.insertAround('(email: user@example.com text: ', ')');
+                    } else {
+                        this.insert('<user@example.com>');
                     }
                 },
-                bold: {
-                    optional: true,
-                    type: 'editor',
-                    callback: function callback() {
-                        this.toggleAround('**', '**');
+                image: function image() {
+                    if (this.options.kirbytext) {
+                        this.insert('(image: filename.jpg)');
+                    } else {
+                        this.insert('![alt text](http://)');
                     }
                 },
-                italic: {
-                    optional: true,
-                    type: 'editor',
-                    callback: function callback() {
-                        this.toggleAround('*', '*');
-                    }
+                line: function line() {
+                    this.insert('****');
                 },
-                strikethrough: {
-                    optional: true,
-                    type: 'editor',
-                    callback: function callback() {
-                        this.toggleAround('~~', '~~');
-                    }
+                code: function code() {
+                    this.insertAround('```\r\n', '\r\n```');
                 },
-                blockquote: {
-                    optional: true,
-                    type: 'editor',
-                    callback: function callback() {
-                        this.toggleBefore('>', false);
-                    }
+                shortcutsModal: function shortcutsModal() {
+                    this.showShortcutsModal();
                 },
-                orderedList: {
-                    optional: true,
-                    type: 'editor',
-                    callback: function callback() {
-                        this.insertBefore('1. ', 3);
-                    }
+                markdownLink: function markdownLink() {
+                    window.open('http://daringfireball.net/projects/markdown/syntax');
                 },
-                unorderedList: {
-                    optional: true,
-                    type: 'editor',
-                    callback: function callback() {
-                        this.toggleBefore('*', true);
-                    }
+                kirbytextLink: function kirbytextLink() {
+                    window.open('http://getkirby.com/docs/content/text');
                 },
-                link: {
-                    optional: true,
-                    type: 'editor',
-                    callback: function callback() {
-                        if (this.options.kirbytext) {
-                            this.insertAround('(link: http:// text: ', ')');
-                        } else {
-                            this.insertAround('[', '](http://)');
-                        }
-                    }
+                issuesLink: function issuesLink() {
+                    window.open('https://github.com/JonasDoebertin/kirby-visual-markdown/issues/new');
                 },
-                email: {
-                    optional: true,
-                    type: 'editor',
-                    callback: function callback() {
-                        if (this.options.kirbytext) {
-                            this.insertAround('(email: user@example.com text: ', ')');
-                        } else {
-                            this.insert('<user@example.com>');
-                        }
-                    }
+                licenseLink: function licenseLink() {
+                    window.open('https://gumroad.com/l/visualmarkdown');
                 },
-                image: {
-                    optional: true,
-                    type: 'editor',
-                    callback: function callback() {
-                        if (this.options.kirbytext) {
-                            this.insert('(image: filename.jpg)');
-                        } else {
-                            this.insert('![alt text](http://)');
-                        }
-                    }
-                },
-                line: {
-                    optional: true,
-                    type: 'editor',
-                    callback: function callback() {
-                        this.insert('****');
-                    }
-                },
-                code: {
-                    optional: true,
-                    type: 'editor',
-                    callback: function callback() {
-                        this.insertAround('```\r\n', '\r\n```');
-                    }
-                },
-                shortcutsModal: {
-                    optional: false,
-                    type: 'help',
-                    callback: function callback() {
-                        this.showShortcutsModal();
-                    }
-                },
-                markdownLink: {
-                    optional: true,
-                    type: 'help',
-                    callback: function callback() {
-                        window.open('http://daringfireball.net/projects/markdown/syntax');
-                    }
-                },
-                kirbytextLink: {
-                    optional: true,
-                    type: 'help',
-                    callback: function callback() {
-                        window.open('http://getkirby.com/docs/content/text');
-                    }
-                },
-                issuesLink: {
-                    optional: true,
-                    type: 'help',
-                    callback: function callback() {
-                        window.open('https://github.com/JonasDoebertin/kirby-visual-markdown/issues');
-                    }
-                },
-                licenseLink: {
-                    optional: true,
-                    type: 'help',
-                    callback: function callback() {
-                        window.open('https://gumroad.com/l/visualmarkdown');
-                    }
-                },
-                help: {
-                    optional: true,
-                    type: 'help',
-                    callback: function callback() {}
-                },
-                fullscreen: {
-                    optional: false,
-                    type: 'display',
-                    callback: function callback() {
-                        this.toggleFullscreenMode();
-                    }
+                help: function help() {},
+                fullscreen: function fullscreen() {
+                    this.toggleFullscreenMode();
                 }
             };
         }
@@ -10967,68 +10912,90 @@ __WEBPACK_IMPORTED_MODULE_0_codemirror___default.a.defineMode('kirbytext', funct
  */
 /* harmony default export */ __webpack_exports__["a"] = [{
     action: 'header1',
-    className: 'fa fa-header'
+    className: 'fa fa-header',
+    type: 'edit'
 }, {
     action: 'header2',
     className: 'markdownfield-icon-text markdownfield-icon-header2',
-    showName: true
+    showName: true,
+    type: 'edit'
 }, {
-    action: 'divider'
+    type: 'divider'
 }, {
     action: 'bold',
-    className: 'fa fa-bold'
+    className: 'fa fa-bold',
+    type: 'edit'
 }, {
     action: 'italic',
-    className: 'fa fa-italic'
+    className: 'fa fa-italic',
+    type: 'edit'
 }, {
     action: 'strikethrough',
-    className: 'fa fa-strikethrough'
+    className: 'fa fa-strikethrough',
+    type: 'edit'
 }, {
     action: 'blockquote',
-    className: 'fa fa-quote-left'
+    className: 'fa fa-quote-left',
+    type: 'edit'
 }, {
     action: 'unorderedList',
-    className: 'fa fa-list'
+    className: 'fa fa-list',
+    type: 'edit'
 }, {
     action: 'orderedList',
-    className: 'fa fa-list-ol'
+    className: 'fa fa-list-ol',
+    type: 'edit'
 }, {
-    action: 'divider'
+    type: 'divider'
 }, {
     action: 'link',
-    className: 'fa fa-link'
+    className: 'fa fa-link',
+    type: 'edit'
 }, {
     action: 'email',
-    className: 'fa fa-envelope'
+    className: 'fa fa-envelope',
+    type: 'edit'
 }, {
     action: 'image',
-    className: 'fa fa-image'
+    className: 'fa fa-image',
+    type: 'edit'
 }, {
     action: 'line',
-    className: 'fa fa-minus'
+    className: 'fa fa-minus',
+    type: 'edit'
 }, {
-    action: 'divider'
+    type: 'divider'
 }, {
     action: 'help',
     className: 'fa fa-question-circle',
+    type: 'help',
     nested: [{
         action: 'shortcutsModal',
-        showName: true
+        showName: true,
+        type: 'help'
     }, {
         action: 'markdownLink',
-        showName: true
+        showName: true,
+        type: 'help'
     }, {
         action: 'kirbytextLink',
-        showName: true
+        showName: true,
+        type: 'help'
     }, {
-        action: 'divider'
+        type: 'divider'
     }, {
         action: 'issuesLink',
-        showName: true
+        showName: true,
+        type: 'help'
     }, {
         action: 'licenseLink',
-        showName: true
+        showName: true,
+        type: 'license'
     }]
+}, {
+    action: 'fullscreen',
+    className: 'fa fa-expand',
+    type: 'fullscreen'
 }];
 
 /***/ }),
@@ -11102,6 +11069,7 @@ var _class = function () {
       header1: this.$field.data('header1'),
       header2: this.$field.data('header2'),
       tools: this.$field.data('tools').split(','),
+      licensed: this.$field.is('[data-licensed]'),
       kirbytext: this.$field.data('kirbytext')
     });
 

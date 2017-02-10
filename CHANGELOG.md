@@ -9,15 +9,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 
 * Global header level configuration (in config.php)
+* New option for hiding the "Purchase a license" link
 
 ### Changed
 
-* Updated to CodeMirror 5.23
+* Updated to CodeMirror 5.23.0
 * Updated translations
   * Dutch (thanks to [@icod](https://github.com/icod))
   * French (thanks to [@Thiousi](https://github.com/Thiousi))
 * Improved documentation (also thanks to [@malvese](https://github.com/malvese))
-* Improved plugin structure & assets build process
+* Improved overall plugin structure & assets build process
 
 ### Fixed
 

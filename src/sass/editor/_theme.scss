@@ -170,28 +170,20 @@
     vertical-align: top;
 }
 
-.markdownfield-wrapper .visualmarkdown-toolbar > li.visualmarkdown-action-header2 a {
+.markdownfield-wrapper .visualmarkdown-toolbar > li.visualmarkdown-tool-header2 a {
     font-family: Georgia, Garamond, serif;
     font-size: 18px;
 }
 
-.markdownfield-wrapper .visualmarkdown-toolbar > li.visualmarkdown-action-fullscreen {
+.markdownfield-wrapper .visualmarkdown-toolbar > li.visualmarkdown-tool-fullscreen {
     position: absolute;
     right: 0;
 }
 
-.markdownfield-wrapper .visualmarkdown-toolbar > li.visualmarkdown-action-hidden {
-    display: none;
-}
-
-.markdownfield-wrapper .visualmarkdown-toolbar > li.visualmarkdown-action-divider + li {
+.markdownfield-wrapper .visualmarkdown-toolbar > li.visualmarkdown-tool-divider + li {
     padding-left: 0.5em;
     margin-left: 0.5em;
     border-left: 1px solid #efefef;
-}
-
-.markdownfield-wrapper .visualmarkdown-toolbar > li:nth-last-child(2) {
-    margin-right: 40px;
 }
 
 .markdownfield-wrapper .visualmarkdown-toolbar > li > a {
@@ -231,11 +223,11 @@
     width: 100%;
 }
 
-.markdownfield-wrapper .visualmarkdown-toolbar ul li.visualmarkdown-action-divider {
+.markdownfield-wrapper .visualmarkdown-toolbar ul li.visualmarkdown-tool-divider {
     display: none;
 }
 
-.markdownfield-wrapper .visualmarkdown-toolbar ul  .visualmarkdown-action-divider + li {
+.markdownfield-wrapper .visualmarkdown-toolbar ul li.visualmarkdown-tool-divider + li {
     padding-top: 0.5em;
     margin-top: 0.5em;
     border-top: 1px solid #efefef;

@@ -64,7 +64,7 @@ class VisualMarkdownField extends InputField
     protected $header2 = 'h2';
 
     /**
-     * Option: Available Tools.
+     * Option: Available tools.
      *
      * @since 1.3.0
      * @var string
@@ -83,6 +83,13 @@ class VisualMarkdownField extends InputField
         'image',
         'line',
     ];
+
+    /**
+     * Option: Licensed
+     *
+     * @var bool
+     */
+    protected $licensed = false;
 
     /**
      * Translated strings.
@@ -194,6 +201,10 @@ class VisualMarkdownField extends InputField
             case 'tools':
                 $this->validateToolsOption($value);
                 break;
+
+            case 'licensed':
+                $this->validateLicensedOption($value);
+                break;
         }
     }
 
@@ -233,6 +244,17 @@ class VisualMarkdownField extends InputField
         if (!is_array($value) or empty($value)) {
             $this->tools = $this->defaultValues['tools'];
         }
+    }
+
+    /**
+     * Validate "licensed" option.
+     *
+     * @since 1.6.0
+     * @param mixed $value
+     */
+    protected function validateLicensedOption($value)
+    {
+        $this->licensed = in_array($value, ['true', 'yes', '1', true]);
     }
 
     /**
@@ -276,6 +298,7 @@ class VisualMarkdownField extends InputField
             'tools'         => implode(',', $this->tools),
             'header1'       => $this->header1,
             'header2'       => $this->header2,
+            'licensed'      => $this->licensed,
             'kirbytext'     => (c::get('panel.kirbytext', true)) ? 'true' : 'false',
         ]);
 

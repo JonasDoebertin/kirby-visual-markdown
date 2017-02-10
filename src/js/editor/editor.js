@@ -11,9 +11,9 @@
 import CodeMirror from 'codemirror';
 import ContinueListAddon from 'codemirror/addon/edit/continuelist';
 import Screenfull from 'screenfull';
-import Keymaps from './keymaps';
+import keymaps from './keymaps';
 import KirbyTagsMode from './kirbytags-mode';
-import Tools from './tools';
+import tools from './tools';
 
 /**
  * Visual Markdown Editor CodeMirror Wrapper
@@ -45,17 +45,10 @@ export default class {
         this.$wrapper = $(this.codemirror.getWrapperElement());
 
         // Register key bindings
-        this.registerKeyMaps(Keymaps);
+        this.registerKeyMaps(keymaps);
 
         // Initialize toolbar
         if (this.options.toolbar) {
-            if (!this.isSafari()) {
-                Tools.push({
-                    name: 'fullscreen',
-                    action: 'fullscreen',
-                    className: 'fa fa-expand'
-                });
-            }
             this.initToolbar();
         }
 
@@ -64,7 +57,9 @@ export default class {
             $shortcuts: $('[data-visualmarkdown-modal=shortcuts]')
         };
         Object.keys(this.modals).forEach(key => {
-            this.modals[key].on('click', this.hideModals.bind(this));
+            this.modals[key].on('click', () => {
+                this.hideModals();
+            });
         });
 
         // Refresh CodeMirror DOM
@@ -83,6 +78,7 @@ export default class {
             toolbar: true,
             header1: 'h1',
             header2: 'h2',
+            licensed: false,
             kirbytext: true,
             codemirror: {
                 theme: 'visualmarkdown',
@@ -119,157 +115,77 @@ export default class {
      */
     get actions() {
         return {
-            header1: {
-                optional: true,
-                type: 'editor',
-                callback() {
-                    let header = this.translateHeaderValue(this.options.header1);
-                    this.toggleBefore(header, false);
+            header1() {
+                let header = this.translateHeaderValue(this.options.header1);
+                this.toggleBefore(header, false);
+            },
+            header2() {
+                let header = this.translateHeaderValue(this.options.header2);
+                this.toggleBefore(header, false);
+            },
+            bold() {
+                this.toggleAround('**', '**');
+            },
+            italic() {
+                this.toggleAround('*', '*');
+            },
+            strikethrough() {
+                this.toggleAround('~~', '~~');
+            },
+            blockquote() {
+                this.toggleBefore('>', false);
+            },
+            orderedList() {
+                this.insertBefore('1. ', 3);
+            },
+            unorderedList() {
+                this.toggleBefore('*', true);
+            },
+            link() {
+                if (this.options.kirbytext) {
+                    this.insertAround('(link: http:// text: ', ')');
+                } else {
+                    this.insertAround('[', '](http://)');
                 }
             },
-            header2: {
-                optional: true,
-                type: 'editor',
-                callback() {
-                    var header = this.translateHeaderValue(this.options.header2);
-                    this.toggleBefore(header, false);
+            email() {
+                if (this.options.kirbytext) {
+                    this.insertAround('(email: user@example.com text: ', ')');
+                } else {
+                    this.insert('<user@example.com>');
                 }
             },
-            bold: {
-                optional: true,
-                type: 'editor',
-                callback() {
-                    this.toggleAround('**', '**');
+            image() {
+                if (this.options.kirbytext) {
+                    this.insert('(image: filename.jpg)');
+                } else {
+                    this.insert('![alt text](http://)');
                 }
             },
-            italic: {
-                optional: true,
-                type: 'editor',
-                callback() {
-                    this.toggleAround('*', '*');
-                }
+            line() {
+                this.insert('****');
             },
-            strikethrough: {
-                optional: true,
-                type: 'editor',
-                callback() {
-                    this.toggleAround('~~', '~~');
-                }
+            code() {
+                this.insertAround('```\r\n', '\r\n```');
             },
-            blockquote: {
-                optional: true,
-                type: 'editor',
-                callback() {
-                    this.toggleBefore('>', false);
-                }
+            shortcutsModal() {
+                this.showShortcutsModal();
             },
-            orderedList: {
-                optional: true,
-                type: 'editor',
-                callback() {
-                    this.insertBefore('1. ', 3);
-                }
+            markdownLink() {
+                window.open('http://daringfireball.net/projects/markdown/syntax');
             },
-            unorderedList: {
-                optional: true,
-                type: 'editor',
-                callback() {
-                    this.toggleBefore('*', true);
-                }
+            kirbytextLink() {
+                window.open('http://getkirby.com/docs/content/text');
             },
-            link: {
-                optional: true,
-                type: 'editor',
-                callback() {
-                    if (this.options.kirbytext) {
-                        this.insertAround('(link: http:// text: ', ')');
-                    } else {
-                        this.insertAround('[', '](http://)');
-                    }
-                }
+            issuesLink() {
+                window.open('https://github.com/JonasDoebertin/kirby-visual-markdown/issues/new');
             },
-            email: {
-                optional: true,
-                type: 'editor',
-                callback() {
-                    if (this.options.kirbytext) {
-                        this.insertAround('(email: user@example.com text: ', ')');
-                    } else {
-                        this.insert('<user@example.com>');
-                    }
-                }
+            licenseLink() {
+                window.open('https://gumroad.com/l/visualmarkdown');
             },
-            image: {
-                optional: true,
-                type: 'editor',
-                callback() {
-                    if (this.options.kirbytext) {
-                        this.insert('(image: filename.jpg)');
-                    } else {
-                        this.insert('![alt text](http://)');
-                    }
-                }
-            },
-            line: {
-                optional: true,
-                type: 'editor',
-                callback() {
-                    this.insert('****');
-                }
-            },
-            code: {
-                optional: true,
-                type: 'editor',
-                callback() {
-                    this.insertAround('```\r\n', '\r\n```');
-                }
-            },
-            shortcutsModal: {
-                optional: false,
-                type: 'help',
-                callback() {
-                    this.showShortcutsModal();
-                }
-            },
-            markdownLink: {
-                optional: true,
-                type: 'help',
-                callback() {
-                    window.open('http://daringfireball.net/projects/markdown/syntax');
-                }
-            },
-            kirbytextLink: {
-                optional: true,
-                type: 'help',
-                callback() {
-                    window.open('http://getkirby.com/docs/content/text');
-                }
-            },
-            issuesLink: {
-                optional: true,
-                type: 'help',
-                callback() {
-                    window.open('https://github.com/JonasDoebertin/kirby-visual-markdown/issues');
-                }
-            },
-            licenseLink: {
-                optional: true,
-                type: 'help',
-                callback() {
-                    window.open('https://gumroad.com/l/visualmarkdown');
-                }
-            },
-            help: {
-                optional: true,
-                type: 'help',
-                callback() {}
-            },
-            fullscreen: {
-                optional: false,
-                type: 'display',
-                callback() {
-                    this.toggleFullscreenMode();
-                }
+            help() {},
+            fullscreen() {
+                this.toggleFullscreenMode();
             }
         };
     }
@@ -294,23 +210,6 @@ export default class {
     }
 
     /**
-     * Initialize the toolbar
-     *
-     * @since 1.2.0
-     */
-    initToolbar() {
-        let toolbar = this.$('<ul>').addClass('visualmarkdown-toolbar');
-        let tools = this.generateToolbarItems(Tools);
-        let wrapper = this.codemirror.getWrapperElement();
-
-        tools.forEach(function (tool) {
-            toolbar.append(tool);
-        });
-
-        this.$(wrapper).parent().prepend(toolbar);
-    }
-
-    /**
      * Register keymaps by extending the extraKeys object
      *
      * @since 1.2.0
@@ -319,53 +218,100 @@ export default class {
         let name;
         let obj;
 
-        for (name in Keymaps) {
-            if (Object.prototype.hasOwnProperty.call(Keymaps, name)) {
+        for (name in keymaps) {
+            if (Object.prototype.hasOwnProperty.call(keymaps, name)) {
                 // Abort if action doesn't have a callback
-                if (typeof (this.actions[Keymaps[name]]) !== 'object') {
-                    throw 'VisualMarkdownEditor: "' + Keymaps[name] + '" is not a registered action';
+                if (typeof (this.actions[keymaps[name]]) !== 'function') {
+                    throw 'VisualMarkdownEditor: "' + keymaps[name] + '" is not a registered action';
                 }
 
                 obj = {};
-                obj[name] = this.actions[Keymaps[name]].callback.bind(this);
+                obj[name] = this.actions[keymaps[name]].bind(this);
                 this.$.extend(this.options.codemirror.extraKeys, obj);
             }
         }
     }
 
     /**
-     * Generate a list of <li> tags for the available tools
+     * Initialize the toolbar
      *
      * @since 1.2.0
      */
-    generateToolbarItems(tools) {
-        let alwaysVisibleItems = ['help', 'fullscreen'];
+    initToolbar() {
+        let $toolbar = this.$('<ul>').addClass('visualmarkdown-toolbar');
 
+        this.buildTools(this.filterTools(tools)).forEach(function (tool) {
+            $toolbar.append(tool);
+        });
+
+        this.$wrapper.parent().prepend($toolbar);
+    }
+
+    /**
+     * Filter out disabled tools.
+     *
+     * @param tools
+     * @returns {Array}
+     */
+    filterTools(tools) {
         return tools.map(tool => {
-            let $item;
-            let $anchor;
-            let $subItems;
+            // Recursively filter nested tools
+            if (tool.nested) {
+                tool.nested = this.filterTools(tool.nested);
 
-            // Generate elements
-            $item = this.$('<li>').addClass('visualmarkdown-action-' + tool.action);
-            $anchor = this.$('<a>').attr('href', '#').attr('tabindex', '-1');
-
-            if ((this.$.inArray(tool.action, this.options.tools) === -1) && (this.$.inArray(tool.action, alwaysVisibleItems) === -1)) {
-                $item.addClass('visualmarkdown-action-hidden');
+                if (tool.nested.length === 0) {
+                    return false;
+                }
             }
+
+            switch (tool.type) {
+                case 'divider':
+                    return tool;
+
+                case 'edit':
+                    return this.options.tools.indexOf(tool.action) !== -1 ? tool : false;
+
+                case 'help':
+                    return tool;
+
+                case 'license':
+                    return !this.options.licensed ? tool : false;
+
+                case 'fullscreen':
+                    return !this.isSafari() ? tool : false;
+
+                default:
+                    return false;
+            }
+        }).filter(tool => {
+            return tool !== false;
+        });
+    }
+
+    /**
+     * Build
+     *
+     * @param tools
+     * @return Array
+     */
+    buildTools(tools) {
+        return tools.map(tool => {
+            // Generate elements
+            let $item = this.$('<li>').addClass('visualmarkdown-tool-' + tool.type);
+            let $anchor = this.$('<a>').attr('href', '#').attr('tabindex', '-1');
 
             // Don't do anything with divider elements.
             // They are just an empty <li> tag with a "divider" class.
-            if (tool.action === 'divider') {
+            if (tool.type === 'divider') {
                 return $item;
             }
 
-            // Add the tools name as anchor class.
+            // Add the tools classes to the anchor element
             if (tool.className) {
                 $anchor.addClass(tool.className);
             }
 
-            // Add the tooltip if available
+            // Add a tooltip if a translation is available
             if (VisualMarkdownTranslation['action.tooltip.' + tool.action]) {
                 $anchor.attr('title', VisualMarkdownTranslation['action.tooltip.' + tool.action]);
             }
@@ -383,7 +329,7 @@ export default class {
                 $anchor.on('click', event => {
                     if (!this.options.readonly) {
                         this.codemirror.focus();
-                        this.actions[tool.action].callback.call(this);
+                        this.actions[tool.action].call(this);
                     }
                     this.field.inAction = false;
                     event.preventDefault();
@@ -395,9 +341,7 @@ export default class {
 
             // Generate nested items
             if (tool.nested) {
-                $subItems = this.$('<ul>').append(this.generateToolbarItems(tool.nested));
-                $item.addClass('visualmarkdown-action-with-subactions');
-                $item.append($subItems);
+                $item.append(this.$('<ul>').append(this.buildTools(tool.nested)));
             }
 
             return $item;
@@ -806,12 +750,10 @@ export default class {
      *
      * @since 1.4.2
      */
-    hideModals(e) {
-        if (e.target === this) {
-            this.$.each(this.modals, function (index, modal) {
-                modal.hide();
-            });
-        }
+    hideModals() {
+        this.$.each(this.modals, (index, modal) => {
+            modal.hide();
+        });
     }
 
     /**

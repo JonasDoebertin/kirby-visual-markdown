@@ -16,89 +16,112 @@
 export default [
     {
         action: 'header1',
-        className: 'fa fa-header'
+        className: 'fa fa-header',
+        type: 'edit'
     },
     {
         action: 'header2',
         className: 'markdownfield-icon-text markdownfield-icon-header2',
-        showName: true
+        showName: true,
+        type: 'edit'
     },
     {
-        action: 'divider'
+        type: 'divider'
     },
     {
         action: 'bold',
-        className: 'fa fa-bold'
+        className: 'fa fa-bold',
+        type: 'edit'
     },
     {
         action: 'italic',
-        className: 'fa fa-italic'
+        className: 'fa fa-italic',
+        type: 'edit'
     },
     {
         action: 'strikethrough',
-        className: 'fa fa-strikethrough'
+        className: 'fa fa-strikethrough',
+        type: 'edit'
     },
     {
         action: 'blockquote',
-        className: 'fa fa-quote-left'
+        className: 'fa fa-quote-left',
+        type: 'edit'
     },
     {
         action: 'unorderedList',
-        className: 'fa fa-list'
+        className: 'fa fa-list',
+        type: 'edit'
     },
     {
         action: 'orderedList',
-        className: 'fa fa-list-ol'
+        className: 'fa fa-list-ol',
+        type: 'edit'
     },
     {
-        action: 'divider'
+        type: 'divider'
     },
     {
         action: 'link',
-        className: 'fa fa-link'
+        className: 'fa fa-link',
+        type: 'edit'
     },
     {
         action: 'email',
-        className: 'fa fa-envelope'
+        className: 'fa fa-envelope',
+        type: 'edit'
     },
     {
         action: 'image',
-        className: 'fa fa-image'
+        className: 'fa fa-image',
+        type: 'edit'
     },
     {
         action: 'line',
-        className: 'fa fa-minus'
+        className: 'fa fa-minus',
+        type: 'edit'
     },
     {
-        action: 'divider'
+        type: 'divider'
     },
     {
         action: 'help',
         className: 'fa fa-question-circle',
+        type: 'help',
         nested: [
             {
                 action: 'shortcutsModal',
-                showName: true
+                showName: true,
+                type: 'help'
             },
             {
                 action: 'markdownLink',
-                showName: true
+                showName: true,
+                type: 'help'
             },
             {
                 action: 'kirbytextLink',
-                showName: true
+                showName: true,
+                type: 'help'
             },
             {
-                action: 'divider'
+                type: 'divider'
             },
             {
                 action: 'issuesLink',
-                showName: true
+                showName: true,
+                type: 'help'
             },
             {
                 action: 'licenseLink',
-                showName: true
+                showName: true,
+                type: 'license'
             }
         ]
+    },
+    {
+        action: 'fullscreen',
+        className: 'fa fa-expand',
+        type: 'fullscreen'
     }
 ];

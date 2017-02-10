@@ -52,6 +52,7 @@ export default class {
             header1: this.$field.data('header1'),
             header2: this.$field.data('header2'),
             tools: this.$field.data('tools').split(','),
+            licensed: this.$field.is('[data-licensed]'),
             kirbytext: this.$field.data('kirbytext')
         });
 
